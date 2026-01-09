@@ -1,0 +1,1320 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : localhost
+ Source Server Type    : MySQL
+ Source Server Version : 80025 (8.0.25)
+ Source Host           : localhost:3306
+ Source Schema         : matlink_db
+
+ Target Server Type    : MySQL
+ Target Server Version : 80025 (8.0.25)
+ File Encoding         : 65001
+
+ Date: 09/01/2026 17:51:52
+*/
+
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- ----------------------------
+-- Table structure for clt_category
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_category`;
+CREATE TABLE `clt_category`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '分类名称',
+  `parent_id` bigint NULL DEFAULT 0 COMMENT '父分类ID，0表示顶级分类',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `del_flag` int NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1952678710640549890 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品分类表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_category
+-- ----------------------------
+INSERT INTO `clt_category` VALUES (1952678553081520129, '食品', 0, '2025-08-05 18:30:21', '2025-08-05 18:30:21', 0);
+INSERT INTO `clt_category` VALUES (1952678599009148929, '生活用品', 0, '2025-08-05 18:30:32', '2025-08-05 18:30:32', 0);
+INSERT INTO `clt_category` VALUES (1952678628172144642, '米', 1952678553081520129, '2025-08-05 18:30:39', '2025-08-05 18:30:39', 0);
+INSERT INTO `clt_category` VALUES (1952678652444581890, '面', 1952678553081520129, '2025-08-05 18:30:44', '2025-08-05 18:30:44', 0);
+INSERT INTO `clt_category` VALUES (1952678680789688322, '粮', 1952678553081520129, '2025-08-05 18:30:51', '2025-08-05 18:30:51', 0);
+INSERT INTO `clt_category` VALUES (1952678710640549889, '油', 1952678553081520129, '2025-08-05 18:30:58', '2025-08-05 18:30:58', 0);
+
+-- ----------------------------
+-- Table structure for clt_department
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_department`;
+CREATE TABLE `clt_department`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '部门名称',
+  `parent_id` bigint NULL DEFAULT 0 COMMENT '父部门ID',
+  `manager_id` bigint NULL DEFAULT NULL COMMENT '部门负责人ID',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `del_flag` int NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `department_name`(`name` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1952987749664636930 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_department
+-- ----------------------------
+INSERT INTO `clt_department` VALUES (1952262586321022978, '销售部', 0, 0, '2025-08-04 14:57:27', '2025-08-06 14:59:11', 0);
+INSERT INTO `clt_department` VALUES (1952264115023196161, '人事部', 0, 0, '2025-08-04 15:03:31', '2025-10-20 18:18:06', 1);
+INSERT INTO `clt_department` VALUES (1952265346936418305, '销售小组1', 1952262586321022978, 0, '2025-08-04 15:08:25', '2025-08-04 15:43:05', 0);
+INSERT INTO `clt_department` VALUES (1952275260559798273, '销售小组2', 1952262586321022978, 0, '2025-08-04 15:47:48', '2025-08-04 15:47:48', 0);
+INSERT INTO `clt_department` VALUES (1952276451498864642, '采购部', 0, 0, '2025-08-04 15:52:32', '2025-08-04 15:53:04', 0);
+INSERT INTO `clt_department` VALUES (1952276503030083586, '采购小组1', 1952276451498864642, 0, '2025-08-04 15:52:45', '2025-08-04 15:52:45', 0);
+INSERT INTO `clt_department` VALUES (1952276547581980674, '采购小组2', 1952276451498864642, 0, '2025-08-04 15:52:55', '2025-08-04 15:52:55', 0);
+INSERT INTO `clt_department` VALUES (1952276768491778049, '仓库管理部', 0, 0, '2025-08-04 15:53:48', '2025-08-04 15:53:48', 0);
+INSERT INTO `clt_department` VALUES (1952276819339325441, '财务部', 0, 0, '2025-08-04 15:54:00', '2025-08-04 15:54:00', 0);
+INSERT INTO `clt_department` VALUES (1952987749664636929, '11', 0, 0, '2025-08-06 14:58:59', '2025-08-06 14:59:05', 1);
+
+-- ----------------------------
+-- Table structure for clt_employee
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_employee`;
+CREATE TABLE `clt_employee`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '员工编码',
+  `username` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '登录用户名',
+  `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '加密密码',
+  `real_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '真实姓名',
+  `department_id` bigint NOT NULL COMMENT '部门ID',
+  `position` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '职位',
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '联系电话',
+  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '邮箱',
+  `status` int NULL DEFAULT 1 COMMENT '状态(1-在职,0-离职)',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `gender` int NULL DEFAULT NULL COMMENT '0女1男',
+  `avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '头像',
+  `del_flag` int NULL DEFAULT 0 COMMENT '0正常1删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1980218558943260674 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '员工表（用户表）' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_employee
+-- ----------------------------
+INSERT INTO `clt_employee` VALUES (1950095792504283138, '001', 'admin', '$2a$10$iL0sIuo./e5sxTWoc10Dae2EuADpz7nPfKxRNwAzlTVcRjOOxyC12', '张敏', 0, '', '17312124545', '123@163.com', 1, '2025-07-29 15:27:22', '2025-10-20 22:03:35', 1952303554671882242, 0, '/static/2025/10/20/93586520bc5c413ab81e54dfe596b935_20251020220335A001.png', 0);
+INSERT INTO `clt_employee` VALUES (1952309334494097410, '002', '仓库管理员', '$2a$10$iL0sIuo./e5sxTWoc10Dae2EuADpz7nPfKxRNwAzlTVcRjOOxyC12', '赵军', 1952276768491778049, '', '18318341611', '123@163.com', 1, '2025-08-04 18:03:12', '2025-10-20 22:03:46', 2, 1, '/static/2025/10/20/e6e6994c1bb14474bcb8ffd3e1ea174b_20251020220345A002.png', 0);
+INSERT INTO `clt_employee` VALUES (1954553753768919041, '003', '采购主管', '$2a$10$iL0sIuo./e5sxTWoc10Dae2EuADpz7nPfKxRNwAzlTVcRjOOxyC12', '李刚', 1952276451498864642, '', '17311112222', '123@163.com', 1, '2025-08-10 22:41:43', '2025-10-20 22:37:26', 3, 1, '/static/2025/10/20/e66bd132a29849168885e58498e2de94_20251020220355A003.png', 0);
+INSERT INTO `clt_employee` VALUES (1980217514406375425, '004', '采购人员', '$2a$10$drY/ydpDUOHeqcOWZyfWb.ilUvQNsjIXXO8fM7D6Bm8NJxW4.9SDK', '李明', 1952276451498864642, '', '18310249899', 'liming@163.com', 1, '2025-10-20 18:20:21', '2025-10-20 18:20:42', 4, 1, 'defaultAvatar.png', 0);
+INSERT INTO `clt_employee` VALUES (1980217833198645250, '005', '销售主管', '$2a$10$kfQLI0q2aBOylYrsznQ2VuXkKA4RSriOJh6jPJZeJyRtN1kYbT52.', '张宇', 1952262586321022978, '', '13501012155', 'zhangyu@163.com', 1, '2025-10-20 18:21:37', '2025-10-20 18:22:31', 6, 1, 'defaultAvatar.png', 0);
+INSERT INTO `clt_employee` VALUES (1980218236149624833, '006', '销售人员', '$2a$10$293PfqDIsSO02N1Dk9VnJeTdqqkr/ukYmNGl/ISPuXxIF.9zEKgFq', '赵鹏', 1952262586321022978, '', '18801256565', 'zhaopeng@163.com', 1, '2025-10-20 18:23:13', '2025-10-20 18:23:13', 5, 1, 'defaultAvatar.png', 0);
+INSERT INTO `clt_employee` VALUES (1980218558943260673, '007', '财务主管', '$2a$10$VPdNyvnh5FMKSbd6rkOpwOZ1jjip.6fwkV1Xa.DYFGA70qZZzZFdG', '李楠', 1952276819339325441, '', '18802025444', 'linan@163.com', 1, '2025-10-20 18:24:30', '2025-10-20 18:24:30', 1, 0, 'defaultAvatar.png', 0);
+
+-- ----------------------------
+-- Table structure for clt_login_log
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_login_log`;
+CREATE TABLE `clt_login_log`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `employee_id` bigint NOT NULL COMMENT '员工ID',
+  `login_time` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '登录时间',
+  `login_ip` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '登录IP',
+  `status` tinyint NULL DEFAULT 1 COMMENT '状态(1-成功,0-失败)',
+  `message` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '登录信息',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 2009560260099076099 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录日志表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_login_log
+-- ----------------------------
+INSERT INTO `clt_login_log` VALUES (1976505128247848961, 1950095792504283138, '2025-10-10 12:28:38', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976536913061048321, 1950095792504283138, '2025-10-10 14:34:57', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976544774777729026, 1950095792504283138, '2025-10-10 15:06:11', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976552947039322114, 1950095792504283138, '2025-10-10 15:38:39', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976554288377675777, 1950095792504283138, '2025-10-10 15:43:59', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976554436981866498, 1950095792504283138, '2025-10-10 15:44:35', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976557069473824769, 1950095792504283138, '2025-10-10 15:55:02', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976567653443452930, 1950095792504283138, '2025-10-10 16:37:06', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976572363806236674, 1950095792504283138, '2025-10-10 16:55:49', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976573669107281922, 1950095792504283138, '2025-10-10 17:01:00', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976577804254818306, 1950095792504283138, '2025-10-10 17:17:26', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976578378803163137, 1950095792504283138, '2025-10-10 17:19:43', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976579367685828610, 1950095792504283138, '2025-10-10 17:23:38', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976579502532702209, 1950095792504283138, '2025-10-10 17:24:11', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976579592391471106, 1952309334494097410, '2025-10-10 17:24:32', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976579692098465794, 1950095792504283138, '2025-10-10 17:24:56', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976579811686461442, 1954553753768919041, '2025-10-10 17:25:24', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976579851389743105, 1954553753768919041, '2025-10-10 17:25:34', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976579973192331265, 1950095792504283138, '2025-10-10 17:26:03', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976580083309588482, 1950095792504283138, '2025-10-10 17:26:29', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976580222786973697, 1950095792504283138, '2025-10-10 17:27:02', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976580316127014913, 1950095792504283138, '2025-10-10 17:27:25', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976580477490278401, 1950095792504283138, '2025-10-10 17:28:03', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976590048208334849, 1950095792504283138, '2025-10-10 18:06:05', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976603142791868418, 1950095792504283138, '2025-10-10 18:58:07', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976855899503280129, 1950095792504283138, '2025-10-11 11:42:29', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976856656298328065, 1950095792504283138, '2025-10-11 11:45:29', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976857713996939265, 1950095792504283138, '2025-10-11 11:49:41', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1976866184284815361, 1950095792504283138, '2025-10-11 12:23:21', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1977563376241496065, 1950095792504283138, '2025-10-13 10:33:44', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1977574823927406594, 1950095792504283138, '2025-10-13 11:19:14', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1977577885555421186, 1950095792504283138, '2025-10-13 11:31:24', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1977591581862195202, 1950095792504283138, '2025-10-13 12:25:49', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1977622961967001601, 1950095792504283138, '2025-10-13 14:30:31', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1977653870430711810, 1950095792504283138, '2025-10-13 16:33:20', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1977673908999090177, 1950095792504283138, '2025-10-13 17:52:57', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1977946351005306881, 1950095792504283138, '2025-10-14 11:55:33', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1977999451565035522, 1950095792504283138, '2025-10-14 15:26:33', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978005591342325761, 1950095792504283138, '2025-10-14 15:50:57', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978037483177455617, 1950095792504283138, '2025-10-14 17:57:40', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978044796433068033, 1950095792504283138, '2025-10-14 18:26:44', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978046086890348546, 1950095792504283138, '2025-10-14 18:31:52', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978350501937438721, 1950095792504283138, '2025-10-15 14:41:30', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978350663271342082, 1950095792504283138, '2025-10-15 14:42:08', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978380165900820482, 1950095792504283138, '2025-10-15 16:39:22', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978410813726322689, 1950095792504283138, '2025-10-15 18:41:09', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978646573528260610, 1950095792504283138, '2025-10-16 10:17:59', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978650931439484929, 1950095792504283138, '2025-10-16 10:35:18', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978651131805646849, 1950095792504283138, '2025-10-16 10:36:06', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978663949795753986, 1950095792504283138, '2025-10-16 11:27:02', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978665018831626241, 1950095792504283138, '2025-10-16 11:31:16', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978709226070171650, 1950095792504283138, '2025-10-16 14:26:56', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978718595822346242, 1950095792504283138, '2025-10-16 15:04:10', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978743695065964545, 1950095792504283138, '2025-10-16 16:43:54', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1978771941157380097, 1950095792504283138, '2025-10-16 18:36:09', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979025112203255809, 1950095792504283138, '2025-10-17 11:22:09', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979087874510020610, 1950095792504283138, '2025-10-17 15:31:33', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979095601068105730, 1950095792504283138, '2025-10-17 16:02:15', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979124521322668034, 1950095792504283138, '2025-10-17 17:57:10', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979124714470367233, 1952309334494097410, '2025-10-17 17:57:56', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979124764885901313, 1950095792504283138, '2025-10-17 17:58:08', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979125307855331330, 1952309334494097410, '2025-10-17 18:00:18', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979127782482108418, 1950095792504283138, '2025-10-17 18:10:08', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979127910907502594, 1952309334494097410, '2025-10-17 18:10:39', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979129379446579202, 1950095792504283138, '2025-10-17 18:16:29', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979129641523470337, 1952309334494097410, '2025-10-17 18:17:31', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979131103087419393, 1950095792504283138, '2025-10-17 18:23:20', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979131270654058497, 1950095792504283138, '2025-10-17 18:24:00', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979131296490971137, 1952309334494097410, '2025-10-17 18:24:06', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1979131540649795585, 1950095792504283138, '2025-10-17 18:25:04', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980096121668808706, 1950095792504283138, '2025-10-20 10:17:58', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980216345172832258, 1950095792504283138, '2025-10-20 18:15:41', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980219561180590082, 1950095792504283138, '2025-10-20 18:28:28', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980219631443570690, 1952309334494097410, '2025-10-20 18:28:45', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980219720069214209, 1950095792504283138, '2025-10-20 18:29:06', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980220160689238018, 1952309334494097410, '2025-10-20 18:30:51', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980220439199412225, 1950095792504283138, '2025-10-20 18:31:58', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980221516762247169, 1952309334494097410, '2025-10-20 18:36:14', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980221723369467905, 1952309334494097410, '2025-10-20 18:37:04', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980222009408417794, 1980217514406375425, '2025-10-20 18:38:12', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980222092149452801, 1954553753768919041, '2025-10-20 18:38:32', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980222268779982850, 1950095792504283138, '2025-10-20 18:39:14', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980222935821119489, 1952309334494097410, '2025-10-20 18:41:53', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980223056642240513, 1950095792504283138, '2025-10-20 18:42:22', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980223264096710658, 1952309334494097410, '2025-10-20 18:43:11', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980273554054991873, 1950095792504283138, '2025-10-20 22:03:01', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980273820951138305, 1950095792504283138, '2025-10-20 22:04:05', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980274951932628993, 1980217833198645250, '2025-10-20 22:08:34', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980275114696790018, 1980218236149624833, '2025-10-20 22:09:13', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980275291113410562, 1952309334494097410, '2025-10-20 22:09:55', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980275543136555009, 1980218558943260673, '2025-10-20 22:10:55', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980275644756152321, 1950095792504283138, '2025-10-20 22:11:20', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980276149645496322, 1980218558943260673, '2025-10-20 22:13:20', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980276543520002050, 1950095792504283138, '2025-10-20 22:14:54', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980277007334526977, 1950095792504283138, '2025-10-20 22:16:44', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980277193070891010, 1980218558943260673, '2025-10-20 22:17:29', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980277402240831489, 1950095792504283138, '2025-10-20 22:18:19', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980278449332047874, 1950095792504283138, '2025-10-20 22:22:28', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980278615153856513, 1980217514406375425, '2025-10-20 22:23:08', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980278790475763713, 1954553753768919041, '2025-10-20 22:23:50', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980278866518495233, 1950095792504283138, '2025-10-20 22:24:08', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980279115748233217, 1954553753768919041, '2025-10-20 22:25:07', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980279395910963201, 1950095792504283138, '2025-10-20 22:26:14', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980279628552228866, 1954553753768919041, '2025-10-20 22:27:09', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980279982337576962, 1950095792504283138, '2025-10-20 22:28:34', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980280174784827393, 1954553753768919041, '2025-10-20 22:29:20', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980280628335890434, 1950095792504283138, '2025-10-20 22:31:08', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980281821678292993, 1954553753768919041, '2025-10-20 22:35:52', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980281907862851586, 1954553753768919041, '2025-10-20 22:36:13', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980282107864043521, 1950095792504283138, '2025-10-20 22:37:01', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980282325330317314, 1954553753768919041, '2025-10-20 22:37:52', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980282723092942849, 1950095792504283138, '2025-10-20 22:39:27', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980284303527661570, 1950095792504283138, '2025-10-20 22:45:44', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980284448306647041, 1980217514406375425, '2025-10-20 22:46:19', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980284669484879874, 1954553753768919041, '2025-10-20 22:47:11', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980284786384326657, 1980217514406375425, '2025-10-20 22:47:39', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980284977187409921, 1954553753768919041, '2025-10-20 22:48:25', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980285049958584322, 1980217514406375425, '2025-10-20 22:48:42', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980285146746343426, 1952309334494097410, '2025-10-20 22:49:05', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980285311007870977, 1980218558943260673, '2025-10-20 22:49:44', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980285558400503809, 1950095792504283138, '2025-10-20 22:50:43', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980287534328729602, 1980218558943260673, '2025-10-20 22:58:34', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980461276252475394, 1950095792504283138, '2025-10-21 10:28:58', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980461340844756993, 1950095792504283138, '2025-10-21 10:29:13', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980464553492877313, 1954553753768919041, '2025-10-21 10:41:59', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980465610495234049, 1980217833198645250, '2025-10-21 10:46:11', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980465962758049794, 1980218558943260673, '2025-10-21 10:47:35', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980482891535224833, 1950095792504283138, '2025-10-21 11:54:51', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980553388293787649, 1950095792504283138, '2025-10-21 16:34:59', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980554666612850690, 1950095792504283138, '2025-10-21 16:40:04', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980578875409924097, 1950095792504283138, '2025-10-21 18:16:15', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980578911543853058, 1980218236149624833, '2025-10-21 18:16:24', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980579024764895233, 1980217833198645250, '2025-10-21 18:16:51', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980579106511880194, 1980218236149624833, '2025-10-21 18:17:11', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980579195468873730, 1952309334494097410, '2025-10-21 18:17:32', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980579335688650753, 1980218558943260673, '2025-10-21 18:18:05', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980579520061865986, 1980217514406375425, '2025-10-21 18:18:49', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980579900560674818, 1950095792504283138, '2025-10-21 18:20:20', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980580005258891266, 1954553753768919041, '2025-10-21 18:20:45', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980580138985885697, 1980217514406375425, '2025-10-21 18:21:17', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980581055877517314, 1954553753768919041, '2025-10-21 18:24:55', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980581134956924929, 1952309334494097410, '2025-10-21 18:25:14', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980581221284089858, 1980217514406375425, '2025-10-21 18:25:35', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980581285658267649, 1952309334494097410, '2025-10-21 18:25:50', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980581773854281730, 1980218558943260673, '2025-10-21 18:27:46', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (1980587213585551361, 1950095792504283138, '2025-10-21 18:49:23', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2007647183057420289, 1950095792504283138, '2026-01-04 10:56:03', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2008445167948988417, 1950095792504283138, '2026-01-06 15:46:57', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2008447856736927745, 1950095792504283138, '2026-01-06 15:57:38', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2008448990327275522, 1950095792504283138, '2026-01-06 16:02:09', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2008449138306514945, 1950095792504283138, '2026-01-06 16:02:44', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2008482536303558658, 1950095792504283138, '2026-01-06 18:15:27', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2009154842134802433, 1950095792504283138, '2026-01-08 14:46:57', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2009173706100924417, 1950095792504283138, '2026-01-08 16:01:54', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2009480858212384770, 1950095792504283138, '2026-01-09 12:22:25', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2009537076226314242, 1950095792504283138, '2026-01-09 16:05:49', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2009559222927380482, 1950095792504283138, '2026-01-09 17:33:49', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2009560260099076098, 1950095792504283138, '2026-01-09 17:37:56', '127.0.0.1', 1, '登录成功');
+
+-- ----------------------------
+-- Table structure for clt_material
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material`;
+CREATE TABLE `clt_material`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `trade_type_id` bigint NOT NULL DEFAULT 0 COMMENT '类别ID',
+  `name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
+  `simple_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '简称',
+  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '物料编码',
+  `brand` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '品牌',
+  `model_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '型号',
+  `specification` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '规格',
+  `unit` bigint NOT NULL COMMENT '单位',
+  `producing_area` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '产地',
+  `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `min_count_limit` int NULL DEFAULT 1 COMMENT '最低库存量',
+  `max_count_limit` int NULL DEFAULT 1 COMMENT '最高库存量',
+  `safe_count_limit` int NULL DEFAULT 1 COMMENT '安全库存量',
+  `suggested_cost_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '参考售价',
+  `suggested_purchas_price` decimal(10, 2) NULL DEFAULT NULL COMMENT '参考进价',
+  `status` int NOT NULL DEFAULT 1 COMMENT '状态',
+  `barcode` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '条形码',
+  `create_time` bigint NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `create_user_id` bigint NOT NULL DEFAULT 0 COMMENT '创建用户id',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-物料表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_audit_flow
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_audit_flow`;
+CREATE TABLE `clt_material_audit_flow`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT '主键',
+  `project_id` bigint NOT NULL COMMENT '项目id',
+  `title` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '审批申请标题',
+  `resource_id` bigint NULL DEFAULT NULL COMMENT '资源ID',
+  `resource_type` int NULL DEFAULT NULL COMMENT '资源类型 1入库 2出库 3领料 4盘点 5采购',
+  `dept_id` bigint NULL DEFAULT NULL COMMENT '部门id',
+  `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `enable` int UNSIGNED NULL DEFAULT 1 COMMENT '状态，1启用 0禁用',
+  `parent_process` int NULL DEFAULT 0 COMMENT '是否父级部门处理审批',
+  `create_user_id` bigint NULL DEFAULT NULL COMMENT '创建人id',
+  `create_time` bigint NULL DEFAULT NULL COMMENT '创建时间',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标识',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-审批流程表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_audit_flow
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_audit_flow_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_audit_flow_detail`;
+CREATE TABLE `clt_material_audit_flow_detail`  (
+  `id` bigint NOT NULL COMMENT '主键',
+  `project_id` bigint NOT NULL COMMENT '项目id',
+  `flow_id` bigint NULL DEFAULT NULL COMMENT '审批主表ID',
+  `resource_type` int NULL DEFAULT NULL COMMENT '资源类型',
+  `level` int NULL DEFAULT NULL COMMENT '审核层级',
+  `dept_id` bigint NULL DEFAULT NULL COMMENT '部门id',
+  `role_id` bigint NULL DEFAULT NULL COMMENT '审核岗ID',
+  `role_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '审核岗名称',
+  `user_id` bigint NULL DEFAULT NULL COMMENT '审核人ID',
+  `user_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '审核人姓名',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标识',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-审批流步骤明细表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_audit_flow_detail
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_audit_flow_detail_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_audit_flow_detail_relation`;
+CREATE TABLE `clt_material_audit_flow_detail_relation`  (
+  `id` bigint NOT NULL COMMENT '主键',
+  `project_id` bigint NOT NULL COMMENT '项目id',
+  `flow_id` bigint NULL DEFAULT NULL COMMENT '审批主表ID',
+  `sub_id` bigint NULL DEFAULT NULL COMMENT '预定ID',
+  `resource_type` int NULL DEFAULT NULL COMMENT '资源类型',
+  `resource_id` bigint NULL DEFAULT NULL COMMENT '资源ID',
+  `level` int NULL DEFAULT NULL COMMENT '审核层级',
+  `dept_id` bigint NULL DEFAULT NULL COMMENT '部门id',
+  `role_id` bigint NULL DEFAULT NULL COMMENT '审核岗ID',
+  `role_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '审核岗名称',
+  `audit_remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '审核备注',
+  `audit_time` bigint NULL DEFAULT NULL COMMENT '审核时间',
+  `audit_status` int NULL DEFAULT NULL COMMENT '审核状态(0.待审核 1.不通过, 2.通过. 3.审核中)',
+  `user_id` bigint NULL DEFAULT NULL COMMENT '审核人ID',
+  `user_name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '审核人姓名',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-审批流程记录步骤明细表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_audit_flow_detail_relation
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_audit_flow_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_audit_flow_relation`;
+CREATE TABLE `clt_material_audit_flow_relation`  (
+  `id` bigint NOT NULL COMMENT '主键',
+  `project_id` bigint NOT NULL COMMENT '项目id',
+  `resource_id` bigint NULL DEFAULT NULL COMMENT '资源ID',
+  `sub_id` bigint NULL DEFAULT NULL COMMENT '预定ID',
+  `audit_status` int NULL DEFAULT NULL COMMENT '审核状态(0 待审核 \n1审核拒绝\n 2 审核通过 \n3  审核中)',
+  `audit_time` bigint NULL DEFAULT NULL COMMENT '审核时间',
+  `dept_id` bigint NULL DEFAULT NULL COMMENT '部门id',
+  `resource_type` int NULL DEFAULT NULL COMMENT '资源类型',
+  `enable` int NULL DEFAULT 1 COMMENT '状态，1启用 0禁用',
+  `current_audit_level` int NULL DEFAULT NULL COMMENT '当前审核层级',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-审批流程记录表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_audit_flow_relation
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_image
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_image`;
+CREATE TABLE `clt_material_image`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `material_id` bigint NOT NULL DEFAULT 0 COMMENT '报修ID',
+  `image_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '图像路径',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-物料图像表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_image
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_in_stock
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_in_stock`;
+CREATE TABLE `clt_material_in_stock`  (
+  `id` bigint NOT NULL DEFAULT 1 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `resource_id` bigint NULL DEFAULT 0 COMMENT '源单id：关联单号，采购/生产/调拨',
+  `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库ID',
+  `in_stock_no` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '单号RK20251014000001,按日期递增',
+  `status` int NOT NULL DEFAULT 0 COMMENT '审核状态:0-待审核,1-审核不通过，2-审核通过，3-审核中',
+  `in_stock_status` int NOT NULL DEFAULT 0 COMMENT '入库状态:0-未入库,1-已入库，2-已作废',
+  `supply_id` bigint NULL DEFAULT 0 COMMENT '供应商ID,0-无',
+  `type` int NOT NULL COMMENT '入库类型：1-期初入库，2-采购入库，3-退料入库，4-归还入库，5-调拨入库，6-其它入库',
+  `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `is_direct` int NOT NULL DEFAULT 0 COMMENT '是否直接入库：0否1是',
+  `in_stock_user_id` bigint NOT NULL DEFAULT 0 COMMENT '入库人ID',
+  `in_stock_time` bigint NULL DEFAULT NULL COMMENT '入库时间',
+  `approver_user_id` bigint NULL DEFAULT 0 COMMENT '审核人',
+  `approver_create_time` bigint NULL DEFAULT 0 COMMENT '审核时间',
+  `create_user_id` bigint NOT NULL DEFAULT 0 COMMENT '创建人ID',
+  `create_time` bigint NOT NULL DEFAULT 0 COMMENT '时间戳',
+  `source` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '来源：app/web/API',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-入库记录表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_in_stock
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_in_stock_details
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_in_stock_details`;
+CREATE TABLE `clt_material_in_stock_details`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `in_stock_id` bigint NOT NULL DEFAULT 0 COMMENT '入库id',
+  `trade_id` bigint NOT NULL DEFAULT 0 COMMENT '物料ID',
+  `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库id',
+  `per_price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '单价',
+  `total_price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '总价',
+  `in_stock_price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '入库价格',
+  `price_ratio` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '税率',
+  `actual_count` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '实际数量',
+  `expected_count` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '源单数量',
+  `description` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `invoice_number` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发票号',
+  `invoice_time` bigint NULL DEFAULT 0 COMMENT '开票日期',
+  `photos` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图片，只有App端可以传',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标识',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-采购入库详情表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_in_stock_details
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_in_stock_file
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_in_stock_file`;
+CREATE TABLE `clt_material_in_stock_file`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `in_stock_id` bigint NOT NULL DEFAULT 0 COMMENT '入库id',
+  `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件路径',
+  `file_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件名称',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标识',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-采购入库附件表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_in_stock_file
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_out_stock
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_out_stock`;
+CREATE TABLE `clt_material_out_stock`  (
+  `id` bigint NOT NULL DEFAULT 1 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `resource_id` bigint NULL DEFAULT 0 COMMENT '源单id：关联单号，采购/生产/调拨',
+  `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库ID',
+  `out_stock_no` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '单号CK20251014000001,按日期递增',
+  `status` int NOT NULL DEFAULT 0 COMMENT '审核状态:0-待审核,1-审核不通过，2-审核通过，3-审核中',
+  `out_stock_status` int NOT NULL DEFAULT 0 COMMENT '出库状态:0-未出库,1-已出库，2-已作废',
+  `type` int NOT NULL COMMENT '出库类型：1-领料出库，2-退货入库，3-报废出库，4-其它出库',
+  `dept_id` bigint NOT NULL DEFAULT 0 COMMENT '领用部门ID',
+  `is_direct` int NOT NULL DEFAULT 0 COMMENT '是否直接出库：0否1是',
+  `out_stock_user_id` bigint NOT NULL DEFAULT 0 COMMENT '入库人ID',
+  `out_stock_time` bigint NULL DEFAULT NULL COMMENT '入库时间',
+  `approver_user_id` bigint NULL DEFAULT 0 COMMENT '审核人',
+  `approver_create_time` bigint NULL DEFAULT 0 COMMENT '审核时间',
+  `create_user_id` bigint NOT NULL DEFAULT 0 COMMENT '创建人ID',
+  `create_time` bigint NOT NULL DEFAULT 0 COMMENT '时间戳',
+  `source` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '来源：app/web/API',
+  `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
+  `useage` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用途',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-物料出库记录表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_out_stock
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_out_stock_details
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_out_stock_details`;
+CREATE TABLE `clt_material_out_stock_details`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `out_stock_id` bigint NOT NULL DEFAULT 0 COMMENT '出库id',
+  `trade_id` bigint NOT NULL DEFAULT 0 COMMENT '物料ID',
+  `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库id',
+  `per_price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '出库单价',
+  `total_price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '出库总价',
+  `out_stock_price` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '出库价格（不含税）',
+  `price_ratio` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '税率',
+  `actual_count` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '实际数量',
+  `expected_count` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '源单出库数量',
+  `description` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注：使用地点或用途',
+  `invoice_number` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发票号',
+  `invoice_time` bigint NULL DEFAULT 0 COMMENT '开票日期',
+  `photos` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图片，只有App端可以传',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标识',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-出库物料明细表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_out_stock_details
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_out_stock_file
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_out_stock_file`;
+CREATE TABLE `clt_material_out_stock_file`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `out_stock_id` bigint NOT NULL DEFAULT 0 COMMENT '出库记录id',
+  `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件路径',
+  `file_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件名称',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标识',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-出库记录附件表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_out_stock_file
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_outbound_apply
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_outbound_apply`;
+CREATE TABLE `clt_material_outbound_apply`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库ID',
+  `workorder_id` bigint NULL DEFAULT 0 COMMENT '工单ID',
+  `apply_no` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '领料单号：SQ2025020300002,不重复后台动态生成',
+  `apply_time` bigint NOT NULL DEFAULT 0 COMMENT '申请时间',
+  `dept_id` bigint NOT NULL DEFAULT 0 COMMENT '申请部门ID',
+  `apply_user_id` bigint NOT NULL DEFAULT 0 COMMENT '申请人ID',
+  `status` int NOT NULL DEFAULT 0 COMMENT '审核状态:0-待审核,1-审核不通过，2-审核通过，3-审核中',
+  `apply_status` int NOT NULL DEFAULT 0 COMMENT '申请状态:0-未领料，1-已领料,2-废弃',
+  `approve_user_id` bigint NULL DEFAULT 0 COMMENT '审批人ID',
+  `approve_time` bigint NULL DEFAULT 0 COMMENT '审批时间',
+  `useage` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用途',
+  `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用途备注',
+  `create_user_id` bigint NOT NULL DEFAULT 0 COMMENT '创建人ID',
+  `create_time` bigint NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-物料领用申请表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_outbound_apply
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_outbound_apply_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_outbound_apply_detail`;
+CREATE TABLE `clt_material_outbound_apply_detail`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `apply_id` bigint NOT NULL DEFAULT 0 COMMENT '申请id',
+  `trade_id` bigint NOT NULL DEFAULT 0 COMMENT '物料ID',
+  `apply_count` decimal(20, 2) NOT NULL DEFAULT 0.00 COMMENT '申领数量',
+  `actual_count` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '实际数量',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-物料领用申请明细表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_outbound_apply_detail
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_stock
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_stock`;
+CREATE TABLE `clt_material_stock`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `parent_id` bigint NOT NULL DEFAULT 0 COMMENT '父id',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
+  `type_id` bigint NOT NULL DEFAULT 0 COMMENT '类别',
+  `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '描述',
+  `create_time` bigint NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `create_user_id` bigint NOT NULL DEFAULT 0 COMMENT '创建用户id',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-库管理表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_stock
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_stock_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_stock_detail`;
+CREATE TABLE `clt_material_stock_detail`  (
+  `id` bigint NOT NULL COMMENT '主键ID',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库存号ID',
+  `trade_type_id` bigint NOT NULL DEFAULT 0 COMMENT '类别ID',
+  `trade_id` bigint NOT NULL DEFAULT 0 COMMENT '物料id',
+  `count` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '库存数量',
+  `lock_count` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '锁定数量',
+  `use_count` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '可用数量',
+  `stock_time` bigint NOT NULL DEFAULT 0 COMMENT '更新时间',
+  `transit_count` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '在途数量',
+  `cost_price` decimal(10, 2) NOT NULL COMMENT '成本单价',
+  `total_cost_price` decimal(10, 2) NOT NULL COMMENT '成本总价',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-物料库存详情表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_stock_detail
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_stock_record
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_stock_record`;
+CREATE TABLE `clt_material_stock_record`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `type` int NOT NULL DEFAULT 0 COMMENT '类型：1-入库，2-出库，3-盘盈/盘亏调整',
+  `related_doc_id` bigint NOT NULL DEFAULT 0 COMMENT '关联出入库单id',
+  `trade_id` bigint NOT NULL DEFAULT 0 COMMENT '物料ID',
+  `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库id',
+  `quantity_change` decimal(18, 6) NOT NULL DEFAULT 0.000000 COMMENT '变化数量',
+  `balance_after` decimal(18, 6) NOT NULL DEFAULT 0.000000 COMMENT '剩余数量',
+  `cost_price` decimal(10, 2) NOT NULL COMMENT '成本单价',
+  `total_cost_price` decimal(10, 2) NOT NULL COMMENT '成本总价',
+  `handle_user_id` bigint NOT NULL DEFAULT 0 COMMENT '处置人id',
+  `handle_time` bigint NOT NULL DEFAULT 0 COMMENT '处置时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-采购入库详情表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_stock_record
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_stock_type
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_stock_type`;
+CREATE TABLE `clt_material_stock_type`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目id',
+  `parent_id` bigint NOT NULL DEFAULT 0 COMMENT '父id',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
+  `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '描述',
+  `create_time` bigint NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `create_user_id` bigint NOT NULL DEFAULT 0 COMMENT '创建人',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-库存类型表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_stock_type
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_task
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_task`;
+CREATE TABLE `clt_material_task`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
+  `task_type` int NOT NULL DEFAULT 1 COMMENT '盘点类型：1-全库盘点，2-区域盘点',
+  `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库ID',
+  `handle_user_id` bigint NOT NULL DEFAULT 0 COMMENT '处理人ID',
+  `start_time` bigint NOT NULL DEFAULT 0 COMMENT '开始时间',
+  `end_time` bigint NOT NULL DEFAULT 0 COMMENT '结束时间',
+  `stocktaking_none` int NOT NULL DEFAULT 0 COMMENT '是否盘点0库存：0-否，1-是',
+  `approve_time` bigint NULL DEFAULT 0 COMMENT '审批时间',
+  `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `status` int NOT NULL DEFAULT 0 COMMENT '审批状态：0-未审核，1-审核中，2-已审核',
+  `task_status` int NOT NULL DEFAULT 0 COMMENT '盘点状态：0-未盘点，1-已盘点结束，2-已入库，3-已废弃，4-盘盈或盘亏',
+  `create_user_id` bigint NOT NULL DEFAULT 0 COMMENT '创建用户id',
+  `create_time` bigint NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-盘点任务表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_task
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_task_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_task_detail`;
+CREATE TABLE `clt_material_task_detail`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `task_id` bigint NOT NULL DEFAULT 1 COMMENT '任务ID',
+  `trade_id` bigint NOT NULL DEFAULT 0 COMMENT '物料ID',
+  `real_count` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '实际数量',
+  `status` int NOT NULL DEFAULT 0 COMMENT '状态：0-未盘点，1-盘点中，2-已盘点',
+  `count_status` int NULL DEFAULT NULL COMMENT '数量状态：0 正常 1盘盈 2盘亏',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-盘点明细表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_task_detail
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_task_flow
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_task_flow`;
+CREATE TABLE `clt_material_task_flow`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `name` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '名称',
+  `task_id` bigint NOT NULL DEFAULT 0 COMMENT '任务ID',
+  `handle_time` bigint NOT NULL DEFAULT 0 COMMENT '审批时间',
+  `handle_user_id` bigint NOT NULL DEFAULT 0 COMMENT '处理人ID',
+  `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `status` int NOT NULL DEFAULT 0 COMMENT '状态：0-创建盘点，1-盘点结束，2-审核',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-盘点任务处理流表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_task_flow
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_material_unit
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_material_unit`;
+CREATE TABLE `clt_material_unit`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `parent_id` bigint NOT NULL DEFAULT 0 COMMENT '父单位',
+  `cnname` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '中文名',
+  `enname` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '英文名',
+  `unit_symbol` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '符号',
+  `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '描述',
+  `del_flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-物料单位表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_material_unit
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_permission`;
+CREATE TABLE `clt_permission`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '权限名称',
+  `module_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '所属模块编码',
+  `parent_id` bigint NULL DEFAULT 0 COMMENT '父权限ID',
+  `url` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '关联URL',
+  `description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '权限描述',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `del_flag` int NULL DEFAULT 0,
+  `action` int NOT NULL DEFAULT 1 COMMENT '操作类型 1 view、2 add、3 edit、4 delete、5 approve',
+  `type` int NOT NULL DEFAULT 1 COMMENT '权限类型 1 菜单级别 2 按钮级别',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `permission_name`(`name` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1980287290148933634 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_permission
+-- ----------------------------
+INSERT INTO `clt_permission` VALUES (1952561113785896961, '组织权限', 'employeeManagement', 0, '/employeeManagement', '', '2025-08-05 10:43:41', '2025-10-20 10:41:01', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1952561423342309377, '部门管理', 'department', 1952561113785896961, '/employeeManagement/department', '', '2025-08-05 10:44:55', '2025-08-05 10:44:55', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1952562158385696769, '添加部门', 'department', 1952561423342309377, '/employeeManagement/department', '', '2025-08-05 10:47:50', '2025-10-20 11:14:39', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1952562778312216578, '删除部门', 'department', 1952561423342309377, '/employeeManagement/department', '', '2025-08-05 10:50:18', '2025-10-20 11:14:48', 0, 4, 2);
+INSERT INTO `clt_permission` VALUES (1952658215757062146, '角色管理', 'role', 1952561113785896961, '/employeeManagement/role', '', '2025-08-05 17:09:32', '2025-08-05 17:09:46', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1952658612836016129, '权限管理', 'permission', 1952561113785896961, '/employeeManagement/permission', '', '2025-08-05 17:11:07', '2025-08-05 17:11:35', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1954554256779214850, '采购管理', 'purchaseManagement', 0, 'purchaseManagement', '', '2025-08-10 22:43:43', '2025-08-10 22:43:43', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1954554607104262146, '采购需求', 'purchaseDemand', 1954554256779214850, 'purchaseManagement/demand', '', '2025-08-10 22:45:07', '2025-08-11 16:32:24', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1954554993114447874, '审批采购需求', 'purchaseDemand', 1954554607104262146, 'purchaseManagement/demand', '', '2025-08-10 22:46:39', '2025-08-11 16:32:32', 0, 5, 2);
+INSERT INTO `clt_permission` VALUES (1954833520101867522, '采购订单', 'purchaseOrder', 1954554256779214850, 'purchaseManagement/order', '', '2025-08-11 17:13:25', '2025-10-20 11:21:01', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1954834079097733121, '审批采购订单', 'purchaseOrder', 1954833520101867522, 'purchaseManagement/order', '', '2025-08-11 17:15:38', '2025-10-20 11:21:16', 0, 5, 2);
+INSERT INTO `clt_permission` VALUES (1954922598694195201, '采购退单', 'purchaseReturn', 1954554256779214850, 'purchaseManagement/return', '', '2025-08-11 23:07:23', '2025-10-20 11:24:12', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1954922913359269890, '审批采购退单', 'purchaseReturn', 1954922598694195201, 'purchaseManagement/return', '', '2025-08-11 23:08:38', '2025-10-20 11:24:20', 0, 5, 2);
+INSERT INTO `clt_permission` VALUES (1957435491113308162, '销售管理', 'saleManagement', 0, 'saleManagement', '', '2025-08-18 21:32:43', '2025-08-18 21:33:24', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1957435627012952065, '销售订单', 'salesOrder', 1957435491113308162, 'saleManagement/order', '', '2025-08-18 21:33:16', '2025-10-20 11:29:15', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1957435790586613762, '审批销售订单', 'salesOrder', 1957435627012952065, 'saleManagement/order', '', '2025-08-18 21:33:55', '2025-10-20 11:30:48', 0, 5, 2);
+INSERT INTO `clt_permission` VALUES (1957436138843869185, '销售退单', 'salesReturn', 1957435491113308162, 'saleManagement/return', '', '2025-08-18 21:35:18', '2025-10-20 11:29:41', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1957436430557712385, '审批销售退单', 'salesReturn', 1957436138843869185, 'saleManagement/return', '', '2025-08-18 21:36:27', '2025-10-20 11:29:50', 0, 5, 2);
+INSERT INTO `clt_permission` VALUES (1970053250455896065, '账单管理', 'accountManagement', 0, 'accountManagement', NULL, '2025-09-22 17:11:11', '2025-09-22 17:11:11', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1970053380479320066, '账单', 'account', 1970053250455896065, 'accountManagement/account', '', '2025-09-22 17:11:42', '2025-10-20 22:12:13', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1979105949879885826, '编辑部门', 'department', 1952561423342309377, '/employeeManagement/department', '', '2025-10-17 16:43:23', '2025-10-20 11:14:57', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980102171428040705, '员工管理', 'employee', 1952561113785896961, '/employeeManagement/employee', '', '2025-10-20 10:42:01', '2025-10-20 10:43:31', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980102996762210306, '添加角色', 'role', 1952658215757062146, '/employeeManagement/role', '', '2025-10-20 10:45:18', '2025-10-20 11:15:06', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980103144267493377, '删除角色', 'role', 1952658215757062146, '/employeeManagement/role', '', '2025-10-20 10:45:53', '2025-10-20 11:15:14', 0, 4, 2);
+INSERT INTO `clt_permission` VALUES (1980103228065492994, '编辑角色', 'role', 1952658215757062146, '/employeeManagement/role', '', '2025-10-20 10:46:13', '2025-10-20 11:15:24', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980109746630471682, '编辑权限', 'permission', 1952658612836016129, '/employeeManagement/permission', '', '2025-10-20 11:12:07', '2025-10-20 11:15:33', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980109892256706561, '添加权限', 'permission', 1952658612836016129, '/employeeManagement/permission', '', '2025-10-20 11:12:42', '2025-10-20 11:15:45', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980109986188144641, '删除权限', 'permission', 1952658612836016129, '/employeeManagement/permission', '', '2025-10-20 11:13:04', '2025-10-20 11:15:58', 0, 4, 2);
+INSERT INTO `clt_permission` VALUES (1980110236332240897, '添加员工', 'employee', 1980102171428040705, '/employeeManagement/employee', '', '2025-10-20 11:14:04', '2025-10-20 11:14:28', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980110818451304449, '删除员工', 'employee', 1980102171428040705, '/employeeManagement/employee', '', '2025-10-20 11:16:22', '2025-10-20 11:16:22', 0, 4, 2);
+INSERT INTO `clt_permission` VALUES (1980110948873187330, '编辑员工', 'employee', 1980102171428040705, '/employeeManagement/employee', '', '2025-10-20 11:16:54', '2025-10-20 11:16:54', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980111535538876417, '编辑采购需求', 'purchaseDemand', 1954554607104262146, 'purchaseManagement/demand', '', '2025-10-20 11:19:13', '2025-10-20 11:19:13', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980111779097915393, '创建采购需求', 'purchaseDemand', 1954554607104262146, 'purchaseManagement/demand', '', '2025-10-20 11:20:11', '2025-10-20 11:20:11', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980112226063921153, '创建采购订单', 'purchaseOrder', 1954833520101867522, 'purchaseManagement/order', '', '2025-10-20 11:21:58', '2025-10-20 11:21:58', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980112633196621825, '编辑采购订单', 'purchaseOrder', 1954833520101867522, 'purchaseManagement/order', '', '2025-10-20 11:23:35', '2025-10-20 11:23:35', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980112972478066690, '创建采购退单', 'purchaseReturn', 1954922598694195201, 'purchaseManagement/return', '', '2025-10-20 11:24:56', '2025-10-20 11:24:56', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980113495453249538, '供应商', 'supplier', 1954554256779214850, '/purchaseManagement/supplier', '', '2025-10-20 11:27:01', '2025-10-20 11:27:10', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980113641251450882, '新增供应商', 'supplier', 1980113495453249538, '/purchaseManagement/supplier', '', '2025-10-20 11:27:35', '2025-10-20 11:27:35', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980113740383825921, '编辑供应商', 'supplier', 1980113495453249538, '/purchaseManagement/supplier', '', '2025-10-20 11:27:59', '2025-10-20 11:27:59', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980113874467336194, '删除供应商', 'supplier', 1980113495453249538, '/purchaseManagement/supplier', '', '2025-10-20 11:28:31', '2025-10-20 11:28:31', 0, 4, 2);
+INSERT INTO `clt_permission` VALUES (1980114577466241025, '编辑销售订单', 'salesOrder', 1957435627012952065, 'saleManagement/order', '', '2025-10-20 11:31:19', '2025-10-20 11:31:19', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980114713395245058, '新增销售订单', 'salesOrder', 1957435627012952065, 'saleManagement/order', '', '2025-10-20 11:31:51', '2025-10-20 11:31:51', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980115035895279618, '创建销售退单', 'salesReturn', 1957436138843869185, '/saleManagement/return', '', '2025-10-20 11:33:08', '2025-10-20 11:33:08', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980115387193405442, '客户', 'customer', 1957435491113308162, '/saleManagement/customer', '', '2025-10-20 11:34:32', '2025-10-20 11:34:32', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980115513571979266, '编辑客户', 'customer', 1980115387193405442, '/saleManagement/customer', '', '2025-10-20 11:35:02', '2025-10-20 11:35:02', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980115614893780994, '新增客户', 'customer', 1980115387193405442, '/saleManagement/customer', '', '2025-10-20 11:35:26', '2025-10-20 11:35:26', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980115736620871681, '删除客户', 'customer', 1980115387193405442, '/saleManagement/customer', '', '2025-10-20 11:35:55', '2025-10-20 11:35:55', 0, 4, 2);
+INSERT INTO `clt_permission` VALUES (1980116311634784258, '商品管理', 'productManagement', 0, '/productManagement', '', '2025-10-20 11:38:12', '2025-10-20 11:39:35', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980116507596861441, '商品', 'product', 1980116311634784258, '/productManagement/product', '', '2025-10-20 11:38:59', '2025-10-20 11:40:39', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980116871276572674, '商品分类', 'category', 1980116311634784258, '/productManagement/category', '', '2025-10-20 11:40:26', '2025-10-20 11:40:26', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980117137338052609, '新增商品', 'product', 1980116507596861441, '/productManagement/product', '', '2025-10-20 11:41:29', '2025-10-20 11:41:29', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980117220787924994, '编辑商品', 'product', 1980116507596861441, '/productManagement/product', '', '2025-10-20 11:41:49', '2025-10-20 11:41:49', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980117386370658305, '删除商品', 'product', 1980116507596861441, '/productManagement/product', '', '2025-10-20 11:42:28', '2025-10-20 11:42:28', 0, 4, 2);
+INSERT INTO `clt_permission` VALUES (1980117490846576641, '新增商品分类', 'category', 1980116871276572674, '/productManagement/category', '', '2025-10-20 11:42:53', '2025-10-20 11:43:38', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980117622686134273, '编辑商品分类', 'category', 1980116871276572674, '/productManagement/category', '', '2025-10-20 11:43:25', '2025-10-20 11:43:25', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980117784208781313, '删除商品分类', 'category', 1980116871276572674, '/productManagement/category', '', '2025-10-20 11:44:03', '2025-10-20 11:44:03', 0, 4, 2);
+INSERT INTO `clt_permission` VALUES (1980118049758556162, '仓库管理', 'warehouseManagement', 0, '/warehouseManagement', '', '2025-10-20 11:45:07', '2025-10-20 11:45:07', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980118144524660738, '仓库', 'warehouse', 1980118049758556162, '/warehouseManagement/warehouse', '', '2025-10-20 11:45:29', '2025-10-20 11:46:09', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980118255375921154, '区域', 'area', 1980118049758556162, '/warehouseManagement/area', '', '2025-10-20 11:45:56', '2025-10-20 11:45:56', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980118404567314433, '货架', 'shelf', 1980118049758556162, '/warehouseManagement/shelf', '', '2025-10-20 11:46:31', '2025-10-20 11:46:31', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980118528601272321, '新增仓库', 'warehouse', 1980118144524660738, '/warehouseManagement/warehouse', '', '2025-10-20 11:47:01', '2025-10-20 11:47:01', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980118622956335105, '编辑仓库', 'warehouse', 1980118144524660738, '/warehouseManagement/warehouse', '', '2025-10-20 11:47:23', '2025-10-20 11:47:23', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980118712265650178, '删除仓库', 'warehouse', 1980118144524660738, '/warehouseManagement/warehouse', '', '2025-10-20 11:47:45', '2025-10-20 11:47:45', 0, 4, 2);
+INSERT INTO `clt_permission` VALUES (1980118915995578369, '新增区域', 'area', 1980118255375921154, '/warehouseManagement/area', '', '2025-10-20 11:48:33', '2025-10-20 11:48:33', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980119004847714306, '编辑区域', 'area', 1980118255375921154, '/warehouseManagement/area', '', '2025-10-20 11:48:54', '2025-10-20 11:48:54', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980119083981647874, '删除区域', 'area', 1980118255375921154, '/warehouseManagement/area', '', '2025-10-20 11:49:13', '2025-10-20 11:49:13', 0, 4, 2);
+INSERT INTO `clt_permission` VALUES (1980119168865972225, '新增货架', 'shelf', 1980118404567314433, '/warehouseManagement/shelf', '', '2025-10-20 11:49:33', '2025-10-20 11:49:33', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980119272905682946, '编辑货架', 'shelf', 1980118404567314433, '/warehouseManagement/shelf', '', '2025-10-20 11:49:58', '2025-10-20 11:49:58', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980119366778400769, '删除货架', 'shelf', 1980118404567314433, '/warehouseManagement/shelf', '', '2025-10-20 11:50:21', '2025-10-20 11:50:21', 0, 4, 2);
+INSERT INTO `clt_permission` VALUES (1980119638070177794, '库存管理', 'inventoryManagement', 0, '/inventoryManagement', '', '2025-10-20 11:51:25', '2025-10-20 11:51:25', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980119755712016386, '商品库存', 'inventory', 1980119638070177794, '//inventoryManagement/inventory', '', '2025-10-20 11:51:53', '2025-10-20 11:51:53', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980119883239829505, '库存流水', 'inventoryHistory', 1980119638070177794, '/inventoryManagement/history', '', '2025-10-20 11:52:24', '2025-10-20 11:53:27', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980120030963216385, '库存盘点', 'inventoryCheck', 1980119638070177794, '/inventoryManagement/check', '', '2025-10-20 11:52:59', '2025-10-20 11:52:59', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980120321771089921, '入库', 'inventoryReceipt', 1980119638070177794, '/inventoryManagement/receipt', '', '2025-10-20 11:54:08', '2025-10-20 11:54:08', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980120473340653570, '出库', 'inventoryShipment', 1980119638070177794, '/inventoryManagement/shipment', '', '2025-10-20 11:54:44', '2025-10-20 11:54:44', 0, 1, 1);
+INSERT INTO `clt_permission` VALUES (1980124565504962561, '新增库存盘点', 'inventoryCheck', 1980120030963216385, '/inventoryManagement/check', '', '2025-10-20 12:11:00', '2025-10-20 12:11:00', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980124661353197570, '编辑库存盘点', 'inventoryCheck', 1980120030963216385, '/inventoryManagement/check', '', '2025-10-20 12:11:23', '2025-10-20 12:11:23', 0, 3, 2);
+INSERT INTO `clt_permission` VALUES (1980124768932900866, '删除库存盘点', 'inventoryCheck', 1980120030963216385, '/inventoryManagement/check', '', '2025-10-20 12:11:49', '2025-10-20 12:11:49', 0, 4, 2);
+INSERT INTO `clt_permission` VALUES (1980125223805169666, '新增入库', 'inventoryReceipt', 1980120321771089921, '/inventoryManagement/receipt', '', '2025-10-20 12:13:37', '2025-10-20 12:13:37', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980125320706174977, '新增出库', 'inventoryShipment', 1980120473340653570, '/inventoryManagement/shipment', '', '2025-10-20 12:14:00', '2025-10-20 12:14:00', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980276008213565442, '审批账单', 'account', 1970053380479320066, 'accountManagement/account', '', '2025-10-20 22:12:47', '2025-10-20 22:12:47', 0, 5, 2);
+INSERT INTO `clt_permission` VALUES (1980276869455171585, '出入帐', 'account', 1970053380479320066, 'accountManagement/account', '', '2025-10-20 22:16:12', '2025-10-20 22:16:12', 0, 2, 2);
+INSERT INTO `clt_permission` VALUES (1980287290148933633, '利润统计', 'accountStatistics', 1970053250455896065, '/accountManagement/statistics', '', '2025-10-20 22:57:37', '2025-10-20 22:57:37', 0, 1, 1);
+
+-- ----------------------------
+-- Table structure for clt_purchasing_contact
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_purchasing_contact`;
+CREATE TABLE `clt_purchasing_contact`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `bill_id` bigint NOT NULL DEFAULT 0 COMMENT '申请id',
+  `supplier_id` bigint NULL DEFAULT 0 COMMENT '供应商ID',
+  `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '合同文件路径',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-采购合同表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_purchasing_contact
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_purchasing_requisition
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_purchasing_requisition`;
+CREATE TABLE `clt_purchasing_requisition`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `bill_no` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '申请单编号:GQ2025120200003',
+  `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '申请人ID',
+  `apply_user_id` bigint NOT NULL DEFAULT 0 COMMENT '申请人ID',
+  `dept_id` bigint NOT NULL DEFAULT 0 COMMENT '申请部门ID',
+  `apply_date` bigint NOT NULL DEFAULT 0 COMMENT '期望时间',
+  `status` int NOT NULL DEFAULT 0 COMMENT '审核状态',
+  `pur_status` int NOT NULL DEFAULT 0 COMMENT '采购状态：0未采购1已采购2已废弃3已入库',
+  `create_user_id` bigint NOT NULL DEFAULT 0 COMMENT '创建人ID',
+  `create_time` bigint NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `approver_user_id` bigint NULL DEFAULT 0 COMMENT '审核人',
+  `approver_time` bigint NULL DEFAULT 0 COMMENT '审核时间',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-采购单表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_purchasing_requisition
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_purchasing_requisition_details
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_purchasing_requisition_details`;
+CREATE TABLE `clt_purchasing_requisition_details`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `bill_id` bigint NOT NULL DEFAULT 0 COMMENT '申请id',
+  `trade_type_id` bigint NOT NULL DEFAULT 0 COMMENT '物料类别ID',
+  `trade_id` bigint NOT NULL DEFAULT 0 COMMENT '申请物料id',
+  `count` decimal(20, 2) NOT NULL DEFAULT 0.00 COMMENT '数量',
+  `brand` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '建议品牌',
+  `model_no` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '型号',
+  `per_price` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '单价',
+  `total_price` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '总价',
+  `supplier_id` bigint NULL DEFAULT 0 COMMENT '供应商ID',
+  `delivery_date` bigint NOT NULL DEFAULT 0 COMMENT '期望采购日期',
+  `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
+  `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '附件',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-采购单物料详情表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_purchasing_requisition_details
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for clt_role
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_role`;
+CREATE TABLE `clt_role`  (
+  `id` bigint NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色名称',
+  `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '角色编码',
+  `description` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '角色描述',
+  `status` tinyint NULL DEFAULT 1 COMMENT '状态(1-启用,0-禁用)',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `del_flag` int NULL DEFAULT 0,
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE INDEX `role_name`(`name` ASC) USING BTREE,
+  UNIQUE INDEX `role_code`(`code` ASC) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1952580037491453954 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_role
+-- ----------------------------
+INSERT INTO `clt_role` VALUES (1, '财务主管', 'account_manager', '审批账单、出入帐', 1, '2025-07-17 17:30:15', '2025-10-20 22:58:24', 0);
+INSERT INTO `clt_role` VALUES (2, '仓库管理员', 'warehouse_admin', '负责仓库管理和库存操作', 1, '2025-07-17 17:30:15', '2025-10-20 18:40:12', 0);
+INSERT INTO `clt_role` VALUES (3, '采购主管', 'purchase_manager', '负责采购需求、订单和退单的审批', 1, '2025-07-17 17:30:15', '2025-10-20 22:29:04', 0);
+INSERT INTO `clt_role` VALUES (4, '采购人员', 'purchase_staff', '负责管理供应商信息、提交采购需求、创建采购订单以及采购退单', 1, '2025-07-17 17:30:15', '2025-10-20 18:40:57', 0);
+INSERT INTO `clt_role` VALUES (5, '销售人员', 'sales_staff', '负责销售订单、销售退单以及客户维护', 1, '2025-07-17 17:30:15', '2025-10-20 18:41:14', 0);
+INSERT INTO `clt_role` VALUES (6, '销售主管', 'sales_manager', '负责销售订单和销售退单的审批', 1, '2025-07-17 17:30:15', '2025-10-20 18:41:26', 0);
+INSERT INTO `clt_role` VALUES (7, '财务人员', 'finance_staff', '负责财务管理和报表', 1, '2025-07-17 17:30:15', '2025-10-20 10:38:35', 1);
+INSERT INTO `clt_role` VALUES (1952303554671882242, '超级管理员', 'admin', '超级管理员拥有最大权限', 1, '2025-08-04 17:40:14', '2025-10-20 22:58:04', 0);
+INSERT INTO `clt_role` VALUES (1952580037491453953, '测试角色', 'test', '用于测试', 1, '2025-08-05 11:58:53', '2025-10-20 18:16:23', 0);
+
+-- ----------------------------
+-- Table structure for clt_role_permission
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_role_permission`;
+CREATE TABLE `clt_role_permission`  (
+  `id` bigint NOT NULL,
+  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `permission_id` bigint NOT NULL COMMENT '权限ID',
+  `create_time` datetime NULL DEFAULT CURRENT_TIMESTAMP,
+  `del_flag` int NULL DEFAULT 0,
+  `update_time` datetime NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色权限关联表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_role_permission
+-- ----------------------------
+INSERT INTO `clt_role_permission` VALUES (1980222350451470338, 1, 1970053250455896065, '2025-10-20 18:39:34', 1, '2025-10-20 18:39:34');
+INSERT INTO `clt_role_permission` VALUES (1980222350451470339, 1, 1970053380479320066, '2025-10-20 18:39:34', 1, '2025-10-20 18:39:34');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278145, 2, 1980116311634784258, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278146, 2, 1980116507596861441, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278147, 2, 1980117137338052609, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278148, 2, 1980117220787924994, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278149, 2, 1980117386370658305, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278150, 2, 1980116871276572674, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278151, 2, 1980117490846576641, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278152, 2, 1980117622686134273, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278153, 2, 1980117784208781313, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278154, 2, 1980118049758556162, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278155, 2, 1980118144524660738, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278156, 2, 1980118528601272321, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278157, 2, 1980118622956335105, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278158, 2, 1980118712265650178, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278159, 2, 1980118255375921154, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278160, 2, 1980118915995578369, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512150278161, 2, 1980119004847714306, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804098, 2, 1980119083981647874, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804099, 2, 1980118404567314433, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804100, 2, 1980119168865972225, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804101, 2, 1980119272905682946, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804102, 2, 1980119366778400769, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804103, 2, 1980119638070177794, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804104, 2, 1980119755712016386, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804105, 2, 1980119883239829505, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804106, 2, 1980120030963216385, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804107, 2, 1980124565504962561, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804108, 2, 1980124661353197570, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804109, 2, 1980124768932900866, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804110, 2, 1980120321771089921, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804111, 2, 1980125223805169666, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804112, 2, 1980120473340653570, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222512204804113, 2, 1980125320706174977, '2025-10-20 18:40:12', 0, '2025-10-20 18:40:12');
+INSERT INTO `clt_role_permission` VALUES (1980222612054405122, 3, 1954554256779214850, '2025-10-20 18:40:36', 1, '2025-10-20 18:40:36');
+INSERT INTO `clt_role_permission` VALUES (1980222612054405123, 3, 1954554607104262146, '2025-10-20 18:40:36', 1, '2025-10-20 18:40:36');
+INSERT INTO `clt_role_permission` VALUES (1980222612054405124, 3, 1954554993114447874, '2025-10-20 18:40:36', 1, '2025-10-20 18:40:36');
+INSERT INTO `clt_role_permission` VALUES (1980222612054405125, 3, 1954833520101867522, '2025-10-20 18:40:36', 1, '2025-10-20 18:40:36');
+INSERT INTO `clt_role_permission` VALUES (1980222612054405126, 3, 1954834079097733121, '2025-10-20 18:40:36', 1, '2025-10-20 18:40:36');
+INSERT INTO `clt_role_permission` VALUES (1980222612054405127, 3, 1954922598694195201, '2025-10-20 18:40:36', 1, '2025-10-20 18:40:36');
+INSERT INTO `clt_role_permission` VALUES (1980222612054405128, 3, 1954922913359269890, '2025-10-20 18:40:36', 1, '2025-10-20 18:40:36');
+INSERT INTO `clt_role_permission` VALUES (1980222612054405129, 3, 1980113495453249538, '2025-10-20 18:40:36', 1, '2025-10-20 18:40:36');
+INSERT INTO `clt_role_permission` VALUES (1980222699530809345, 4, 1954554256779214850, '2025-10-20 18:40:57', 0, '2025-10-20 18:40:57');
+INSERT INTO `clt_role_permission` VALUES (1980222699530809346, 4, 1954554607104262146, '2025-10-20 18:40:57', 0, '2025-10-20 18:40:57');
+INSERT INTO `clt_role_permission` VALUES (1980222699530809347, 4, 1980111535538876417, '2025-10-20 18:40:57', 0, '2025-10-20 18:40:57');
+INSERT INTO `clt_role_permission` VALUES (1980222699530809348, 4, 1980111779097915393, '2025-10-20 18:40:57', 0, '2025-10-20 18:40:57');
+INSERT INTO `clt_role_permission` VALUES (1980222699530809349, 4, 1954833520101867522, '2025-10-20 18:40:57', 0, '2025-10-20 18:40:57');
+INSERT INTO `clt_role_permission` VALUES (1980222699530809350, 4, 1980112226063921153, '2025-10-20 18:40:57', 0, '2025-10-20 18:40:57');
+INSERT INTO `clt_role_permission` VALUES (1980222699530809351, 4, 1980112633196621825, '2025-10-20 18:40:57', 0, '2025-10-20 18:40:57');
+INSERT INTO `clt_role_permission` VALUES (1980222699530809352, 4, 1954922598694195201, '2025-10-20 18:40:57', 0, '2025-10-20 18:40:57');
+INSERT INTO `clt_role_permission` VALUES (1980222699602112513, 4, 1980112972478066690, '2025-10-20 18:40:57', 0, '2025-10-20 18:40:57');
+INSERT INTO `clt_role_permission` VALUES (1980222699602112514, 4, 1980113495453249538, '2025-10-20 18:40:57', 0, '2025-10-20 18:40:57');
+INSERT INTO `clt_role_permission` VALUES (1980222699602112515, 4, 1980113641251450882, '2025-10-20 18:40:57', 0, '2025-10-20 18:40:57');
+INSERT INTO `clt_role_permission` VALUES (1980222699602112516, 4, 1980113740383825921, '2025-10-20 18:40:57', 0, '2025-10-20 18:40:57');
+INSERT INTO `clt_role_permission` VALUES (1980222699602112517, 4, 1980113874467336194, '2025-10-20 18:40:57', 0, '2025-10-20 18:40:57');
+INSERT INTO `clt_role_permission` VALUES (1980222772725608450, 5, 1957435491113308162, '2025-10-20 18:41:14', 0, '2025-10-20 18:41:14');
+INSERT INTO `clt_role_permission` VALUES (1980222772725608451, 5, 1957435627012952065, '2025-10-20 18:41:14', 0, '2025-10-20 18:41:14');
+INSERT INTO `clt_role_permission` VALUES (1980222772725608452, 5, 1980114577466241025, '2025-10-20 18:41:14', 0, '2025-10-20 18:41:14');
+INSERT INTO `clt_role_permission` VALUES (1980222772725608453, 5, 1980114713395245058, '2025-10-20 18:41:14', 0, '2025-10-20 18:41:14');
+INSERT INTO `clt_role_permission` VALUES (1980222772725608454, 5, 1957436138843869185, '2025-10-20 18:41:14', 0, '2025-10-20 18:41:14');
+INSERT INTO `clt_role_permission` VALUES (1980222772725608455, 5, 1980115035895279618, '2025-10-20 18:41:14', 0, '2025-10-20 18:41:14');
+INSERT INTO `clt_role_permission` VALUES (1980222772725608456, 5, 1980115387193405442, '2025-10-20 18:41:14', 0, '2025-10-20 18:41:14');
+INSERT INTO `clt_role_permission` VALUES (1980222772725608457, 5, 1980115513571979266, '2025-10-20 18:41:14', 0, '2025-10-20 18:41:14');
+INSERT INTO `clt_role_permission` VALUES (1980222772725608458, 5, 1980115614893780994, '2025-10-20 18:41:14', 0, '2025-10-20 18:41:14');
+INSERT INTO `clt_role_permission` VALUES (1980222772725608459, 5, 1980115736620871681, '2025-10-20 18:41:14', 0, '2025-10-20 18:41:14');
+INSERT INTO `clt_role_permission` VALUES (1980222822872707074, 6, 1957435491113308162, '2025-10-20 18:41:26', 0, '2025-10-20 18:41:26');
+INSERT INTO `clt_role_permission` VALUES (1980222822872707075, 6, 1957435627012952065, '2025-10-20 18:41:26', 0, '2025-10-20 18:41:26');
+INSERT INTO `clt_role_permission` VALUES (1980222822872707076, 6, 1957435790586613762, '2025-10-20 18:41:26', 0, '2025-10-20 18:41:26');
+INSERT INTO `clt_role_permission` VALUES (1980222822872707077, 6, 1957436138843869185, '2025-10-20 18:41:26', 0, '2025-10-20 18:41:26');
+INSERT INTO `clt_role_permission` VALUES (1980222822872707078, 6, 1957436430557712385, '2025-10-20 18:41:26', 0, '2025-10-20 18:41:26');
+INSERT INTO `clt_role_permission` VALUES (1980222822872707079, 6, 1980115387193405442, '2025-10-20 18:41:26', 0, '2025-10-20 18:41:26');
+INSERT INTO `clt_role_permission` VALUES (1980222842745319425, 1952303554671882242, 1952561113785896961, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842745319426, 1952303554671882242, 1952561423342309377, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842745319427, 1952303554671882242, 1952562158385696769, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842745319428, 1952303554671882242, 1952562778312216578, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842745319429, 1952303554671882242, 1979105949879885826, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842745319430, 1952303554671882242, 1952658215757062146, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842745319431, 1952303554671882242, 1980102996762210306, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842745319432, 1952303554671882242, 1980103144267493377, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842745319433, 1952303554671882242, 1980103228065492994, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233985, 1952303554671882242, 1952658612836016129, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233986, 1952303554671882242, 1980109746630471682, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233987, 1952303554671882242, 1980109892256706561, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233988, 1952303554671882242, 1980109986188144641, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233989, 1952303554671882242, 1980102171428040705, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233990, 1952303554671882242, 1980110236332240897, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233991, 1952303554671882242, 1980110818451304449, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233992, 1952303554671882242, 1980110948873187330, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233993, 1952303554671882242, 1954554256779214850, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233994, 1952303554671882242, 1954554607104262146, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233995, 1952303554671882242, 1954554993114447874, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233996, 1952303554671882242, 1980111535538876417, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233997, 1952303554671882242, 1980111779097915393, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233998, 1952303554671882242, 1954833520101867522, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808233999, 1952303554671882242, 1954834079097733121, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234000, 1952303554671882242, 1980112226063921153, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234001, 1952303554671882242, 1980112633196621825, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234002, 1952303554671882242, 1954922598694195201, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234003, 1952303554671882242, 1954922913359269890, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234004, 1952303554671882242, 1980112972478066690, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234005, 1952303554671882242, 1980113495453249538, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234006, 1952303554671882242, 1980113641251450882, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234007, 1952303554671882242, 1980113740383825921, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234008, 1952303554671882242, 1980113874467336194, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234009, 1952303554671882242, 1957435491113308162, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234010, 1952303554671882242, 1957435627012952065, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234011, 1952303554671882242, 1957435790586613762, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234012, 1952303554671882242, 1980114577466241025, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234013, 1952303554671882242, 1980114713395245058, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234014, 1952303554671882242, 1957436138843869185, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234015, 1952303554671882242, 1957436430557712385, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234016, 1952303554671882242, 1980115035895279618, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234017, 1952303554671882242, 1980115387193405442, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234018, 1952303554671882242, 1980115513571979266, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234019, 1952303554671882242, 1980115614893780994, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234020, 1952303554671882242, 1980115736620871681, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234021, 1952303554671882242, 1970053250455896065, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234022, 1952303554671882242, 1970053380479320066, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234023, 1952303554671882242, 1980116311634784258, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234024, 1952303554671882242, 1980116507596861441, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234025, 1952303554671882242, 1980117137338052609, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234026, 1952303554671882242, 1980117220787924994, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234027, 1952303554671882242, 1980117386370658305, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234028, 1952303554671882242, 1980116871276572674, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234029, 1952303554671882242, 1980117490846576641, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234030, 1952303554671882242, 1980117622686134273, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234031, 1952303554671882242, 1980117784208781313, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234032, 1952303554671882242, 1980118049758556162, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234033, 1952303554671882242, 1980118144524660738, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234034, 1952303554671882242, 1980118528601272321, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234035, 1952303554671882242, 1980118622956335105, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234036, 1952303554671882242, 1980118712265650178, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234037, 1952303554671882242, 1980118255375921154, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234038, 1952303554671882242, 1980118915995578369, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234039, 1952303554671882242, 1980119004847714306, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234040, 1952303554671882242, 1980119083981647874, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234041, 1952303554671882242, 1980118404567314433, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234042, 1952303554671882242, 1980119168865972225, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234043, 1952303554671882242, 1980119272905682946, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234044, 1952303554671882242, 1980119366778400769, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234045, 1952303554671882242, 1980119638070177794, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234046, 1952303554671882242, 1980119755712016386, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234047, 1952303554671882242, 1980119883239829505, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234048, 1952303554671882242, 1980120030963216385, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234049, 1952303554671882242, 1980124565504962561, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234050, 1952303554671882242, 1980124661353197570, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234051, 1952303554671882242, 1980124768932900866, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234052, 1952303554671882242, 1980120321771089921, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234053, 1952303554671882242, 1980125223805169666, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234054, 1952303554671882242, 1980120473340653570, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980222842808234055, 1952303554671882242, 1980125320706174977, '2025-10-20 18:41:31', 1, '2025-10-20 18:41:31');
+INSERT INTO `clt_role_permission` VALUES (1980276071769853953, 1, 1970053250455896065, '2025-10-20 22:13:02', 1, '2025-10-20 22:13:02');
+INSERT INTO `clt_role_permission` VALUES (1980276071769853954, 1, 1970053380479320066, '2025-10-20 22:13:02', 1, '2025-10-20 22:13:02');
+INSERT INTO `clt_role_permission` VALUES (1980276071769853955, 1, 1980276008213565442, '2025-10-20 22:13:02', 1, '2025-10-20 22:13:02');
+INSERT INTO `clt_role_permission` VALUES (1980276974136610818, 1, 1970053250455896065, '2025-10-20 22:16:37', 1, '2025-10-20 22:16:37');
+INSERT INTO `clt_role_permission` VALUES (1980276974174359554, 1, 1970053380479320066, '2025-10-20 22:16:37', 1, '2025-10-20 22:16:37');
+INSERT INTO `clt_role_permission` VALUES (1980276974174359555, 1, 1980276008213565442, '2025-10-20 22:16:37', 1, '2025-10-20 22:16:37');
+INSERT INTO `clt_role_permission` VALUES (1980276974174359556, 1, 1980276869455171585, '2025-10-20 22:16:37', 1, '2025-10-20 22:16:37');
+INSERT INTO `clt_role_permission` VALUES (1980280107843735553, 3, 1954554256779214850, '2025-10-20 22:29:04', 0, '2025-10-20 22:29:04');
+INSERT INTO `clt_role_permission` VALUES (1980280107902455809, 3, 1954554607104262146, '2025-10-20 22:29:04', 0, '2025-10-20 22:29:04');
+INSERT INTO `clt_role_permission` VALUES (1980280107902455810, 3, 1954554993114447874, '2025-10-20 22:29:04', 0, '2025-10-20 22:29:04');
+INSERT INTO `clt_role_permission` VALUES (1980280107902455811, 3, 1954833520101867522, '2025-10-20 22:29:04', 0, '2025-10-20 22:29:04');
+INSERT INTO `clt_role_permission` VALUES (1980280107902455812, 3, 1954834079097733121, '2025-10-20 22:29:04', 0, '2025-10-20 22:29:04');
+INSERT INTO `clt_role_permission` VALUES (1980280107902455813, 3, 1954922598694195201, '2025-10-20 22:29:04', 0, '2025-10-20 22:29:04');
+INSERT INTO `clt_role_permission` VALUES (1980280107902455814, 3, 1954922913359269890, '2025-10-20 22:29:04', 0, '2025-10-20 22:29:04');
+INSERT INTO `clt_role_permission` VALUES (1980280107902455815, 3, 1980113495453249538, '2025-10-20 22:29:04', 0, '2025-10-20 22:29:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131010, 1952303554671882242, 1952561113785896961, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131011, 1952303554671882242, 1952561423342309377, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131012, 1952303554671882242, 1952562158385696769, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131013, 1952303554671882242, 1952562778312216578, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131014, 1952303554671882242, 1979105949879885826, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131015, 1952303554671882242, 1952658215757062146, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131016, 1952303554671882242, 1980102996762210306, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131017, 1952303554671882242, 1980103144267493377, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131018, 1952303554671882242, 1980103228065492994, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131019, 1952303554671882242, 1952658612836016129, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131020, 1952303554671882242, 1980109746630471682, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131021, 1952303554671882242, 1980109892256706561, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131022, 1952303554671882242, 1980109986188144641, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131023, 1952303554671882242, 1980102171428040705, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131024, 1952303554671882242, 1980110236332240897, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131025, 1952303554671882242, 1980110818451304449, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131026, 1952303554671882242, 1980110948873187330, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131027, 1952303554671882242, 1954554256779214850, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131028, 1952303554671882242, 1954554607104262146, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131029, 1952303554671882242, 1954554993114447874, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131030, 1952303554671882242, 1980111535538876417, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131031, 1952303554671882242, 1980111779097915393, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131032, 1952303554671882242, 1954833520101867522, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131033, 1952303554671882242, 1954834079097733121, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131034, 1952303554671882242, 1980112226063921153, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131035, 1952303554671882242, 1980112633196621825, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131036, 1952303554671882242, 1954922598694195201, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131037, 1952303554671882242, 1954922913359269890, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131038, 1952303554671882242, 1980112972478066690, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131039, 1952303554671882242, 1980113495453249538, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131040, 1952303554671882242, 1980113641251450882, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131041, 1952303554671882242, 1980113740383825921, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131042, 1952303554671882242, 1980113874467336194, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131043, 1952303554671882242, 1957435491113308162, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131044, 1952303554671882242, 1957435627012952065, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131045, 1952303554671882242, 1957435790586613762, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131046, 1952303554671882242, 1980114577466241025, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406201131047, 1952303554671882242, 1980114713395245058, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434178, 1952303554671882242, 1957436138843869185, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434179, 1952303554671882242, 1957436430557712385, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434180, 1952303554671882242, 1980115035895279618, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434181, 1952303554671882242, 1980115387193405442, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434182, 1952303554671882242, 1980115513571979266, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434183, 1952303554671882242, 1980115614893780994, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434184, 1952303554671882242, 1980115736620871681, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434185, 1952303554671882242, 1970053250455896065, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434186, 1952303554671882242, 1970053380479320066, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434187, 1952303554671882242, 1980276008213565442, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434188, 1952303554671882242, 1980276869455171585, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434189, 1952303554671882242, 1980287290148933633, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434190, 1952303554671882242, 1980116311634784258, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434191, 1952303554671882242, 1980116507596861441, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434192, 1952303554671882242, 1980117137338052609, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434193, 1952303554671882242, 1980117220787924994, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434194, 1952303554671882242, 1980117386370658305, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434195, 1952303554671882242, 1980116871276572674, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434196, 1952303554671882242, 1980117490846576641, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434197, 1952303554671882242, 1980117622686134273, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434198, 1952303554671882242, 1980117784208781313, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434199, 1952303554671882242, 1980118049758556162, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434200, 1952303554671882242, 1980118144524660738, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434201, 1952303554671882242, 1980118528601272321, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434202, 1952303554671882242, 1980118622956335105, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434203, 1952303554671882242, 1980118712265650178, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434204, 1952303554671882242, 1980118255375921154, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434205, 1952303554671882242, 1980118915995578369, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434206, 1952303554671882242, 1980119004847714306, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434207, 1952303554671882242, 1980119083981647874, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434208, 1952303554671882242, 1980118404567314433, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434209, 1952303554671882242, 1980119168865972225, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434210, 1952303554671882242, 1980119272905682946, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434211, 1952303554671882242, 1980119366778400769, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434212, 1952303554671882242, 1980119638070177794, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434213, 1952303554671882242, 1980119755712016386, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434214, 1952303554671882242, 1980119883239829505, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406272434215, 1952303554671882242, 1980120030963216385, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406339543042, 1952303554671882242, 1980124565504962561, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406339543043, 1952303554671882242, 1980124661353197570, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406339543044, 1952303554671882242, 1980124768932900866, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406339543045, 1952303554671882242, 1980120321771089921, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406339543046, 1952303554671882242, 1980125223805169666, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406339543047, 1952303554671882242, 1980120473340653570, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287406339543048, 1952303554671882242, 1980125320706174977, '2025-10-20 22:58:04', 0, '2025-10-20 22:58:04');
+INSERT INTO `clt_role_permission` VALUES (1980287488698896386, 1, 1970053250455896065, '2025-10-20 22:58:24', 0, '2025-10-20 22:58:24');
+INSERT INTO `clt_role_permission` VALUES (1980287488698896387, 1, 1970053380479320066, '2025-10-20 22:58:24', 0, '2025-10-20 22:58:24');
+INSERT INTO `clt_role_permission` VALUES (1980287488698896388, 1, 1980276008213565442, '2025-10-20 22:58:24', 0, '2025-10-20 22:58:24');
+INSERT INTO `clt_role_permission` VALUES (1980287488698896389, 1, 1980276869455171585, '2025-10-20 22:58:24', 0, '2025-10-20 22:58:24');
+INSERT INTO `clt_role_permission` VALUES (1980287488698896390, 1, 1980287290148933633, '2025-10-20 22:58:24', 0, '2025-10-20 22:58:24');
+
+-- ----------------------------
+-- Table structure for clt_trade_detail
+-- ----------------------------
+DROP TABLE IF EXISTS `clt_trade_detail`;
+CREATE TABLE `clt_trade_detail`  (
+  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
+  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
+  `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库存号ID',
+  `trade_id` bigint NOT NULL DEFAULT 0 COMMENT '商品编码',
+  `stock_batch` bigint NOT NULL DEFAULT 0 COMMENT '采购码',
+  `validation_period` bigint NOT NULL DEFAULT 0 COMMENT '有效期',
+  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '码',
+  `count` decimal(20, 2) NOT NULL DEFAULT 0.00 COMMENT '数量',
+  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-物料详情表' ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of clt_trade_detail
+-- ----------------------------
+
+SET FOREIGN_KEY_CHECKS = 1;
