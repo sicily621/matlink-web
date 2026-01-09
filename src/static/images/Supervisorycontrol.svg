@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Supervisorycontrol</title>
+    <g id="后续新增页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Supervisorycontrol">
+            <circle id="椭圆形" fill="#166AEA" fill-rule="nonzero" cx="7" cy="7" r="7"></circle>
+            <circle id="椭圆形备份-2" stroke="#9DC3FF" fill-opacity="0.7" fill="#9ABFF6" cx="13" cy="13" r="10"></circle>
+            <g id="编组" transform="translate(9.000000, 7.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                <path d="M1.27971429,7.71428571 L1.27971429,6.04542856 L0,5.84571429 L0,12 L1.28057143,11.5628571 L1.28057143,8.868 L3.32057143,8.868 L4.2,7.51714285 L3.07971429,6.84 L2.56028571,7.75457143 L1.27971429,7.75457143 L1.27971429,7.71514285 L1.27971429,7.71428571 Z M12,6.04542857 L2.83971429,0 L1.8,0 L0.36,2.26628571 L0.36,3.02228571 L8.56028571,8.35114286 L9.24,8.27142857 L12,6.04457144 L12,6.04542857 Z M0.36,3.49885715 L0.36,4.692 L8.64,9.942 L9.40028571,9.942 L9.76028571,9.54342857 L10.1202857,8.39057144 C9.42657143,8.89400001 9.05314286,9.14571429 9,9.14571429 C8.76,8.96 5.88,7.07800001 0.36,3.49971429 L0.36,3.49885715 Z" id="形状"></path>
+            </g>
+        </g>
+    </g>
+</svg>

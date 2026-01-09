@@ -1,0 +1,730 @@
+@use "sass:map";
+@use "sass:math";
+@use "sass:list";
+@use "sass:color";
+@use "element-plus/theme-chalk/src/common/var.scss" as common;
+@use "element-plus/theme-chalk/src/mixins/mixins.scss" as *;
+@use "element-plus/theme-chalk/src/color/index.scss" as *;
+@use "@static/css/common/size.scss" as *;
+
+//左侧导航背景
+$left-menu-bg: linear-gradient(180deg, #0c1b30 0%, #0b2240 47%, #0b1b30 100%);
+$left-menu-item-bg-level-1: #31486d;
+$left-menu-hover-color: #ffffff;
+$left-menu-active-shadow: inset 4px 4px 5px 0px rgba(0, 0, 0, 0.57), inset 2px -2px 5px 0px #000000;
+$top-header-bg: linear-gradient(90deg, #061d3a 0%, #0b2443 50%, #061d3a 100%);
+$top-header-color: #ffffff;
+$top-tab-bg: linear-gradient(90deg, #0f2340 0%, #071e3b 100%);
+$login-input-background: #123962;
+$map-bg: #0c1f3a;
+$map-grid-color: #3a3b3c;
+
+$screen-top-header-bg: linear-gradient(180deg, rgba(26, 30, 56, 0) 0%, rgba(27, 136, 255, 0.34) 100%);
+$screen-top-shadow: linear-gradient(0deg, rgba(4, 27, 49, 0) 0%, rgba(3, 23, 42, 0.63) 37%, rgba(1, 22, 40, 0.9) 100%);
+$screen-bottom-shadow: linear-gradient(0deg, rgba(1, 22, 40, 0.9) 0%, rgba(3, 23, 42, 0.63) 63%, rgba(4, 27, 49, 0) 100%);
+$screen-left-shadow: linear-gradient(270deg, rgba(8, 10, 18, 0) 0%, rgba(8, 10, 18, 0.5) 48%, rgba(8, 10, 18, 0.8) 100%);
+$screen-right-shadow: linear-gradient(90deg, rgba(8, 10, 18, 0) 0%, rgba(8, 10, 18, 0.5) 48%, rgba(8, 10, 18, 0.8) 100%);
+$screen-top-menu-level1-active-bg: linear-gradient(180deg, rgba(2, 113, 227, 0) 0%, rgba(87, 170, 255, 0.52) 100%);
+$screen-top-menu-level1-active-border-color: #fff;
+$screen-top-menu-level2-bg: #004793;
+$screen-top-menu-level2-active-bg: #0271e3;
+$screen-top-menu-level2-active-color: #ffffff;
+$screen-title-decoration-bg: linear-gradient(0deg, rgba(17, 64, 115, 0.7) 0%, rgba(17, 64, 115, 0) 100%);
+$screen-DPT1S1-menu-bg: linear-gradient(180deg, rgba(57, 206, 255, 0.8) 0%, rgba(26, 92, 147, 0.3) 54%, rgba(31, 110, 164, 0.41) 61%, #39ceff 100%);
+$screen-DPT1S1-menu-active-bg: linear-gradient(180deg, #fffa75 0%, rgba(90, 63, 15, 0.3) 54%, #fffa75 100%);
+$screen-DPT1S1-menu-shadow: inset 0 0 zrem(7) #999;
+$screen-DPT1S1-menu-active-shadow: inset 0 0 zrem(7) #33adf1;
+$screen-DPT1S1-menu-border: linear-gradient(90deg, #ffffff, #5dbaff, #ffffff);
+$screen-DPT1S1-menu-active-border: linear-gradient(90deg, #ffffff, #fffa75, #ffffff);
+$types: primary, success, warning, danger, error, info;
+$colors: (
+  ) !default;
+$colors: map.deep-merge(("white": #ffffff,
+      "black": #000000,
+      "primary": ("base": #417be4,
+      ),
+      "success": ("base": #4cc09e,
+      ),
+      "warning": ("base": #fa8b16,
+      ),
+      "danger": ("base": #f56c6c,
+      ),
+      "error": ("base": #ff4d4f,
+      ),
+      "info": ("base": #fecc55,
+      ),
+    ),
+    $colors
+);
+
+@each $type in common.$types {
+  $colors: map.deep-merge(($type: (
+        "base": map.get(common.$colors, $type, "base"),
+      ),
+    ),
+    $colors ) !global;
+}
+
+@mixin set-color-mix-level($type, $number, $mode: "light", $mix-color: $color-white) {
+  // hex mix color
+  $colors: map.deep-merge(($type: (
+        "#{$mode}-#{$number}": color.mix($mix-color, map.get($colors, $type, "base"), math.percentage(math.div($number, 10))),
+      ),
+    ),
+    $colors ) !global;
+}
+
+@mixin set-color-opacity($type, $number, $color) {
+  $globalVarMap: map.deep-merge(("#{$type}-opacity-#{$number}": rgba($color, math.percentage(math.div($number, 10))),
+      ),
+      $globalVarMap ) !global;
+}
+
+@mixin set-linear-gradient($type, $color, $index, $opacity: 3) {
+  $globalVarMap: map.deep-merge(("#{$type}-linear-gradient-#{$index}": linear-gradient(90deg, rgba($color, math.percentage(math.div($opacity, 5))) 8%, $color 50%, $color 100%),
+      ),
+      $globalVarMap ) !global;
+}
+
+@each $type in $types {
+  @for $i from 1 through 9 {
+    @include set-color-mix-level($type, $i, "light", common.$color-white
+  );
+}
+}
+
+// --el-color-primary-dark-2
+@each $type in $types {
+  @include set-color-mix-level($type, 2, "dark", common.$color-black);
+}
+
+@mixin gradient-colors-primary() {
+  background: linear-gradient(90deg, getCssVar("color-primary"), getCssVar("color-primary-light-3"));
+}
+
+// Background
+$bg-color: (
+  ) !default;
+$bg-color: map.merge(("": #031327,
+      "page": #0e223f,
+      "overlay": #0e223f,
+    ),
+    $bg-color
+);
+// border
+// $border-color-base: #f5f8ff;
+$border-color: (
+  ) !default;
+$border-color: map.merge(("": #50637e,
+      "light": rgba(0, 0, 0, 0),
+      "lighter": #ebeef5,
+      "extra-light": #f2f6fc,
+      "dark": #d4d7de,
+      "darker": #cdd0d6,
+    ),
+    $border-color
+);
+
+// mix to hex to avoid overlay issues
+/* @each $key, $val in $border-color {
+  $border-color: map.merge(
+    $border-color,
+    (
+      $key: mix-overlay-color($val, map.get($bg-color, "")),
+    )
+  ) !global;
+} */
+
+// Box-shadow
+$box-shadow: (
+  ) !default;
+$box-shadow: map.merge(("": (0 zrem(12) zrem(32) zrem(4) rgba(0, 0, 0, 0.36),
+        0 zrem(8) zrem(20) rgba(0, 0, 0, 0.72),
+      ),
+      "light": (0 0 zrem(12) rgba(0, 0, 0, 0.72),
+      ),
+      "lighter": (0 0 zrem(6) rgba(0, 0, 0, 0.72),
+      ),
+      "dark": (0 zrem(16) zrem(48) zrem(16) rgba(0, 0, 0, 0.72),
+        0 zrem(12) zrem(32) #000000,
+        0 zrem(8) zrem(16) zrem(-8) #000000,
+      ),
+    ),
+    $box-shadow
+);
+//font-size
+$font-size: (
+  ) !default;
+$font-size: map.merge(("extra-large": zrem(20),
+      "large": zrem(18),
+      "medium": zrem(16),
+      "base": zrem(14),
+      "small": zrem(13),
+      "extra-small": zrem(12),
+    ),
+    $font-size
+);
+// fill
+$fill-color-opacity-types: "", light;
+$fill-color: (
+  ) !default;
+$fill-color: map.merge(("": #0c1f3a,
+      "light": #31486d,
+      "lighter": #fafafa,
+      "extra-light": #fafcff,
+      "dark": #0b1b30,
+      "darker": #e6e8eb,
+      "blank": #0e223f,
+      "rgb": (14,
+        34,
+        63,
+      ),
+      "large-rgb-1": (47, 138, 253, 0.15),
+      "large-rgb-2": (0, 123, 255, 0.15),
+      "large-rgb-3": (3, 95, 176, 0.1)),
+    $fill-color
+);
+
+// text
+$text-color: (
+  ) !default;
+$text-color: map.merge(("primary": #ffffff,
+      "regular": #ffffff,
+      "secondary": #86868c,
+      "placeholder": #bdbdbd,
+      "disabled": #c0c4cc,
+    ),
+    $text-color
+);
+
+@mixin set-text-color-mix-level($number, $mix-color: $color-white, $type: "primary", $mode: "mix") {
+  $text-color: map.deep-merge(("#{$mode}-#{$number}": color.mix($mix-color, map.get($text-color, $type), math.percentage(math.div($number, 10))),
+      ),
+      $text-color ) !global;
+}
+
+@for $i from 1 through 9 {
+  @include set-text-color-mix-level($i, common.$color-black);
+}
+
+// Disable default
+$disabled: (
+  ) !default;
+$disabled: map.merge(("bg-color": #1f273a,
+      "text-color": getCssVar("text-color", "secondary"),
+      "border-color": getCssVar("border-color"),
+    ),
+    $disabled
+);
+
+$border-color-hover: #7492bd;
+
+// mask
+$mask-color: (
+  ) !default;
+$mask-color: map.merge(("": rgba(0, 0, 0, 0.8),
+      "extra-light": rgba(0, 0, 0, 0.3),
+    ),
+    $mask-color
+);
+
+// Input
+// css3 var in packages/theme-chalk/src/input.scss
+$input: (
+  ) !default;
+$input: map.merge(("text-color": getCssVar("text-color-secondary"),
+      "border": getCssVar("border"),
+      "hover-border": getCssVar("border-color-hover"),
+      "focus-border": getCssVar("color-primary"),
+      "transparent-border": 0 0 0 zrem(1) transparent inset,
+      "border-color": getCssVar("border-color"),
+      "border-radius": getCssVar("border-radius-base"),
+      "bg-color": getCssVar("fill-color", "blank"),
+      "icon-color": getCssVar("text-color-placeholder"),
+      "placeholder-color": getCssVar("text-color-placeholder"),
+      "hover-border-color": getCssVar("border-color-hover"),
+      "clear-hover-color": getCssVar("text-color-secondary"),
+      "focus-border-color": getCssVar("color-primary"),
+      "width": 100%,
+    ),
+    $input
+);
+$input-padding-horizontal: (
+  ) !default;
+$input-padding-horizontal: map.merge(("large": zrem(12),
+      "default": zrem(8),
+      "small": zrem(4),
+    ),
+    $input-padding-horizontal
+);
+
+.el-input__wrapper {
+  @extend .el-input__wrapper;
+  padding: 0 map.get($input-padding-horizontal, "default");
+
+  &:hover {
+    &+.el-input-group__append {
+      border-color: getCssVar("border-color-hover");
+    }
+  }
+
+  &.is-focus {
+    &+.el-input-group__append {
+      border-color: getCssVar("color-primary");
+    }
+  }
+}
+
+.el-input {
+  @extend .el-input;
+  height: zrem(32);
+
+  .el-input__suffix {
+    @extend .el-input__suffix;
+    border-left: zrem(1) solid getCssVar("border-color");
+  }
+
+  &.el-date-editor--date,
+  &.el-date-editor {
+    .el-input__suffix {
+      @extend .el-input__suffix;
+      border-left: none;
+    }
+  }
+
+  .el-input-group__append {
+    @extend .el-input-group__append;
+    border: zrem(1) solid getCssVar("border-color");
+    border-left: none;
+    box-shadow: none;
+    padding: 0 zrem(15);
+    background: transparent;
+    color: getCssVar("text-color-primary");
+    outline: none;
+    height: zrem(32);
+    line-height: zrem(32);
+    box-sizing: border-box;
+  }
+
+  &:hover {
+    .el-input__suffix {
+      border-color: getCssVar("border-color-hover");
+    }
+  }
+
+  &.is-focus {
+    .el-input__suffix {
+      border-color: getCssVar("color-primary");
+    }
+  }
+}
+
+// Switch
+// css3 var in packages/theme-chalk/src/switch.scss
+$switch: (
+  ) !default;
+$switch: map.merge(("on-color": getCssVar("color-success"),
+      "off-color": getCssVar("text-color", "placeholder"),
+    ),
+    $switch
+);
+
+// Checkbox
+// css3 var in packages/theme-chalk/src/checkbox.scss
+$checkbox: (
+  ) !default;
+$checkbox: map.merge(("font-size": 14px,
+      "font-weight": getCssVar("font-weight-primary"),
+      "text-color": getCssVar("text-color-regular"),
+      "input-height": 14px,
+      "input-width": 14px,
+      "border-radius": getCssVar("border-radius-small"),
+      "bg-color": getCssVar("fill-color", "blank"),
+      "input-border": getCssVar("border"),
+      "disabled-border-color": getCssVar("border-color"),
+      "disabled-input-fill": getCssVar("fill-color", "light"),
+      "disabled-icon-color": getCssVar("text-color-placeholder"),
+      "disabled-checked-input-fill": getCssVar("border-color-extra-light"),
+      "disabled-checked-input-border-color": getCssVar("border-color"),
+      "disabled-checked-icon-color": getCssVar("text-color-placeholder"),
+      "checked-text-color": getCssVar("color-primary"),
+      "checked-input-border-color": getCssVar("color-primary"),
+      "checked-bg-color": getCssVar("color-primary"),
+      "checked-icon-color": getCssVar("color", "white"),
+      "input-border-color-hover": getCssVar("color-primary"),
+    ),
+    $checkbox
+);
+$border-radius: (
+  ) !default;
+$border-radius: map.merge(("base": zrem(4),
+      "small": zrem(4),
+      "round": zrem(20),
+      "circle": 100%,
+    ),
+    $border-radius
+);
+
+// header
+$header: (
+  ) !default;
+$header: map.merge(("padding": 0 zrem(20),
+      "height": zrem(72),
+    ),
+    $header
+);
+// Table
+// css3 var in packages/theme-chalk/src/table.scss
+$table: (
+  ) !default;
+$table: map.merge(("border-color": getCssVar("border-color"),
+      "border": zrem(1) solid getCssVar("table-border-color"),
+      "text-color": getCssVar("text-color-regular"),
+      "header-text-color": getCssVar("text-color-primary"),
+      "row-hover-bg-color": getCssVar("color-primary-dark-2"),
+      "current-row-bg-color": getCssVar("color-primary-dark-2"),
+      "header-bg-color": #31486d,
+      "fixed-box-shadow": getCssVar("box-shadow", "light"),
+      "bg-color": getCssVar("fill-color", "blank"),
+      "tr-bg-color": #0c1f3a,
+      "expanded-cell-bg-color": getCssVar("fill-color", "blank"),
+      "fixed-left-column": inset zrem(10) 0 zrem(10) zrem(-10) rgb(0 0 0 / 15%),
+      "fixed-right-column": inset zrem(-10) 0 zrem(10) zrem(-10) rgb(0 0 0 / 15%),
+      "index": getCssVar("index-normal"),
+    ),
+    $table
+);
+
+.el-table__inner-wrapper::before {
+  display: none;
+}
+
+.el-table__body td:nth-child(1) .cell {
+  padding-left: zrem(20);
+}
+
+.el-table__header-wrapper {
+  border-radius: zrem(8);
+}
+
+// Pagination
+$pagination: (
+  ) !default;
+$pagination: map.merge(("font-size": zrem(14),
+      "bg-color": getCssVar("fill-color", "blank"),
+      "text-color": getCssVar("text-color-primary"),
+      "border-radius": zrem(2),
+      "button-color": getCssVar("text-color-primary"),
+      "button-width": zrem(28),
+      "button-height": zrem(28),
+      "button-disabled-color": getCssVar("text-color-placeholder"),
+      "button-disabled-bg-color": getCssVar("fill-color", "blank"),
+      "button-bg-color": getCssVar("fill-color"),
+      "hover-color": getCssVar("color-primary"),
+      "font-size-small": zrem(12),
+      "button-width-small": zrem(24),
+      "button-height-small": zrem(24),
+      "item-gap": zrem(16),
+    ),
+    $pagination
+);
+//Tree
+$tree-node-content-height: zrem(40);
+$tree: (
+  ) !default;
+$tree: map.merge(("node-content-height": zrem(40),
+      "node-hover-bg-color": rgba(#2b3f59, 0.3),
+      "text-color": getCssVar("text-color-regular"),
+      "expand-icon-color": getCssVar("text-color-placeholder"),
+    ),
+    $tree
+);
+
+.el-tree-node__content {
+  @extend .el-tree-node__content;
+  height: getCssVar("tree-node-content-height");
+}
+
+// Button
+// css3 var in packages/theme-chalk/src/button.scss
+$button: (
+  ) !default;
+$button: map.merge(("border-color": getCssVar("color", "primary"),
+      "disabled-text-color": rgba(255, 255, 255, 0.5),
+      "hover-text-color": getCssVar("color-primary"),
+      "hover-bg-color": getCssVar("color-primary", "light-2"),
+      "hover-border-color": getCssVar("color-primary", "light-2"),
+    ),
+    $button
+);
+
+.el-button {
+  &.is-plain {
+    border-color: getCssVar("color-primary");
+    color: getCssVar("text-color");
+
+    &:hover {
+      border-color: getCssVar("color-primary", "light-2");
+      color: getCssVar("text-color");
+      background: none;
+    }
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &:hover {
+    background: getCssVar("fill-color", "blank");
+  }
+
+  &.el-button--primary:hover {
+    background: getCssVar("color-primary", "light-2");
+  }
+}
+
+// card
+$card: (
+  ) !default;
+$card: map.merge(("bg-color": getCssVar("bg-color", "overlay"),
+    ),
+    $card
+);
+
+// Dropdown
+$dropdown: (
+  ) !default;
+$dropdown: map.merge(("menu-box-shadow": getCssVar("box-shadow-light"),
+      "menuItem-hover-fill": getCssVar("fill-color", "light"),
+      "menuItem-hover-color": getCssVar("color-primary"),
+      "menu-index": 10,
+    ),
+    $dropdown
+);
+
+.el-dropdown-menu__item {
+  &:hover {
+    background: getCssVar("fill-color", "light");
+  }
+
+  &:not(.is-disabled):focus {
+    background: getCssVar("fill-color", "light");
+  }
+}
+
+// Menu
+// css3 var in packages/theme-chalk/src/menu.scss
+$menu: (
+  ) !default;
+$menu: map.merge(("active-color": getCssVar("color-primary"),
+      "text-color": getCssVar("text-color-primary"),
+      "hover-text-color": getCssVar("color-primary"),
+      "bg-color": transparent,
+      "hover-bg-color": getCssVar("fill-color", "dark"),
+      "item-height": zrem(56),
+      "sub-item-height": calc(#{getCssVar("menu-item-height")} - zrem(6)),
+      "horizontal-height": zrem(60),
+      "horizontal-sub-item-height": zrem(36),
+      "item-font-size": getCssVar("font-size-base"),
+      "item-hover-fill": getCssVar("fill-color", "light"),
+      "border-color": getCssVar("border-color"),
+      "base-level-padding": zrem(16),
+      "level-padding": zrem(20),
+      "icon-width": zrem(12),
+    ),
+    $menu
+);
+$popover: (
+  ) !default;
+$popover: map.merge(("bg-color": getCssVar("bg-color", "overlay"),
+      "font-size": getCssVar("font-size-base"),
+      "border-color": getCssVar("border-color-lighter"),
+      "padding": 0,
+      "padding-large": zrem(18) zrem(20),
+      "title-font-size": zrem(16),
+      "title-text-color": getCssVar("text-color-primary"),
+      "border-radius": zrem(4),
+    ),
+    $popover
+);
+
+// MessageBox
+// css3 var in packages/theme-chalk/src/message-box.scss
+$messagebox: (
+  ) !default;
+$messagebox: map.merge(("title-color": getCssVar("text-color-primary"),
+      "width": zrem(420),
+      "border-radius": zrem(4),
+      "font-size": getCssVar("font-size-base"),
+      "content-font-size": getCssVar("font-size-base"),
+      "content-color": getCssVar("text-color-regular"),
+      "error-font-size": zrem(12),
+      "padding-primary": zrem(28),
+    ),
+    $messagebox
+);
+
+// Message
+// css3 var in packages/theme-chalk/src/message.scss
+$message: (
+  ) !default;
+$message: map.merge(("border-color": getCssVar("border-color-lighter"),
+      "padding": zrem(10) zrem(12) zrem(10) zrem(15),
+      "close-size": zrem(10),
+      "close-icon-color": getCssVar("text-color-placeholder"),
+      "close-hover-color": getCssVar("text-color-secondary"),
+    ),
+    $message
+);
+
+html.blue {
+  .el-message {
+    .el-message__content {
+      color: getCssVar("text-color-primary");
+    }
+
+    @each $type in (success, info, warning, error) {
+      &.el-message--#{$type} {
+        background: rgba(map.get($colors, $type, "base"), 0.1);
+        border-color: map.get($colors, $type, "base");
+      }
+    }
+  }
+}
+
+.el-input-group__append {
+  @extend .el-input-group__append;
+  padding: 0 zrem(15);
+  background: getCssVar("fill-color-light");
+  color: getCssVar("text-color-primary");
+}
+
+// Empty
+// css3 var in packages/theme-chalk/src/empty.scss
+$empty: (
+  ) !default;
+$empty: map.merge(("fill-color-0": getCssVar("color-black"),
+      "fill-color-1": #4b4b52,
+      "fill-color-2": #36383d,
+      "fill-color-3": #1e1e20,
+      "fill-color-4": #262629,
+      "fill-color-5": #202124,
+      "fill-color-6": #212224,
+      "fill-color-7": #1b1c1f,
+      "fill-color-8": #1c1d1f,
+      "fill-color-9": #18181a,
+    ),
+    $empty
+);
+// supplement Colors
+$supplement-color: #3c52bf, #fa8b16, #4cc09e, #ff4d4f, #f6bb06, #0271e3, #957dc5, #50c9d2, #df58fd, #37df48;
+$supplement-color-opacity-3: $supplement-color;
+
+@for $index from 1 through list.length($supplement-color-opacity-3) {
+  $color: list.nth($supplement-color-opacity-3, $index);
+  $opacity: 0.35;
+  $supplement-color-opacity-3: list.set-nth($supplement-color-opacity-3, $index, rgba($color, $opacity));
+}
+
+$alarm-color: #ff4d4f;
+$fault-color: #f6bb06;
+$running-color: #4dad90;
+$offline-color: #c7d0dc;
+$stop-color: #0271e3;
+$componentVarMap: (
+  box-shadow: $box-shadow,
+  font-size: $font-size,
+  bg-color: $bg-color,
+  text-color: $text-color,
+  border-color: $border-color,
+  fill-color: $fill-color,
+  mask-color: $mask-color,
+  disabled: $disabled,
+  input-padding-horizontal: $input-padding-horizontal,
+  border-radius: $border-radius,
+);
+$globalVarMap: (
+  border-color-hover: $border-color-hover,
+  left-menu-bg: $left-menu-bg,
+  left-menu-item-bg-level-1: $left-menu-item-bg-level-1,
+  left-menu-hover-color: $left-menu-hover-color,
+  left-menu-active-shadow: $left-menu-active-shadow,
+  top-header-bg: $top-header-bg,
+  top-header-color: $top-header-color,
+  screen-top-header-bg: $screen-top-header-bg,
+  screen-top-shadow: $screen-top-shadow,
+  screen-bottom-shadow: $screen-bottom-shadow,
+  screen-left-shadow: $screen-left-shadow,
+  screen-right-shadow: $screen-right-shadow,
+  screen-top-menu-level1-active-bg: $screen-top-menu-level1-active-bg,
+  screen-top-menu-level1-active-border-color: $screen-top-menu-level1-active-border-color,
+  screen-top-menu-level2-bg: $screen-top-menu-level2-bg,
+  screen-top-menu-level2-active-bg: $screen-top-menu-level2-active-bg,
+  screen-top-menu-level2-active-color: $screen-top-menu-level2-active-color,
+  screen-title-decoration-bg: $screen-title-decoration-bg,
+  screen-DPT1S1-menu-bg: $screen-DPT1S1-menu-bg,
+  screen-DPT1S1-menu-active-bg: $screen-DPT1S1-menu-active-bg,
+  screen-DPT1S1-menu-shadow: $screen-DPT1S1-menu-shadow,
+  screen-DPT1S1-menu-active-shadow: $screen-DPT1S1-menu-active-shadow,
+  screen-DPT1S1-menu-border: $screen-DPT1S1-menu-border,
+  screen-DPT1S1-menu-active-border: $screen-DPT1S1-menu-active-border,
+  top-tab-bg: $top-tab-bg,
+  login-input-background: $login-input-background,
+  map-bg: $map-bg,
+  supplement-color: $supplement-color,
+  supplement-color-opacity-3: $supplement-color-opacity-3,
+  map-grid-color: $map-grid-color,
+  alarm-color: $alarm-color,
+  fault-color: $fault-color,
+  running-color: $running-color,
+  offline-color: $offline-color,
+  label-text-color: getCssVar("text-color-mix-2"),
+  value-text-color: getCssVar("text-color-primary"),
+  stop-color: $stop-color,
+);
+
+@for $index from 1 through list.length($supplement-color) {
+  $globalVarMap: map.deep-merge(("supplement-color-#{$index}": list.nth($supplement-color, $index),
+      ),
+      $globalVarMap ) !global;
+}
+
+@each $color in $supplement-color {
+  @include set-linear-gradient("supplement", $color, list.index($supplement-color, $color));
+}
+
+@each $type in $types {
+  @for $i from 1 through 9 {
+    @include set-color-opacity($type, $i, map.get($colors, $type, "base"));
+  }
+}
+
+@each $type in $fill-color-opacity-types {
+  @for $i from 1 through 9 {
+    @if $type !="" {
+      @include set-color-opacity("fill-color-" + $type, $i, map.get($fill-color, $type));
+    }
+
+    @else {
+      @include set-color-opacity("fill-color", $i, map.get($fill-color, $type));
+    }
+  }
+}
+
+$componentMap: (
+  header: $header,
+  pagination: $pagination,
+  table: $table,
+  tree: $tree,
+  button: $button,
+  input: $input,
+  card: $card,
+  menu: $menu,
+  empty: $empty,
+  popover: $popover,
+  message: $message,
+  message-box: $messagebox,
+  dropdown: $dropdown,
+  checkbox: $checkbox,
+  switch: $switch,
+);

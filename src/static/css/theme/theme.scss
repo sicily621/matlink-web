@@ -1,0 +1,54 @@
+$mainColor: var(--textColorRegular);
+$mainBackground: var(--background);
+$mainBorderColor: var(--borderColor);
+$mainActiveColor: var(--activeColor);
+$mainHoverColor: var(--hoverColor);
+$mainActiveBackground: var(--activeBackground);
+$classes: (
+  "t-bg": (
+    "background": $mainBackground,
+  ),
+  "t-color": (
+    "color": $mainColor,
+  ),
+  "t-bc": (
+    "border-color": $mainBorderColor,
+  ),
+  "t-active-color": (
+    "color": $mainActiveColor,
+  ),
+  "t-hover-color": (
+    "color": $mainHoverColor,
+  ),
+  "t-active-bg": (
+    "background": $mainActiveBackground,
+  ),
+  "t-main": (
+    "border-color": $mainBorderColor,
+    "color": $mainColor,
+    "background": $mainBackground,
+  ),
+);
+$themes: ("black", "blue", "white");
+$appIDs: ("HyMakeApp-html", "HyAdminApp-html");
+
+@each $ID in $appIDs {
+  @each $key in $themes {
+    ##{$ID}[data-theme="#{$key}"] {
+      @each $classKey, $values in $classes {
+        .#{$classKey} {
+          @each $cssKey, $color in $values {
+            #{$cssKey}: $color !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.html-weak {
+  filter: invert(80%);
+}
+.html-grey {
+  filter: grayscale(100%);
+}

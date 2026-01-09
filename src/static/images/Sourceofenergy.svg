@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Sourceofenergy</title>
+    <g id="后续新增页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Sourceofenergy">
+            <circle id="椭圆形" fill="#166AEA" fill-rule="nonzero" cx="7" cy="7" r="7"></circle>
+            <circle id="椭圆形备份-2" stroke="#9DC3FF" fill-opacity="0.7" fill="#9ABFF6" cx="13" cy="13" r="10"></circle>
+            <path d="M11.53125,17.8 L15.46875,17.8 L15.46875,19 L11.53125,19 L11.53125,17.8 Z M13.5,7 C11.025,7 9,9.16 9,11.8 C9,13.45 9.7875,14.92 10.96875,15.76 L10.96875,16.6 C10.96875,16.93 11.221875,17.2 11.53125,17.2 L15.46875,17.2 C15.778125,17.2 16.03125,16.93 16.03125,16.6 L16.03125,15.76 C17.2125,14.89 18,13.45 18,11.8 C18,9.16 15.975,7 13.5,7 Z M14.2875,13.3 L14.0625,13.54 L14.0625,15.4 L12.9375,15.4 L12.9375,13.54 L12.7125,13.3 L11.30625,11.8 L12.09375,10.96 L13.5,12.46 L14.625,11.26 L15.4125,12.1 L14.2875,13.3 L14.2875,13.3 Z" id="形状" fill="#FFFFFF" fill-rule="nonzero"></path>
+        </g>
+    </g>
+</svg>

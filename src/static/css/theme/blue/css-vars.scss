@@ -1,0 +1,24 @@
+// CSS3 var
+@use "./var" as *;
+@use "element-plus/theme-chalk/src/mixins/_var.scss" as *;
+@use "element-plus/theme-chalk/src//mixins/mixins.scss" as *;
+@use "../utils.scss" as *;
+
+// blue
+@mixin blue($block) {
+  html.blue {
+    @include b($block) {
+      @content;
+    }
+  }
+}
+html.blue {
+  color: getCssVar("text-color-primary");
+  background: getCssVar("bg-color");
+  @include set-theme-vars($colors, $componentVarMap, $globalVarMap);
+}
+@each $component, $val in $componentMap {
+  @include blue($component) {
+    @include set-component-css-var(str-replace($component, "-", ""), $val);
+  }
+}

@@ -1,0 +1,21 @@
+@mixin defaultStyle($type, $class) {
+  #HyMakeApp-html[data-style="default"] {
+    @if $type =='btn' {
+      .#{$class} {
+        border: none;
+        @content;
+      }
+    }
+  }
+}
+
+
+@mixin testStyle($type, $class) {
+  #HyMakeApp-html[data-style="test"] {
+    @if $type =='btn' {
+      .#{$class} {
+        @content;
+      }
+    }
+  }
+}

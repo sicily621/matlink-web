@@ -1,0 +1,78 @@
+@use "./size.scss" as *;
+html,
+body {
+  width: 100% !important;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+  font-family: PingFang SC, Arial;
+  //font-size不要写在这里 每个项目定制化不一样 会影响到页面布局 写在项目内的scss里
+  user-select: none;
+}
+
+ul,
+li {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.form-require-item {
+  color: var(--el-color-danger);
+  padding-left: zrem(4);
+}
+@font-face {
+  font-family: "YouSheBiaoTiHei";
+  src: url("/fonts/YouSheBiaoTiHei.ttf");
+}
+@font-face {
+  font-family: "PingFang SC"; // 自定义的字体名字
+  src: url("/fonts/PingFangSC_0.ttf"); //引入的字体文件路径
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "dinpro"; // 自定义的字体名字
+  src: url("/fonts/dinpro-blod.ttf"); //引入的字体文件路径
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "DINAlternate"; // 自定义的字体名字
+  src: url("/fonts/DINAlternateBold.ttf"); //引入的字体文件路径
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "impact"; // 自定义的字体名字
+  src: url("/fonts/impact.ttf"); //引入的字体文件路径
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "PangMenZhengDao"; // 自定义的字体名字
+  src: url("/fonts/PangMenZhengDao.ttf"); //引入的字体文件路径
+  font-weight: normal;
+  font-style: normal;
+}
+
+.YouSheBiaoTiHei {
+  font-family: "YouSheBiaoTiHei";
+}
+.PingFangSC {
+  font-family: "PingFang SC";
+}
+.dinpro {
+  font-family: "dinpro";
+}
+.DINAlternate {
+  font-family: "DINAlternate";
+}
+.impact {
+  font-family: "impact";
+}
+.PangMenZhengDao {
+  font-family: "PangMenZhengDao";
+}

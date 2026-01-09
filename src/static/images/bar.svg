@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="10px" height="11px" viewBox="0 0 10 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 3</title>
+    <g id="黑色版本" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="系统默认图标" transform="translate(-1355.000000, -2066.000000)">
+            <g id="编组-3" transform="translate(1355.000000, 2067.000000)">
+                <rect id="矩形" fill="#FFFFFF" x="0" y="9" width="10" height="1" rx="0.5"></rect>
+                <rect id="矩形" stroke="#FFFFFF" stroke-width="0.6" stroke-linejoin="round" x="1" y="4" width="2" height="4"></rect>
+                <rect id="矩形备份-4" stroke="#FFFFFF" stroke-width="0.6" stroke-linejoin="round" x="4" y="2" width="2" height="6"></rect>
+                <rect id="矩形备份-5" stroke="#FFFFFF" stroke-width="0.6" stroke-linejoin="round" x="7" y="0" width="2" height="8"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,782 @@
+@use "sass:map";
+@use "sass:math";
+@use "sass:list";
+@use "sass:color";
+@use "element-plus/theme-chalk/src/common/var.scss" as common;
+@use "element-plus/theme-chalk/src/mixins/mixins.scss" as *;
+@use "element-plus/theme-chalk/src/color/index.scss" as *;
+@use "@static/css/common/size.scss" as *;
+
+//左侧导航背景
+$left-menu-bg: linear-gradient(180deg, #2e323e 0%, rgba(12, 12, 12, 0.5) 26%, #141313 50%, rgba(12, 12, 12, 0.5) 75%, #2d3038 100%);
+$left-menu-item-bg-level-1: #21242a;
+$left-menu-hover-color: #ffffff;
+$left-menu-active-shadow: inset 4px 4px 5px 0px rgba(0, 0, 0, 0.57), inset 2px -2px 5px 0px #000000;
+$top-header-bg: #1b1d22;
+$top-header-color: #ffffff;
+$top-tab-bg: #121213;
+$login-input-background: #181a1d;
+$map-bg: #1b1d22;
+$map-grid-color: #3a3b3c;
+$screen-top-header-bg: #1b1d22;
+$screen-top-shadow: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 48%, rgba(0, 0, 0, 0.8) 100%);
+$screen-bottom-shadow: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.5) 52%, rgba(0, 0, 0, 0) 100%);
+$screen-left-shadow: linear-gradient(270deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 48%, rgba(0, 0, 0, 0.8) 100%);
+$screen-right-shadow: linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 48%, rgba(0, 0, 0, 0.8) 100%);
+$screen-top-menu-level1-active-bg: linear-gradient(180deg, rgba(2, 113, 227, 0) 0%, rgba(2, 113, 227, 0.4) 100%);
+$screen-top-menu-level1-active-border-color: #0271e3;
+$screen-top-menu-level2-bg: #3a3b3c;
+$screen-top-menu-level2-active-bg: #1b1d23;
+$screen-top-menu-level2-active-color: #80b7f1;
+$screen-title-decoration-bg: linear-gradient(0deg, rgba(58, 59, 60, 0.7) 0%, rgba(58, 59, 60, 0) 100%);
+$screen-DPT1S1-menu-bg: linear-gradient(180deg, #1b1d22 0%, #2c2c2f 100%);
+$screen-DPT1S1-menu-active-bg: linear-gradient(180deg, #002050 0%, #002c59 36%, #268bcc 100%);
+$screen-DPT1S1-menu-shadow: inset 0 0 zrem(7) #999;
+$screen-DPT1S1-menu-active-shadow: inset 0 0 zrem(7) #33adf1;
+$screen-DPT1S1-menu-border: linear-gradient(to bottom, #31486d, #666666);
+$screen-DPT1S1-menu-active-border: linear-gradient(to bottom, #6cd0e6, #9ef3ff);
+$types: primary, success, warning, danger, error, info;
+$colors: (
+  ) !default;
+$colors: map.deep-merge(("white": #ffffff,
+      "black": #000000,
+      "primary": ("base": #0271e3,
+      ),
+      "success": ("base": #4cc09e,
+      ),
+      "warning": ("base": #fa8b16,
+      ),
+      "danger": ("base": #ff4d4f,
+      ),
+      "error": ("base": #ff4d4f,
+      ),
+      "info": ("base": #fecc55,
+      ),
+    ),
+    $colors
+);
+
+@each $type in common.$types {
+  $colors: map.deep-merge(($type: (
+        "base": map.get(common.$colors, $type, "base"),
+      ),
+    ),
+    $colors ) !global;
+}
+
+@mixin set-color-mix-level($type, $number, $mode: "light", $mix-color: $color-white) {
+  // hex mix color
+  $colors: map.deep-merge(($type: (
+        "#{$mode}-#{$number}": color.mix($mix-color, map.get($colors, $type, "base"), math.percentage(math.div($number, 10))),
+      ),
+    ),
+    $colors ) !global;
+}
+
+@mixin set-color-opacity($type, $number, $color) {
+  $globalVarMap: map.deep-merge(("#{$type}-opacity-#{$number}": rgba($color, math.percentage(math.div($number, 10))),
+      ),
+      $globalVarMap ) !global;
+}
+
+@mixin set-linear-gradient($type, $color, $index, $opacity: 3) {
+  $globalVarMap: map.deep-merge(("#{$type}-linear-gradient-#{$index}": linear-gradient(90deg, rgba($color, math.percentage(math.div($opacity, 5))) 8%, $color 50%, $color 100%),
+      ),
+      $globalVarMap ) !global;
+}
+
+@each $type in $types {
+  @for $i from 1 through 9 {
+    @include set-color-mix-level($type, $i, "light", common.$color-white
+  );
+}
+}
+
+// --el-color-primary-dark-2
+@each $type in $types {
+  @include set-color-mix-level($type, 2, "dark", common.$color-black);
+}
+
+// Background
+$bg-color: (
+  ) !default;
+$bg-color: map.merge(("": #000000,
+      "page": #161616,
+      //下拉框背景色
+      "overlay": #161616,
+    ),
+    $bg-color
+);
+
+// border
+$border-color: (
+  ) !default;
+$border-color: map.merge(("": #3a3b3c,
+      "light": #6f6f6f,
+      "lighter": #585859,
+      "extra-light": #f2f6fc,
+      "dark": #6f6f6f,
+      "darker": #cdd0d6,
+    ),
+    $border-color
+);
+$border-color-hover: getCssVar("border-color", "dark");
+// Box-shadow
+$box-shadow: (
+  ) !default;
+$box-shadow: map.merge(("": (0 zrem(12) zrem(32) zrem(4) rgba(0, 0, 0, 0.36),
+        0 zrem(8) zrem(20) rgba(0, 0, 0, 0.72),
+      ),
+      "light": (0 0 zrem(12) rgba(0, 0, 0, 0.72),
+      ),
+      "lighter": (0 0 zrem(6) rgba(0, 0, 0, 0.72),
+      ),
+      "dark": (0 zrem(16) zrem(48) zrem(16) rgba(0, 0, 0, 0.72),
+        0 zrem(12) zrem(32) #000000,
+        0 zrem(8) zrem(16) zrem(-8) #000000,
+      ),
+    ),
+    $box-shadow
+);
+
+//font-size
+$font-size: (
+  ) !default;
+$font-size: map.merge(("extra-large": zrem(20),
+      "large": zrem(18),
+      "medium": zrem(16),
+      "base": zrem(14),
+      "small": zrem(13),
+      "extra-small": zrem(12),
+    ),
+    $font-size
+);
+
+// fill
+$fill-color-opacity-types: "", light;
+$fill-color: (
+  ) !default;
+$fill-color: map.merge(("": #1b1d22,
+      //下拉项滑过背景色
+      "light": #2c2c2f,
+      "lighter": #fafafa,
+      "extra-light": #fafcff,
+      "dark": #17181b,
+      "darker": #181a1d,
+      "blank": #1d1f24,
+      "rgb": (29,
+        31,
+        36,
+      ),
+      "large-rgb-1": (0, 0, 0, 0),
+      "large-rgb-2": (0, 0, 0, 0.5),
+      "large-rgb-3": (0, 0, 0, 0.8)),
+    $fill-color
+);
+
+// text
+$text-color: (
+  ) !default;
+$text-color: map.merge(("primary": #ffffff,
+      "regular": #e8e7ef,
+      "secondary": #c5c5c5,
+      "placeholder": #bdbdbd,
+      "disabled": #86868c,
+    ),
+    $text-color
+);
+
+@mixin set-text-color-mix-level($number, $mix-color: $color-white, $type: "primary", $mode: "mix") {
+  $text-color: map.deep-merge(("#{$mode}-#{$number}": color.mix($mix-color, map.get($text-color, $type), math.percentage(math.div($number, 10))),
+      ),
+      $text-color ) !global;
+}
+
+@for $i from 1 through 9 {
+  @include set-text-color-mix-level($i, common.$color-black);
+}
+
+// Disable default
+$disabled: (
+  ) !default;
+$disabled: map.merge(("bg-color": #1a1f28,
+      "text-color": getCssVar("text-color", "disabled"),
+      "border-color": getCssVar("border-color"),
+    ),
+    $disabled
+);
+
+// mask
+$mask-color: (
+  ) !default;
+$mask-color: map.merge(("": rgba(0, 0, 0, 0.8),
+      "extra-light": rgba(0, 0, 0, 0.3),
+    ),
+    $mask-color
+);
+$datepicker: (
+  ) !default;
+$datepicker: map.merge(("inrange-bg-color": getCssVar("color-primary-dark-2"),
+    ),
+    $datepicker
+);
+
+// Input
+// css3 var in packages/theme-chalk/src/input.scss
+$input: (
+  ) !default;
+$input: map.merge(("text-color": getCssVar("text-color-secondary"),
+      "border": getCssVar("border"),
+      "hover-border": getCssVar("border-color-hover"),
+      "focus-border": getCssVar("color-primary"),
+      "transparent-border": 0 0 0 zrem(1) transparent inset,
+      "border-color": getCssVar("border-color"),
+      "border-radius": getCssVar("border-radius-base"),
+      "bg-color": getCssVar("fill-color", "darker"),
+      "icon-color": getCssVar("text-color-placeholder"),
+      "placeholder-color": getCssVar("text-color-placeholder"),
+      "hover-border-color": getCssVar("border-color-hover"),
+      "clear-hover-color": getCssVar("text-color-secondary"),
+      "focus-border-color": getCssVar("color-primary"),
+      "width": 100%,
+    ),
+    $input
+);
+
+$input-padding-horizontal: (
+  ) !default;
+$input-padding-horizontal: map.merge(("large": zrem(12),
+      "default": zrem(8),
+      "small": zrem(4),
+    ),
+    $input-padding-horizontal
+);
+
+.el-input__wrapper {
+  @extend .el-input__wrapper;
+  padding: 0 map.get($input-padding-horizontal, "default");
+
+  &:hover {
+    &+.el-input-group__append {
+      border-color: getCssVar("border-color-hover");
+    }
+  }
+
+  &.is-focus {
+    &+.el-input-group__append {
+      border-color: getCssVar("color-primary");
+    }
+  }
+}
+
+.el-input {
+  @extend .el-input;
+  height: zrem(32);
+
+  .el-input__suffix {
+    @extend .el-input__suffix;
+    border-left: zrem(1) solid getCssVar("border-color");
+  }
+
+  &.el-date-editor--date,
+  &.el-date-editor {
+    .el-input__suffix {
+      @extend .el-input__suffix;
+      border-left: none;
+    }
+  }
+
+  .el-input-group__append {
+    @extend .el-input-group__append;
+    border: zrem(1) solid getCssVar("border-color");
+    border-left: none;
+    box-shadow: none;
+    padding: 0 zrem(15);
+    background: getCssVar("fill-color-light");
+    color: getCssVar("text-color-primary");
+    outline: none;
+    height: zrem(32);
+    line-height: zrem(32);
+    box-sizing: border-box;
+  }
+
+  &:hover {
+    .el-input__suffix {
+      border-color: getCssVar("border-color-hover");
+    }
+  }
+
+  &.is-focus {
+    .el-input__suffix {
+      border-color: getCssVar("color-primary");
+    }
+  }
+}
+
+// Switch
+// css3 var in packages/theme-chalk/src/switch.scss
+$switch: (
+  ) !default;
+$switch: map.merge(("on-color": getCssVar("color-success"),
+      "off-color": getCssVar("text-color", "placeholder"),
+    ),
+    $switch
+);
+
+// Checkbox
+// css3 var in packages/theme-chalk/src/checkbox.scss
+$checkbox: (
+  ) !default;
+$checkbox: map.merge(("font-size": zrem(14),
+      "font-weight": getCssVar("font-weight-primary"),
+      "text-color": getCssVar("text-color-regular"),
+      "input-height": zrem(16),
+      "input-width": zrem(16),
+      "border-radius": getCssVar("border-radius-small"),
+      "bg-color": getCssVar("fill-color", "blank"),
+      "input-border": getCssVar("border"),
+      "disabled-border-color": getCssVar("border-color"),
+      "disabled-input-fill": getCssVar("fill-color", "light"),
+      "disabled-icon-color": getCssVar("text-color-placeholder"),
+      "disabled-checked-input-fill": getCssVar("border-color-extra-light"),
+      "disabled-checked-input-border-color": getCssVar("border-color"),
+      "disabled-checked-icon-color": getCssVar("text-color-placeholder"),
+      "checked-text-color": getCssVar("text-color-regular"),
+      "checked-input-border-color": getCssVar("color-primary"),
+      "checked-bg-color": transparent,
+      "checked-icon-color": getCssVar("color-primary"),
+      "input-border-color-hover": getCssVar("color-primary"),
+    ),
+    $checkbox
+);
+
+.el-checkbox__inner {
+  border-color: getCssVar("color-primary");
+
+  &::after {
+    left: zrem(5);
+    top: zrem(2);
+  }
+}
+
+$border-radius: (
+  ) !default;
+$border-radius: map.merge(("base": zrem(4),
+      "small": zrem(2),
+      "round": zrem(20),
+      "circle": 100%,
+    ),
+    $border-radius
+);
+
+// header
+$header: (
+  ) !default;
+$header: map.merge(("padding": 0 zrem(20),
+      "height": zrem(72),
+    ),
+    $header
+);
+
+// Table
+// css3 var in packages/theme-chalk/src/table.scss
+$table: (
+  ) !default;
+$table: map.merge(("border-color": getCssVar("border-color"),
+      "border": zrem(1) solid getCssVar("table-border-color"),
+      "text-color": getCssVar("text-color-regular"),
+      "header-text-color": getCssVar("text-color-regular"),
+      "row-hover-bg-color": getCssVar("color-primary-dark-2"),
+      "current-row-bg-color": getCssVar("color-primary-dark-2"),
+      "header-bg-color": getCssVar("fill-color", "light"),
+      "fixed-box-shadow": getCssVar("box-shadow", "light"),
+      "bg-color": getCssVar("fill-color", "blank"),
+      "tr-bg-color": rgba(0, 0, 0, 0),
+      "expanded-cell-bg-color": getCssVar("fill-color", "blank"),
+      "fixed-left-column": inset zrem(10) 0 zrem(10) zrem(-10) rgb(0 0 0 / 15%),
+      "fixed-right-column": inset zrem(-10) 0 zrem(10) zrem(-10) rgb(0 0 0 / 15%),
+      "index": 'auto',
+    ),
+    $table
+);
+
+.el-table__inner-wrapper::before {
+  display: none;
+}
+
+.el-table__body td:nth-child(1) .cell {
+  padding-left: zrem(20);
+}
+
+.el-table__header-wrapper {
+  border-radius: zrem(8);
+}
+
+// Pagination
+$pagination: (
+  ) !default;
+$pagination: map.merge(("font-size": zrem(14),
+      "bg-color": getCssVar("fill-color", "blank"),
+      "text-color": getCssVar("text-color-primary"),
+      "border-radius": zrem(2),
+      "button-color": getCssVar("text-color-primary"),
+      "button-width": zrem(28),
+      "button-height": zrem(28),
+      "button-disabled-color": getCssVar("text-color-placeholder"),
+      "button-disabled-bg-color": getCssVar("fill-color", "blank"),
+      "button-bg-color": getCssVar("fill-color"),
+      "hover-color": getCssVar("color-primary"),
+      "font-size-small": zrem(12),
+      "button-width-small": zrem(24),
+      "button-height-small": zrem(24),
+      "item-gap": zrem(16),
+    ),
+    $pagination
+);
+
+//Tree
+$tree-node-content-height: zrem(40);
+$tree: (
+  ) !default;
+$tree: map.merge(("node-content-height": zrem(40),
+      "node-hover-bg-color": getCssVar("fill-color", "dark"),
+      "text-color": getCssVar("text-color-regular"),
+      "expand-icon-color": getCssVar("text-color-placeholder"),
+    ),
+    $tree
+);
+
+.el-tree-node__content {
+  @extend .el-tree-node__content;
+  height: getCssVar("tree-node-content-height");
+}
+
+.el-tree-node {
+  &.is-current {
+    &>.el-tree-node__content {
+      background: getCssVar("color-primary");
+      border-radius: zrem(8);
+    }
+  }
+}
+
+// Button
+// css3 var in packages/theme-chalk/src/button.scss
+$button: (
+  ) !default;
+$button: map.merge(("border-color": getCssVar("color", "primary"),
+      "disabled-text-color": rgba(255, 255, 255, 0.5),
+      "hover-text-color": getCssVar("text-color-primary"),
+      "hover-border-color": getCssVar("color-primary", "light-2"),
+    ),
+    $button
+);
+
+.el-button {
+  &.is-plain {
+    border-color: getCssVar("color-primary");
+    color: getCssVar("text-color");
+
+    &:hover {
+      border-color: getCssVar("color-primary", "light-2");
+      color: getCssVar("text-color");
+      background: none;
+    }
+  }
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &:hover {
+    background: getCssVar("fill-color", "blank");
+  }
+
+  &.el-button--primary:hover {
+    background: getCssVar("color-primary", "light-2");
+  }
+}
+
+// Dropdown
+$dropdown: (
+  ) !default;
+$dropdown: map.merge(("menu-box-shadow": getCssVar("box-shadow-light"),
+      "menuItem-hover-fill": getCssVar("fill-color", "light"),
+      "menuItem-hover-color": getCssVar("color-primary"),
+      "menu-index": 10,
+    ),
+    $dropdown
+);
+
+.el-dropdown-menu__item {
+  &:hover {
+    background: getCssVar("fill-color", "light");
+  }
+
+  &:not(.is-disabled):focus {
+    background: getCssVar("fill-color", "light");
+  }
+}
+
+// card
+$card: (
+  ) !default;
+$card: map.merge(("bg-color": getCssVar("bg-color", "overlay"),
+    ),
+    $card
+);
+
+// Menu
+// css3 var in packages/theme-chalk/src/menu.scss
+$menu: (
+  ) !default;
+$menu: map.merge(("active-color": getCssVar("color-primary"),
+      "text-color": getCssVar("text-color-primary"),
+      "hover-text-color": getCssVar("color-primary"),
+      "bg-color": transparent,
+      "hover-bg-color": getCssVar("fill-color", "dark"),
+      "item-height": zrem(56),
+      "sub-item-height": calc(#{getCssVar("menu-item-height")} - zrem(6)),
+      "horizontal-height": zrem(60),
+      "horizontal-sub-item-height": zrem(36),
+      "item-font-size": getCssVar("font-size-base"),
+      "item-hover-fill": getCssVar("fill-color", "dark"),
+      "border-color": getCssVar("border-color"),
+      "base-level-padding": zrem(16),
+      "level-padding": zrem(20),
+      "icon-width": zrem(12),
+    ),
+    $menu
+);
+$popover: (
+  ) !default;
+$popover: map.merge(("bg-color": getCssVar("bg-color", "overlay"),
+      "font-size": getCssVar("font-size-base"),
+      "border-color": getCssVar("border-color-lighter"),
+      "padding": 0,
+      "padding-large": zrem(18) zrem(20),
+      "title-font-size": zrem(16),
+      "title-text-color": getCssVar("text-color-primary"),
+      "border-radius": zrem(4),
+    ),
+    $popover
+);
+
+.el-popper.is-light .el-popper__arrow::before {
+  border: 1px solid var(--el-bg-color-overlay);
+}
+
+// MessageBox
+// css3 var in packages/theme-chalk/src/message-box.scss
+$messagebox: (
+  ) !default;
+$messagebox: map.merge(("title-color": getCssVar("text-color-primary"),
+      "width": zrem(420),
+      "border-radius": zrem(4),
+      "font-size": getCssVar("font-size-base"),
+      "content-font-size": getCssVar("font-size-base"),
+      "content-color": getCssVar("text-color-regular"),
+      "error-font-size": zrem(12),
+      "padding-primary": zrem(28),
+    ),
+    $messagebox
+);
+
+.el-message-box {
+  @extend .el-message-box;
+  background: getCssVar("fill-color", "light");
+  border: none;
+
+  .el-message-box__header {
+    height: zrem(20);
+    line-height: zrem(20);
+    padding: 0;
+    font-weight: 500;
+    position: relative;
+  }
+
+  .el-message-box__headerbtn {
+    position: absolute;
+    right: 0;
+    top: zrem(3);
+    width: zrem(20);
+    height: zrem(20);
+
+    .el-message-box__close {
+      color: getCssVar("text-color", "primary");
+    }
+  }
+
+  .el-message-box__content {
+    padding: zrem(32) 0;
+  }
+}
+
+// Message
+// css3 var in packages/theme-chalk/src/message.scss
+$message: (
+  ) !default;
+$message: map.merge(("bg-color": getCssVar("color", "info", "light-9"),
+      "border-color": getCssVar("border-color-lighter"),
+      "padding": zrem(10) zrem(12) zrem(10) zrem(15),
+      "close-size": zrem(10),
+      "close-icon-color": getCssVar("text-color-placeholder"),
+      "close-hover-color": getCssVar("text-color-secondary"),
+    ),
+    $message
+);
+
+html.black {
+  .el-message {
+    .el-message__content {
+      color: getCssVar("text-color-primary");
+    }
+
+    @each $type in (success, info, warning, error) {
+      &.el-message--#{$type} {
+        background: rgba(map.get($colors, $type, "base"), 0.1);
+        border-color: map.get($colors, $type, "base");
+      }
+    }
+  }
+}
+
+.el-message {
+  border-radius: zrem(2);
+
+  .el-message__content {
+    font-size: zrem(14);
+  }
+}
+
+// Empty
+// css3 var in packages/theme-chalk/src/empty.scss
+$empty: (
+  ) !default;
+$empty: map.merge(("fill-color-0": getCssVar("color-black"),
+      "fill-color-1": #4b4b52,
+      "fill-color-2": #36383d,
+      "fill-color-3": #1e1e20,
+      "fill-color-4": #262629,
+      "fill-color-5": #202124,
+      "fill-color-6": #212224,
+      "fill-color-7": #1b1c1f,
+      "fill-color-8": #1c1d1f,
+      "fill-color-9": #18181a,
+    ),
+    $empty
+);
+
+// supplement Colors
+$supplement-color: #3c52bf, #fa8b16, #4cc09e, #ff4d4f, #f6bb06, #0271e3, #957dc5, #50c9d2, #df58fd, #37df48;
+$supplement-color-opacity-3: $supplement-color;
+
+@for $index from 1 through list.length($supplement-color-opacity-3) {
+  $color: list.nth($supplement-color-opacity-3, $index);
+  $opacity: 0.35;
+  $supplement-color-opacity-3: list.set-nth($supplement-color-opacity-3, $index, rgba($color, $opacity));
+}
+
+$alarm-color: #ff4d4f;
+$fault-color: #f6bb06;
+$running-color: #4cc09e;
+$offline-color: #c7d0dc;
+$stop-color: #0271e3;
+$componentVarMap: (
+  box-shadow: $box-shadow,
+  font-size: $font-size,
+  bg-color: $bg-color,
+  text-color: $text-color,
+  border-color: $border-color,
+  fill-color: $fill-color,
+  mask-color: $mask-color,
+  disabled: $disabled,
+  input-padding-horizontal: $input-padding-horizontal,
+  border-radius: $border-radius,
+);
+$globalVarMap: (
+  border-color-hover: $border-color-hover,
+  left-menu-bg: $left-menu-bg,
+  left-menu-item-bg-level-1: $left-menu-item-bg-level-1,
+  left-menu-hover-color: $left-menu-hover-color,
+  left-menu-active-shadow: $left-menu-active-shadow,
+  top-header-bg: $top-header-bg,
+  top-header-color: $top-header-color,
+  screen-top-header-bg: $screen-top-header-bg,
+  screen-top-shadow: $screen-top-shadow,
+  screen-bottom-shadow: $screen-bottom-shadow,
+  screen-left-shadow: $screen-left-shadow,
+  screen-right-shadow: $screen-right-shadow,
+  screen-top-menu-level1-active-bg: $screen-top-menu-level1-active-bg,
+  screen-top-menu-level1-active-border-color: $screen-top-menu-level1-active-border-color,
+  screen-top-menu-level2-bg: $screen-top-menu-level2-bg,
+  screen-top-menu-level2-active-bg: $screen-top-menu-level2-active-bg,
+  screen-top-menu-level2-active-color: $screen-top-menu-level2-active-color,
+  screen-title-decoration-bg: $screen-title-decoration-bg,
+  screen-DPT1S1-menu-bg: $screen-DPT1S1-menu-bg,
+  screen-DPT1S1-menu-active-bg: $screen-DPT1S1-menu-active-bg,
+  screen-DPT1S1-menu-shadow: $screen-DPT1S1-menu-shadow,
+  screen-DPT1S1-menu-active-shadow: $screen-DPT1S1-menu-active-shadow,
+  screen-DPT1S1-menu-border: $screen-DPT1S1-menu-border,
+  screen-DPT1S1-menu-active-border: $screen-DPT1S1-menu-active-border,
+  top-tab-bg: $top-tab-bg,
+  login-input-background: $login-input-background,
+  map-bg: $map-bg,
+  map-grid-color: $map-grid-color,
+  supplement-color: $supplement-color,
+  supplement-color-opacity-3: $supplement-color-opacity-3,
+  alarm-color: $alarm-color,
+  fault-color: $fault-color,
+  running-color: $running-color,
+  offline-color: $offline-color,
+  label-text-color: getCssVar("text-color-mix-2"),
+  value-text-color: getCssVar("text-color-primary"),
+  stop-color: $stop-color,
+);
+
+@for $index from 1 through list.length($supplement-color) {
+  $globalVarMap: map.deep-merge(("supplement-color-#{$index}": list.nth($supplement-color, $index),
+      ),
+      $globalVarMap ) !global;
+}
+
+@each $color in $supplement-color {
+  @include set-linear-gradient("supplement", $color, list.index($supplement-color, $color));
+}
+
+@each $type in $types {
+  @for $i from 1 through 9 {
+    @include set-color-opacity($type, $i, map.get($colors, $type, "base"));
+  }
+}
+
+@each $type in $fill-color-opacity-types {
+  @for $i from 1 through 9 {
+    @if $type !="" {
+      @include set-color-opacity("fill-color-" + $type, $i, map.get($fill-color, $type));
+    }
+
+    @else {
+      @include set-color-opacity("fill-color", $i, map.get($fill-color, $type));
+    }
+  }
+}
+
+$componentMap: (
+  header: $header,
+  pagination: $pagination,
+  table: $table,
+  tree: $tree,
+  button: $button,
+  input: $input,
+  card: $card,
+  menu: $menu,
+  empty: $empty,
+  popover: $popover,
+  message: $message,
+  message-box: $messagebox,
+  dropdown: $dropdown,
+  checkbox: $checkbox,
+  switch: $switch,
+  date-picker: $datepicker,
+);

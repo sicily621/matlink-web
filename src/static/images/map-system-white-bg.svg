@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="44px" height="45px" viewBox="0 0 44 45" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组 10备份 3</title>
+    <defs>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="58.3501043%" id="linearGradient-1">
+            <stop stop-color="#F3F5F8" offset="0%"></stop>
+            <stop stop-color="#FDFDFE" offset="100%"></stop>
+        </linearGradient>
+        <circle id="path-2" cx="22" cy="22" r="16.7619048"></circle>
+        <filter x="-20.9%" y="-14.9%" width="141.8%" height="141.8%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.683033495   0 0 0 0 0.749714018   0 0 0 0 0.856402853  0 0 0 1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="后续新增页面" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编组-10备份-3">
+            <circle id="椭圆形" fill="#F2F4FC" cx="22" cy="22" r="22"></circle>
+            <g id="椭圆形">
+                <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+                <circle stroke="#FFFFFF" stroke-width="1" stroke-linejoin="square" fill="url(#linearGradient-1)" fill-rule="evenodd" cx="22" cy="22" r="16.2619048"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

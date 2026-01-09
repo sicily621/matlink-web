@@ -1,0 +1,33 @@
+// 自定义 Element Plus 样式
+
+// 卡片
+.el-card {
+  background-color: var(--el-bg-color) !important;
+}
+
+// 分页
+.el-pagination {
+  // 参考 Bootstrap 的响应式设计 WIDTH = 768
+  @media screen and (max-width: 768px) {
+    .el-pagination__total,
+    .el-pagination__sizes,
+    .el-pagination__jump,
+    .btn-prev,
+    .btn-next {
+      display: none;
+    }
+  }
+}
+.el-table {
+  .el-table__header {
+    height: 50px;
+  }
+}
+.el-tree {
+  .el-tree-node__content {
+    height: 34px;
+  }
+}
+.el-date-editor.el-input, .el-date-editor.el-input__wrapper{
+  width:230px!important
+}
