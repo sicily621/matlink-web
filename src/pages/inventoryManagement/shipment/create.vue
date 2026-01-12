@@ -305,11 +305,8 @@ import { getReceiptDetailList } from "../api/receiptDetail";
 import {
   findProductListByIds,
   batchEditProduct,
-} from "@/pages/productManagement/api/product";
-import {
-  Category,
-  getCategoryList,
-} from "@/pages/productManagement/api/category";
+} from "@/pages/baseManagement/api/product";
+import { Category, getCategoryList } from "@/pages/baseManagement/api/category";
 import { getWarehouseList } from "@/pages/warehouseManagement/api/warehouse";
 import { getEmployeeList } from "@/pages/employeeManagement/api/employee";
 import { getAreaList } from "@/pages/warehouseManagement/api/area";
@@ -462,7 +459,7 @@ watch(
   ],
   () => {
     queryInventory();
-  },
+  }
 );
 const getMax = () => {
   const shipmentQuantity =
@@ -474,7 +471,7 @@ const getMax = () => {
     if (productForm.value.orderQuantity) {
       return Math.min(
         inventory.value,
-        +productForm.value.orderQuantity - shipmentQuantity,
+        +productForm.value.orderQuantity - shipmentQuantity
       );
     } else {
       return 0;
@@ -642,7 +639,7 @@ const addProduct = async () => {
     }
     if (editIndex0.value === -1) {
       const index = tableData.value.findIndex(
-        (item: any) => item.productId === row.productId,
+        (item: any) => item.productId === row.productId
       );
       const cache = tableData2.value
         .filter((item) => item.productId === row.productId)
@@ -691,14 +688,14 @@ const remove = (row: ShipmentDetail) => {
   const shipmentQuantity = shipmentDetailsMap.value.get(row.productId);
   shipmentDetailsMap.value.set(
     row.productId,
-    (shipmentQuantity ?? 0) - Number(row.quantity),
+    (shipmentQuantity ?? 0) - Number(row.quantity)
   );
   const index0 = tableData.value.findIndex(
-    (item) => item.productId === row.productId,
+    (item) => item.productId === row.productId
   );
   if (index0 > -1) {
     tableData.value[index0].quantity = shipmentDetailsMap.value.get(
-      row.productId,
+      row.productId
     );
   }
 };
@@ -754,14 +751,14 @@ const queryShipment = async () => {
         }
         shipmentDetailsRawMap.value.set(
           item.productId,
-          shipmentDetailsMap.value.get(item.productId),
+          shipmentDetailsMap.value.get(item.productId)
         );
       });
       tableData2.value = (shipmentDetails as any).data.map(
         (item: any, i: number) => {
           item.index = i + 1;
           return item;
-        },
+        }
       );
     }
   }
@@ -857,7 +854,7 @@ const confirmSave = async (cb?: Function) => {
           cost:
             prevCost +
             Number(
-              Number(Number(item.cost) * Number(item.quantity)).toFixed(2),
+              Number(Number(item.cost) * Number(item.quantity)).toFixed(2)
             ),
         };
         accountMap.set(relatedEntityId, account);
@@ -881,8 +878,9 @@ const confirmSave = async (cb?: Function) => {
         const productIds = detailList
           .map((item: any) => item.productId)
           .join(",");
-        const productInventoryRes: any =
-          await getInventoryByProductIds(productIds);
+        const productInventoryRes: any = await getInventoryByProductIds(
+          productIds
+        );
         const productInventoryMap = new Map();
         productInventoryRes.data.map((item: any) => {
           const { productId, quantity } = item;
@@ -915,7 +913,7 @@ const confirmSave = async (cb?: Function) => {
               Number(oldReceiptQuantity)
             ).toFixed(2);
             return { id: productId, purchasePrice };
-          },
+          }
         );
         await batchEditProduct(productNewPriceData);
       }
@@ -970,7 +968,7 @@ onMounted(async () => {
           const cache = receiptDetailsMap.value.get(item.productId);
           receiptDetailsMap.value.set(
             item.productId,
-            Number(cache) + Number(item.quantity),
+            Number(cache) + Number(item.quantity)
           );
         } else {
           receiptDetailsMap.value.set(item.productId, item.quantity);

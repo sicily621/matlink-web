@@ -248,11 +248,8 @@ import {
   getCheckDetailList,
   deleteCheckDetail,
 } from "../api/checkDetail";
-import { getProductList } from "@/pages/productManagement/api/product";
-import {
-  Category,
-  getCategoryList,
-} from "@/pages/productManagement/api/category";
+import { getProductList } from "@/pages/baseManagement/api/product";
+import { Category, getCategoryList } from "@/pages/baseManagement/api/category";
 import { getWarehouseList } from "@/pages/warehouseManagement/api/warehouse";
 import { getEmployeeList } from "@/pages/employeeManagement/api/employee";
 import { getAreaList } from "@/pages/warehouseManagement/api/area";

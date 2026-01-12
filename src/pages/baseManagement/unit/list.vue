@@ -5,10 +5,10 @@
         <div class="flex justify-between">
           <div class="zc-header-title">
             <div class="zc-header-icon"></div>
-            <div class="zc-header-word">分类管理</div>
+            <div class="zc-header-word">物料单位</div>
           </div>
           <el-button type="primary" v-if="enableCreate" @click="create"
-            >新增一级分类</el-button
+            >新增一级单位</el-button
           >
         </div>
       </el-card>
@@ -26,7 +26,10 @@
             stripe
             class="text-align-center"
           >
-            <el-table-column prop="name" label="分类名称" />
+            <el-table-column prop="cnname" label="名称" />
+            <el-table-column prop="enname" label="英文" />
+            <el-table-column prop="unitSymbol" label="换算比例" />
+            <el-table-column prop="description" label="备注" />
             <el-table-column prop="operate" label="操作">
               <template #default="scope">
                 <div class="flex">
@@ -42,7 +45,7 @@
                     class="fz16 pointer m-r-5 cursor-pointer"
                     text
                     v-if="enableCreate"
-                    @click="addSubCategory(scope.row)"
+                    @click="addSubUnit(scope.row)"
                   >
                     <Plus />
                   </el-icon>
@@ -63,20 +66,29 @@
     </div>
     <el-dialog
       v-model="dialogFormVisible"
-      :title="isEdit ? '编辑分类' : '添加分类'"
+      :title="isEdit ? '编辑单位' : '添加单位'"
       width="500"
       @close="closeModal()"
     >
       <el-form :model="form" ref="formRef" :rules="rules">
         <el-form-item
-          label="所属分类名称"
+          label="所属单位名称"
           :label-width="140"
           v-if="!isEdit && currentData"
         >
-          {{ currentData.name }}
+          {{ currentData.cnname }}
         </el-form-item>
-        <el-form-item label="分类名称" :label-width="140" prop="name">
-          <el-input v-model="form.name" autocomplete="off" />
+        <el-form-item label="名称" :label-width="140" prop="cnname">
+          <el-input v-model="form.cnname" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="英文" :label-width="140" prop="enname">
+          <el-input v-model="form.enname" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="换算比例" :label-width="140" prop="unitSymbol">
+          <el-input v-model="form.unitSymbol" autocomplete="off" />
+        </el-form-item>
+        <el-form-item label="备注" :label-width="140" prop="description">
+          <el-input v-model="form.description" autocomplete="off" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -91,12 +103,12 @@
 <script lang="ts" setup>
 import { onMounted, ref, reactive } from "vue";
 import {
-  Category,
-  getCategoryList,
-  deleteCategory,
-  createCategory,
-  editCategory,
-} from "../api/category";
+  Unit,
+  getUnitList,
+  deleteUnit,
+  createUnit,
+  editUnit,
+} from "../api/unit";
 import { ElMessage } from "element-plus";
 import { ModuleCode } from "@/router/moduleCode";
 import { usePermissionStore } from "@/pinia/stores/permission";
@@ -104,36 +116,42 @@ import { PermissionAction } from "@/pages/employeeManagement/api/permission";
 const permissionStore = usePermissionStore();
 
 const enableDelete = permissionStore.hasPermission(
-  ModuleCode.Category,
-  PermissionAction.Delete,
+  ModuleCode.Unit,
+  PermissionAction.Delete
 );
 const enableCreate = permissionStore.hasPermission(
-  ModuleCode.Category,
-  PermissionAction.Add,
+  ModuleCode.Unit,
+  PermissionAction.Add
 );
 const enableEdit = permissionStore.hasPermission(
-  ModuleCode.Category,
-  PermissionAction.Edit,
+  ModuleCode.Unit,
+  PermissionAction.Edit
 );
 const dialogFormVisible = ref(false);
 const form = reactive({
-  name: "",
+  cnname: "",
+  enname: "",
+  unitSymbol: "1",
+  description: "",
 });
 const loading = ref<boolean>(false);
 const formRef = ref();
-const currentData = ref<Category | null>(null);
+const currentData = ref<Unit | null>(null);
 const isEdit = ref(false);
 const rules = reactive({
   name: [{ required: true, message: "不能为空" }],
+  cnname: [{ required: true, message: "不能为空" }],
+  enname: [{ required: true, message: "不能为空" }],
+  unitSymbol: [{ required: true, message: "不能为空" }],
 });
-const tableData = ref<Category[]>([]);
+const tableData = ref<Unit[]>([]);
 
 function refreshTable() {
   loading.value = true;
-  getCategoryList()
+  getUnitList()
     .then((res: any) => {
       const { data } = res;
-      if (data.length > 0) tableData.value = buildCategoryTree(data);
+      if (data.length > 0) tableData.value = buildUnitTree(data);
     })
     .catch(() => {
       tableData.value = [];
@@ -148,44 +166,47 @@ const create = () => {
 };
 
 const remove = async (id: string) => {
-  await deleteCategory(id);
+  await deleteUnit(id);
   ElMessage({
     type: "success",
     message: "删除成功",
   });
   refreshTable();
 };
-const categoryMap = new Map();
-const hasChildren = (row: Category) => {
-  return categoryMap.get(row?.id)?.children.length > 0;
+const unitMap = new Map();
+const hasChildren = (row: Unit) => {
+  return unitMap.get(row?.id)?.children.length > 0;
 };
-function buildCategoryTree(categorys: Category[]) {
-  // 第一步：创建所有分类的映射并初始化children
-  categorys.forEach((dept: Category) => {
-    categoryMap.set(dept.id, {
+function buildUnitTree(units: Unit[]) {
+  // 第一步：创建所有单位的映射并初始化children
+  units.forEach((dept: Unit) => {
+    unitMap.set(dept.id, {
       ...dept,
       children: [],
     });
   });
 
   // 第二步：建立所有层级的父子关系
-  categorys.forEach((dept: Category) => {
-    const current = categoryMap.get(dept.id);
+  units.forEach((dept: Unit) => {
+    const current = unitMap.get(dept.id);
     if (dept.parentId !== 0) {
-      const parent = categoryMap.get(dept.parentId);
+      const parent = unitMap.get(dept.parentId);
       if (parent) {
         parent.children.push(current);
       }
     }
   });
 
-  // 第三步：收集顶级分类
-  return categorys
-    .filter((dept: Category) => dept.parentId === 0)
-    .map((dept: Category) => categoryMap.get(dept.id));
+  // 第三步：收集顶级单位
+  return units
+    .filter((dept: Unit) => dept.parentId === 0)
+    .map((dept: Unit) => unitMap.get(dept.id));
 }
 const closeModal = () => {
-  form.name = "";
+  form.cnname = "";
+  form.enname = "";
+  form.unitSymbol = "";
+  form.description = "";
   dialogFormVisible.value = false;
   currentData.value = null;
   isEdit.value = false;
@@ -197,29 +218,32 @@ const add = async () => {
     if (isEdit.value) {
       const params: any = {
         ...currentData.value,
-        name: form.name,
+        ...form,
       };
-      await editCategory(params);
+      await editUnit(params);
     } else {
-      const params: Category = {
-        name: form.name,
+      const params: Unit = {
+        ...form,
         parentId: currentData.value?.id ?? 0,
       };
-      await createCategory(params);
+      await createUnit(params);
     }
 
     closeModal();
     refreshTable();
   }
 };
-const addSubCategory = (row: Category) => {
+const addSubUnit = (row: Unit) => {
   currentData.value = { ...row };
   dialogFormVisible.value = true;
 };
-const edit = (row: Category) => {
+const edit = (row: Unit) => {
   isEdit.value = true;
   currentData.value = { ...row };
-  form.name = currentData.value.name;
+  form.cnname = currentData.value.cnname;
+  form.enname = currentData.value.enname;
+  form.unitSymbol = currentData.value.unitSymbol;
+  form.description = currentData.value.description;
   dialogFormVisible.value = true;
 };
 onMounted(async () => {

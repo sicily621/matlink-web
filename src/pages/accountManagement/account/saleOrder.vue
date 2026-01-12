@@ -272,11 +272,8 @@
 <script lang="ts" setup>
 import { ref, reactive, computed, onMounted } from "vue";
 import { getOrderDetailList } from "@/pages/saleManagement/api/orderDetail";
-import { getProductList } from "@/pages/productManagement/api/product";
-import {
-  Category,
-  getCategoryList,
-} from "@/pages/productManagement/api/category";
+import { getProductList } from "@/pages/baseManagement/api/product";
+import { Category, getCategoryList } from "@/pages/baseManagement/api/category";
 import {
   Order,
   OrderStatus,
@@ -328,7 +325,7 @@ const productRules = reactive({
 });
 const selectedProduct = computed(() => {
   return productOptions.value.find(
-    (item: any) => item.id === productForm.value.productId,
+    (item: any) => item.id === productForm.value.productId
   );
 });
 const specification = computed(() => {
@@ -344,7 +341,7 @@ const addProduct = async () => {
   if (valid) {
     productForm.value.price = getItem(
       String(productForm.value.productId),
-      productMap.value,
+      productMap.value
     )?.retailPrice;
     const { price, quantity } = productForm.value;
     const row: any = {

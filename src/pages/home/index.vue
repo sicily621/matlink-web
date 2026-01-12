@@ -177,8 +177,8 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { getCategoryList } from "@/pages/productManagement/api/category";
-import { getProductList } from "@/pages/productManagement/api/product";
+import { getCategoryList } from "@/pages/baseManagement/api/category";
+import { getProductList } from "@/pages/baseManagement/api/product";
 import { getWarehouseList } from "@/pages/warehouseManagement/api/warehouse";
 import { getAreaList } from "@/pages/warehouseManagement/api/area";
 import { getShelfList } from "@/pages/warehouseManagement/api/shelf";

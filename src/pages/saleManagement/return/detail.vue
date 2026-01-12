@@ -123,11 +123,8 @@
 </template>
 <script lang="ts" setup>
 import { ref, computed, onMounted } from "vue";
-import { getProductList } from "@/pages/productManagement/api/product";
-import {
-  Category,
-  getCategoryList,
-} from "@/pages/productManagement/api/category";
+import { getProductList } from "@/pages/baseManagement/api/product";
+import { Category, getCategoryList } from "@/pages/baseManagement/api/category";
 import {
   Return,
   ReturnStatus,
@@ -147,7 +144,7 @@ import { ModuleCode } from "@/router/moduleCode";
 const permissionStore = usePermissionStore();
 const enableApprove = permissionStore.hasPermission(
   ModuleCode.SalesReturn,
-  PermissionAction.Approve,
+  PermissionAction.Approve
 );
 // const disabledApprove = computed(() => {
 //   return !enableApprove;

@@ -1,9 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { mount } from "@vue/test-utils";
-import ProductForm from "@/pages/productManagement/product/create.vue";
+import ProductForm from "@/pages/baseManagement/product/create.vue";
 
 // Mock API 模块
-vi.mock("@/pages/productManagement/api/category", () => ({
+vi.mock("@/pages/baseManagement/api/category", () => ({
   getCategoryList: vi.fn(() =>
     Promise.resolve({
       data: [
@@ -13,22 +13,22 @@ vi.mock("@/pages/productManagement/api/category", () => ({
         { id: 4, name: "服饰", parentId: 0 },
         { id: 5, name: "男装", parentId: 4 },
       ],
-    }),
+    })
   ),
   getInventoryByProductIds: vi.fn(() =>
     Promise.resolve({
       data: [],
-    }),
+    })
   ),
 }));
 vi.mock("@/pages/inventoryManagement/api/inventory", () => ({
   getInventoryByProductIds: vi.fn(() =>
     Promise.resolve({
       data: [],
-    }),
+    })
   ),
 }));
-vi.mock("@/pages/productManagement/api/product", () => {
+vi.mock("@/pages/baseManagement/api/product", () => {
   return {
     createProduct: vi.fn().mockResolvedValue({}),
     editProduct: vi.fn().mockResolvedValue({}),
@@ -110,10 +110,10 @@ describe("ProductForm.vue", () => {
     expect((inputs[0].element as any).value).toBe(mockProduct.name);
     expect((inputs[1].element as any).value).toBe(mockProduct.code);
     expect((inputs[2].element as any).value).toBe(
-      String(mockProduct.purchasePrice),
+      String(mockProduct.purchasePrice)
     );
     expect((inputs[3].element as any).value).toBe(
-      String(mockProduct.retailPrice),
+      String(mockProduct.retailPrice)
     );
     expect((inputs[4].element as any).value).toBe(mockProduct.specification);
     expect((inputs[5].element as any).value).toBe(mockProduct.unit);
@@ -152,7 +152,7 @@ describe("ProductForm.vue", () => {
     await confirmSave();
 
     const { createProduct } = await import(
-      "@/pages/productManagement/api/product"
+      "@/pages/baseManagement/api/product"
     );
     expect(createProduct).toHaveBeenCalledTimes(1);
     expect(createProduct).toHaveBeenCalledWith(
@@ -166,7 +166,7 @@ describe("ProductForm.vue", () => {
         unit: "个",
         brand: "Apple",
         barcode: "6901111111111",
-      }),
+      })
     );
 
     wrapper.unmount();
@@ -187,16 +187,14 @@ describe("ProductForm.vue", () => {
     const confirmSave = (wrapper.vm as any).confirmSave;
     await confirmSave();
 
-    const { editProduct } = await import(
-      "@/pages/productManagement/api/product"
-    );
+    const { editProduct } = await import("@/pages/baseManagement/api/product");
     expect(editProduct).toHaveBeenCalledTimes(1);
     expect(editProduct).toHaveBeenCalledWith(
       expect.objectContaining({
         id: "1001",
         name: "iPhone 15",
         brand: "Apple Inc.",
-      }),
+      })
     );
 
     wrapper.unmount();
@@ -223,7 +221,7 @@ describe("ProductForm.vue", () => {
 
     // 确保 createProduct 没被调用
     const { createProduct } = await import(
-      "@/pages/productManagement/api/product"
+      "@/pages/baseManagement/api/product"
     );
     expect(createProduct).not.toHaveBeenCalled();
 
@@ -258,7 +256,7 @@ describe("ProductForm.vue", () => {
     await waitForTicks(2);
 
     const { createProduct } = await import(
-      "@/pages/productManagement/api/product"
+      "@/pages/baseManagement/api/product"
     );
     expect(createProduct).toHaveBeenCalledTimes(1);
     expect(createProduct).toHaveBeenCalledWith(
@@ -266,7 +264,7 @@ describe("ProductForm.vue", () => {
         name: "MacBook Pro",
         code: "MBP-2025",
         categoryId: 3,
-      }),
+      })
     );
 
     wrapper.unmount();

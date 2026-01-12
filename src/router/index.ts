@@ -122,27 +122,45 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: "/productManagement",
+    path: "/baseManagement",
     component: Layouts,
-    redirect: "/productManagement/category",
+    redirect: "/baseManagement/category",
     meta: {
-      title: "商品管理",
+      title: "物料公共",
       elIcon: "Goods",
-      moduleCode: ModuleCode.ProductManagement,
+      moduleCode: ModuleCode.baseManagement,
     },
     children: [
       {
         path: "category",
-        component: () => import("@/pages/productManagement/category/list.vue"),
+        component: () => import("@/pages/baseManagement/category/list.vue"),
         name: "category",
         meta: {
-          title: "商品分类",
+          title: "物料分类",
           moduleCode: ModuleCode.Category,
         },
       },
       {
+        path: "unit",
+        component: () => import("@/pages/baseManagement/unit/list.vue"),
+        name: "unit",
+        meta: {
+          title: "物料单位",
+          moduleCode: ModuleCode.Unit,
+        },
+      },
+      {
+        path: "supplier",
+        component: () => import("@/pages/baseManagement/supplier/list.vue"),
+        name: ModuleCode.Supplier,
+        meta: {
+          title: "供应商",
+          moduleCode: ModuleCode.Supplier,
+        },
+      },
+      {
         path: "product",
-        component: () => import("@/pages/productManagement/product/list.vue"),
+        component: () => import("@/pages/baseManagement/product/list.vue"),
         name: "product",
         meta: {
           title: "商品管理",
@@ -240,15 +258,15 @@ export const dynamicRoutes: RouteRecordRaw[] = [
       moduleCode: ModuleCode.PurchaseManagement,
     },
     children: [
-      {
-        path: "supplier",
-        component: () => import("@/pages/purchaseManagement/supplier/list.vue"),
-        name: ModuleCode.Supplier,
-        meta: {
-          title: "供应商管理",
-          moduleCode: ModuleCode.Supplier,
-        },
-      },
+      // {
+      //   path: "supplier",
+      //   component: () => import("@/pages/purchaseManagement/supplier/list.vue"),
+      //   name: ModuleCode.Supplier,
+      //   meta: {
+      //     title: "供应商管理",
+      //     moduleCode: ModuleCode.Supplier,
+      //   },
+      // },
       {
         path: "demand",
         component: () => import("@/pages/purchaseManagement/demand/list.vue"),
@@ -356,9 +374,11 @@ export const dynamicRoutes: RouteRecordRaw[] = [
           elIcon: "Coin",
           moduleCode: ModuleCode.Account,
         },
-      }, {
+      },
+      {
         path: "accountStatistics",
-        component: () => import("@/pages/accountManagement/statistics/index.vue"),
+        component: () =>
+          import("@/pages/accountManagement/statistics/index.vue"),
         name: ModuleCode.AccountStatistics,
         meta: {
           title: "利润统计",

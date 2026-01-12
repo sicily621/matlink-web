@@ -143,14 +143,11 @@ import {
   HistoryTypeList,
 } from "../api/history";
 import { getEmployeeList } from "@/pages/employeeManagement/api/employee";
-import { getProductList } from "@/pages/productManagement/api/product";
+import { getProductList } from "@/pages/baseManagement/api/product";
 import { getWarehouseList } from "@/pages/warehouseManagement/api/warehouse";
 import { getAreaList } from "@/pages/warehouseManagement/api/area";
 import { getShelfList } from "@/pages/warehouseManagement/api/shelf";
-import {
-  Category,
-  getCategoryList,
-} from "@/pages/productManagement/api/category";
+import { Category, getCategoryList } from "@/pages/baseManagement/api/category";
 import { indexMethod } from "@@/utils/page";
 const allHistoryTypeList = [{ id: 0, name: "全部" }, ...HistoryTypeList];
 const selectProps = { value: "id", label: "name" };

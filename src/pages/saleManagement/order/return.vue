@@ -120,11 +120,8 @@
 </template>
 <script lang="ts" setup>
 import { ref, computed, onMounted } from "vue";
-import { getProductList } from "@/pages/productManagement/api/product";
-import {
-  Category,
-  getCategoryList,
-} from "@/pages/productManagement/api/category";
+import { getProductList } from "@/pages/baseManagement/api/product";
+import { Category, getCategoryList } from "@/pages/baseManagement/api/category";
 import { Order, OrderStatus, editOrder } from "../api/order";
 import {
   Return,
@@ -312,7 +309,7 @@ onMounted(async () => {
       returnListRes = await getReturnDetailList(returnRes?.data?.[0].id);
     }
     const orderDetailRes: any = await getOrderDetailList(
-      (props as any).data.id,
+      (props as any).data.id
     );
     const quantityOrderMap = ref(new Map());
     orderDetailRes.data.map((item: any) => {

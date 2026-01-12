@@ -134,14 +134,11 @@ import {
   Inventory,
   editInventory,
 } from "../api/inventory";
-import { getProductList } from "@/pages/productManagement/api/product";
+import { getProductList } from "@/pages/baseManagement/api/product";
 import { getWarehouseList } from "@/pages/warehouseManagement/api/warehouse";
 import { getAreaList } from "@/pages/warehouseManagement/api/area";
 import { getShelfList } from "@/pages/warehouseManagement/api/shelf";
-import {
-  Category,
-  getCategoryList,
-} from "@/pages/productManagement/api/category";
+import { Category, getCategoryList } from "@/pages/baseManagement/api/category";
 import { indexMethod } from "@@/utils/page";
 import { ElMessage } from "element-plus";
 const selectProps = { value: "id", label: "name" };

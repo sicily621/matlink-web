@@ -122,11 +122,8 @@
 import { ref, reactive, computed, onMounted } from "vue";
 import { Demand, editDemand, DemandStatus } from "../api/demand";
 import { getDemandDetailList } from "../api/demandDetail";
-import { getProductList } from "@/pages/productManagement/api/product";
-import {
-  Category,
-  getCategoryList,
-} from "@/pages/productManagement/api/category";
+import { getProductList } from "@/pages/baseManagement/api/product";
+import { Category, getCategoryList } from "@/pages/baseManagement/api/category";
 import { Order, OrderStatus, createOrder } from "../api/order";
 import {
   OrderDetail,

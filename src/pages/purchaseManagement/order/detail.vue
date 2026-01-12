@@ -115,11 +115,8 @@
 </template>
 <script lang="ts" setup>
 import { ref, computed, onMounted } from "vue";
-import { getProductList } from "@/pages/productManagement/api/product";
-import {
-  Category,
-  getCategoryList,
-} from "@/pages/productManagement/api/category";
+import { getProductList } from "@/pages/baseManagement/api/product";
+import { Category, getCategoryList } from "@/pages/baseManagement/api/category";
 import { Order, OrderStatus, editOrder, OrderStatusList } from "../api/order";
 import { getOrderDetailList } from "../api/orderDetail";
 import { getSupplierList } from "../api/supplier";
@@ -133,7 +130,7 @@ import { ModuleCode } from "@/router/moduleCode";
 const permissionStore = usePermissionStore();
 const enableApprove = permissionStore.hasPermission(
   ModuleCode.PurchaseOrder,
-  PermissionAction.Approve,
+  PermissionAction.Approve
 );
 
 const pageSize = ref(1000);

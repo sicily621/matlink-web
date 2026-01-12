@@ -304,11 +304,8 @@ import {
 import {
   findProductListByIds,
   batchEditProduct,
-} from "@/pages/productManagement/api/product";
-import {
-  Category,
-  getCategoryList,
-} from "@/pages/productManagement/api/category";
+} from "@/pages/baseManagement/api/product";
+import { Category, getCategoryList } from "@/pages/baseManagement/api/category";
 import { getWarehouseList } from "@/pages/warehouseManagement/api/warehouse";
 import { getEmployeeList } from "@/pages/employeeManagement/api/employee";
 import { getAreaList } from "@/pages/warehouseManagement/api/area";
@@ -621,7 +618,7 @@ const addProduct = async () => {
     }
     if (editIndex0.value === -1) {
       const index = tableData.value.findIndex(
-        (item: any) => item.productId === row.productId,
+        (item: any) => item.productId === row.productId
       );
       const cache = tableData2.value
         .filter((item) => item.productId === row.productId)
@@ -674,14 +671,14 @@ const remove = (row: ReceiptDetail) => {
   const receiptQuantity = receiptDetailsMap.value.get(row.productId);
   receiptDetailsMap.value.set(
     row.productId,
-    (receiptQuantity ?? 0) - Number(row.quantity),
+    (receiptQuantity ?? 0) - Number(row.quantity)
   );
   const index0 = tableData.value.findIndex(
-    (item) => item.productId === row.productId,
+    (item) => item.productId === row.productId
   );
   if (index0 > -1) {
     tableData.value[index0].quantity = receiptDetailsMap.value.get(
-      row.productId,
+      row.productId
     );
   }
 };
@@ -697,7 +694,7 @@ const checkStatus = () => {
   }
   // 检查是否所有quantity都等于orderQuantity
   const allFull = tableData.value.every(
-    (item) => +item.quantity === +item.orderQuantity,
+    (item) => +item.quantity === +item.orderQuantity
   );
   if (allFull) {
     return props.type === 1
@@ -733,14 +730,14 @@ const queryReceipt = async () => {
         }
         receiptDetailsRawMap.value.set(
           item.productId,
-          receiptDetailsMap.value.get(item.productId),
+          receiptDetailsMap.value.get(item.productId)
         );
       });
       tableData2.value = (receiptDetails as any).data.map(
         (item: any, i: number) => {
           item.index = i + 1;
           return item;
-        },
+        }
       );
     }
   }
@@ -837,7 +834,7 @@ const confirmSave = async (cb?: Function) => {
           cost:
             prevCost +
             Number(
-              Number(Number(item.cost) * Number(item.quantity)).toFixed(2),
+              Number(Number(item.cost) * Number(item.quantity)).toFixed(2)
             ),
         };
         accountMap.set(relatedEntityId, account);
@@ -859,8 +856,9 @@ const confirmSave = async (cb?: Function) => {
         const productIds = detailList
           .map((item: any) => item.productId)
           .join(",");
-        const productInventoryRes: any =
-          await getInventoryByProductIds(productIds);
+        const productInventoryRes: any = await getInventoryByProductIds(
+          productIds
+        );
         const productInventoryMap = new Map();
         productInventoryRes.data.map((item: any) => {
           const { productId, quantity } = item;
@@ -893,7 +891,7 @@ const confirmSave = async (cb?: Function) => {
               Number(quantity)
             ).toFixed(2);
             return { id: productId, purchasePrice };
-          },
+          }
         );
         await batchEditProduct(productNewPriceData);
       }

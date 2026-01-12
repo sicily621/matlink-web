@@ -210,11 +210,8 @@ import {
   getDemandDetailList,
   deleteDemandDetail,
 } from "../api/demandDetail";
-import { getProductList } from "@/pages/productManagement/api/product";
-import {
-  Category,
-  getCategoryList,
-} from "@/pages/productManagement/api/category";
+import { getProductList } from "@/pages/baseManagement/api/product";
+import { Category, getCategoryList } from "@/pages/baseManagement/api/category";
 
 import baseTable from "@@/components/baseTable/baseTable.vue";
 import { ElMessage } from "element-plus";
@@ -226,7 +223,7 @@ import { ModuleCode } from "@/router/moduleCode";
 const permissionStore = usePermissionStore();
 const enableApprove = permissionStore.hasPermission(
   ModuleCode.PurchaseDemand,
-  PermissionAction.Approve,
+  PermissionAction.Approve
 );
 const pageSize = ref(1000);
 const currentPage = ref(0);
@@ -340,7 +337,7 @@ const queryProductOptions = async () => {
 };
 const seletedProduct = computed(() => {
   return productOptions.value.find(
-    (item: any) => item.id === productForm.value.productId,
+    (item: any) => item.id === productForm.value.productId
   );
 });
 const specification = computed(() => {

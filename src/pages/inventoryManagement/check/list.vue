@@ -155,10 +155,7 @@ import {
 } from "../api/check";
 import { getWarehouseList } from "@/pages/warehouseManagement/api/warehouse";
 import { getEmployeeList } from "@/pages/employeeManagement/api/employee";
-import {
-  Category,
-  getCategoryList,
-} from "@/pages/productManagement/api/category";
+import { Category, getCategoryList } from "@/pages/baseManagement/api/category";
 import { indexMethod } from "@@/utils/page";
 import Create from "./create.vue";
 import { watchDebounced } from "@vueuse/core";
@@ -169,15 +166,15 @@ import { PermissionAction } from "@/pages/employeeManagement/api/permission";
 const permissionStore = usePermissionStore();
 const enableDelete = permissionStore.hasPermission(
   ModuleCode.InventoryCheck,
-  PermissionAction.Delete,
+  PermissionAction.Delete
 );
 const enableCreate = permissionStore.hasPermission(
   ModuleCode.InventoryCheck,
-  PermissionAction.Add,
+  PermissionAction.Add
 );
 const enableEdit = permissionStore.hasPermission(
   ModuleCode.InventoryCheck,
-  PermissionAction.Edit,
+  PermissionAction.Edit
 );
 const allCheckStatusList = [{ id: 0, name: "全部" }, ...CheckStatusList];
 const createRef = ref();
@@ -224,7 +221,7 @@ watchDebounced(
   () => {
     refreshTable();
   },
-  { debounce: 500, maxWait: 1000 },
+  { debounce: 500, maxWait: 1000 }
 );
 function refreshTable() {
   loading.value = true;
