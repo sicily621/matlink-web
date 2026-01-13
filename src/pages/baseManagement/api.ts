@@ -6,3 +6,9 @@ export const unitPrefix = `/material/unit`;
 export const supplierPrefix = `/supplier`;
 //商品
 export const productPrefix = `/product`;
+//物料库
+export const stockPrefix = `/stock`;
+//库存类型
+export const stockTypePrefix = `/stock/type`;
+//物料
+export const materialPrefix = `/material`;

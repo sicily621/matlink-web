@@ -1,14 +1,14 @@
 <template>
   <div class="app-container flex flex-col h-full">
-    <div class="h-full w-full flex flex-col">
+    <div class="h-full w-full flex flex-col" v-if="!processFlag">
       <el-card v-loading="loading" shadow="never" class="search-wrapper">
         <div class="flex justify-between">
           <div class="zc-header-title">
             <div class="zc-header-icon"></div>
-            <div class="zc-header-word">物料分类</div>
+            <div class="zc-header-word">物料库</div>
           </div>
           <el-button type="primary" v-if="enableCreate" @click="create"
-            >新增一级分类</el-button
+            >新增</el-button
           >
         </div>
       </el-card>
@@ -27,8 +27,15 @@
             class="text-align-center"
           >
             <el-table-column width="80" type="index" label="序号" />
-            <el-table-column prop="name" label="分类名称" />
-            <el-table-column prop="code" label="分类编码" />
+            <el-table-column prop="name" label="名称" />
+            <el-table-column prop="typeId" label="类型">
+              <template #default="scope">
+                <span>{{
+                  stockTypeMap.get(scope.row.typeId) || "未设置类型"
+                }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="description" label="描述" />
             <el-table-column prop="operate" label="操作" width="150">
               <template #default="scope">
                 <div class="flex">
@@ -44,7 +51,7 @@
                     class="fz16 pointer m-r-5 cursor-pointer"
                     text
                     v-if="enableCreate"
-                    @click="addSubCategory(scope.row)"
+                    @click="addSubStock(scope.row)"
                   >
                     <Plus />
                   </el-icon>
@@ -63,83 +70,82 @@
         </div>
       </div>
     </div>
-    <el-dialog
-      v-model="dialogFormVisible"
-      :title="isEdit ? '编辑分类' : '添加分类'"
-      width="500"
-      @close="closeModal()"
-    >
-      <el-form :model="form" ref="formRef" :rules="rules">
-        <el-form-item
-          label="所属分类名称"
-          :label-width="140"
-          v-if="!isEdit && currentData"
+    <div class="h-full w-full flex flex-col" v-if="processFlag">
+      <Create
+        class="create-wrap"
+        :parent-id="parentId"
+        ref="createRef"
+        :data="currentData"
+      ></Create>
+      <el-card class="footer flex flex-justify-end flex-items-center">
+        <el-button type="primary" @click="save" class="p-l-6 p-r-6 m-r-3"
+          >保存</el-button
         >
-          {{ currentData.name }}
-        </el-form-item>
-        <el-form-item label="分类名称" :label-width="140" prop="name">
-          <el-input v-model="form.name" autocomplete="off" />
-        </el-form-item>
-        <el-form-item label="分类编码" :label-width="140" prop="code">
-          <el-input v-model="form.code" autocomplete="off" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="closeModal()">取消</el-button>
-          <el-button type="primary" @click="add()">确定</el-button>
-        </div>
-      </template>
-    </el-dialog>
+        <el-button @click="back" class="p-l-6 p-r-6">返回</el-button>
+      </el-card>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
 import { onMounted, ref, reactive } from "vue";
 import {
-  Category,
-  getCategoryList,
-  deleteCategory,
-  createCategory,
-  editCategory,
-} from "../api/category";
+  Stock,
+  getStockList,
+  deleteStock,
+  createStock,
+  editStock,
+} from "../api/stock";
+import { getStockTypeListByIds } from "../api/stockType";
 import { ElMessage } from "element-plus";
 import { ModuleCode } from "@/router/moduleCode";
 import { usePermissionStore } from "@/pinia/stores/permission";
 import { PermissionAction } from "@/pages/employeeManagement/api/permission";
+import Create from "./create.vue";
 const permissionStore = usePermissionStore();
 
 const enableDelete = permissionStore.hasPermission(
-  ModuleCode.Category,
+  ModuleCode.Stock,
   PermissionAction.Delete
 );
 const enableCreate = permissionStore.hasPermission(
-  ModuleCode.Category,
+  ModuleCode.Stock,
   PermissionAction.Add
 );
 const enableEdit = permissionStore.hasPermission(
-  ModuleCode.Category,
+  ModuleCode.Stock,
   PermissionAction.Edit
 );
 const dialogFormVisible = ref(false);
 const form = reactive({
   name: "",
-  code: "",
 });
+const createRef = ref();
+const processFlag = ref(0); // 0列表 1新建 2编辑
 const loading = ref<boolean>(false);
 const formRef = ref();
-const currentData = ref<Category | null>(null);
+const currentData = ref<Stock | null>(null);
+const parentId = ref("0");
 const isEdit = ref(false);
-const rules = reactive({
-  name: [{ required: true, message: "不能为空" }],
-});
-const tableData = ref<Category[]>([]);
-
+const tableData = ref<Stock[]>([]);
+const stockTypeMap = ref<Map<string, string>>(new Map());
+const getStockTypeList = async (ids: number[]) => {
+  const res = await getStockTypeListByIds(ids);
+  (res as any)?.data?.forEach((item: any) => {
+    stockTypeMap.value.set(item.id, item.name);
+  });
+};
 function refreshTable() {
   loading.value = true;
-  getCategoryList()
-    .then((res: any) => {
+  getStockList()
+    .then(async (res: any) => {
       const { data } = res;
-      if (data.length > 0) tableData.value = buildCategoryTree(data);
+      const typeIds: number[] = Array.from(
+        new Set(
+          data.map((item: Stock) => item.typeId).filter((id: number) => id)
+        )
+      );
+      if (typeIds.length > 0) await getStockTypeList(typeIds);
+      if (data.length > 0) tableData.value = buildStockTree(data);
     })
     .catch(() => {
       tableData.value = [];
@@ -149,36 +155,47 @@ function refreshTable() {
     });
 }
 const create = () => {
+  parentId.value = "0";
+  processFlag.value = 1;
+};
+const save = () => {
   currentData.value = null;
-  dialogFormVisible.value = true;
+  createRef.value.confirmSave(() => {
+    back();
+  });
+};
+const back = () => {
+  processFlag.value = 0;
+  currentData.value = null;
+  refreshTable();
 };
 
 const remove = async (id: string) => {
-  await deleteCategory(id);
+  await deleteStock(id);
   ElMessage({
     type: "success",
     message: "删除成功",
   });
   refreshTable();
 };
-const categoryMap = new Map();
-const hasChildren = (row: Category) => {
-  return categoryMap.get(row?.id)?.children.length > 0;
+const stockMap = new Map();
+const hasChildren = (row: Stock) => {
+  return stockMap.get(row?.id)?.children.length > 0;
 };
-function buildCategoryTree(categorys: Category[]) {
+function buildStockTree(stocks: Stock[]) {
   // 第一步：创建所有分类的映射并初始化children
-  categorys.forEach((dept: Category) => {
-    categoryMap.set(dept.id, {
+  stocks.forEach((dept: Stock, i: number) => {
+    stockMap.set(dept.id, {
       ...dept,
       children: [],
     });
   });
 
   // 第二步：建立所有层级的父子关系
-  categorys.forEach((dept: Category) => {
-    const current = categoryMap.get(dept.id);
+  stocks.forEach((dept: Stock) => {
+    const current = stockMap.get(dept.id);
     if (dept.parentId !== 0) {
-      const parent = categoryMap.get(dept.parentId);
+      const parent = stockMap.get(dept.parentId);
       if (parent) {
         parent.children.push(current);
       }
@@ -186,51 +203,19 @@ function buildCategoryTree(categorys: Category[]) {
   });
 
   // 第三步：收集顶级分类
-  return categorys
-    .filter((dept: Category) => dept.parentId === 0)
-    .map((dept: Category) => categoryMap.get(dept.id));
+  return stocks
+    .filter((dept: Stock) => dept.parentId === 0)
+    .map((dept: Stock) => stockMap.get(dept.id));
 }
-const closeModal = () => {
-  form.name = "";
-  form.code = "";
-  dialogFormVisible.value = false;
-  currentData.value = null;
-  isEdit.value = false;
-};
 
-const add = async () => {
-  const valid = await formRef.value.validate();
-  if (valid) {
-    if (isEdit.value) {
-      const params: any = {
-        ...currentData.value,
-        name: form.name,
-        code: form.code,
-      };
-      await editCategory(params);
-    } else {
-      const params: Category = {
-        name: form.name,
-        code: form.code,
-        parentId: currentData.value?.id ?? 0,
-      };
-      await createCategory(params);
-    }
-
-    closeModal();
-    refreshTable();
-  }
+const addSubStock = (row: Stock) => {
+  parentId.value = String(row.id);
+  processFlag.value = 1;
 };
-const addSubCategory = (row: Category) => {
-  currentData.value = { ...row };
-  dialogFormVisible.value = true;
-};
-const edit = (row: Category) => {
+const edit = (row: Stock) => {
   isEdit.value = true;
   currentData.value = { ...row };
-  form.name = currentData.value.name;
-  form.code = currentData.value.code;
-  dialogFormVisible.value = true;
+  processFlag.value = 1;
 };
 onMounted(async () => {
   refreshTable();

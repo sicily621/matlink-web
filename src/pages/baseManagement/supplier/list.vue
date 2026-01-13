@@ -39,7 +39,7 @@
                 >{{ getName(scope.scope.row.creditLevel) }}</el-tag
               >
             </template>
-            <template #operate="scope">
+            <template #operate="scope" width="150">
               <div class="flex">
                 <el-icon
                   class="fz16 pointer m-r-5 cursor-pointer"

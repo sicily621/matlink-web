@@ -132,6 +132,24 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     },
     children: [
       {
+        path: "stock",
+        component: () => import("@/pages/baseManagement/stock/list.vue"),
+        name: "stock",
+        meta: {
+          title: "物料库",
+          moduleCode: ModuleCode.Stock,
+        },
+      },
+      {
+        path: "material",
+        component: () => import("@/pages/baseManagement/material/list.vue"),
+        name: "material",
+        meta: {
+          title: "物料管理",
+          moduleCode: ModuleCode.Material,
+        },
+      },
+      {
         path: "category",
         component: () => import("@/pages/baseManagement/category/list.vue"),
         name: "category",

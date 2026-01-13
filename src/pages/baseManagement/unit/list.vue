@@ -26,11 +26,12 @@
             stripe
             class="text-align-center"
           >
+            <el-table-column width="80" type="index" label="序号" />
             <el-table-column prop="cnname" label="名称" />
             <el-table-column prop="enname" label="英文" />
             <el-table-column prop="unitSymbol" label="换算比例" />
             <el-table-column prop="description" label="备注" />
-            <el-table-column prop="operate" label="操作">
+            <el-table-column prop="operate" label="操作" width="150">
               <template #default="scope">
                 <div class="flex">
                   <el-icon
