@@ -1,5 +1,5 @@
-import { materialPrefix } from "../api";
-import { Post, Get, Put, Delete } from "@/http/axios";
+import { materialPrefix, materialImagePrefix } from "../api";
+import { Post, Get, Put, Delete, PostForm } from "@/http/axios";
 export interface Material {
   id?: string | number;
   tradeTypeId: string | number;
@@ -21,6 +21,11 @@ export interface Material {
   barcode: string;
   createUserId?: string | number;
 }
+export interface MaterialImage {
+  id?: string | number;
+  materialId: string | number;
+  imagePath: string;
+}
 
 export interface queryMaterialConditions {
   code: string;
@@ -40,3 +45,6 @@ export const findMaterialPage = (data: any) =>
 export const getMaterialList = (data: any) => Get(`${materialPrefix}/list`, data);
 export const findMaterialListByIds = (ids: string) =>
   Get(materialPrefix + `/getByIds/${ids}`, null);
+export const uploadMaterialImgs = (data: { files: File[] }) => PostForm("/file/uploads", data)
+export const batchSaveMaterialImages = (data: Partial<MaterialImage>[]) => Put(`${materialImagePrefix}/batchUpdate`, data);
+export const getMaterialImageList = (data: any) => Get(`${materialImagePrefix}/list`, data);

@@ -49,8 +49,12 @@
       :accept="accept"
       :disabled="disabled"
     >
-      <el-button v-if="!imgBtn" class="upload-btn" size="small" type="primary"
-        >{{ $t('elementUI.upload.upload') }}</el-button
+      <el-button
+        v-if="!imgBtn"
+        class="upload-btn"
+        size="small"
+        type="primary"
+        >{{ $t("elementUI.upload.upload") }}</el-button
       >
       <div
         class="preview-item2"
@@ -107,7 +111,7 @@ const fileObj = ref<any>({});
 const beforeUpload = (file: File) => {
   const promise = new Promise((resolve, reject) => {
     if (!props.noSizeLimitFlag && file.size / 1024 / 1204 > 10) {
-      ElMessage.error(t('elementUI.upload.fileSizeLimit'));
+      ElMessage.error(t("elementUI.upload.fileSizeLimit"));
       return reject();
     }
     if (props.accept) {
@@ -117,7 +121,7 @@ const beforeUpload = (file: File) => {
         props.accept.indexOf(fileType) === -1 &&
         fileAccept != props.accept.split("/")[0]
       ) {
-        ElMessage.error(t('elementUI.upload.fileFormatError'));
+        ElMessage.error(t("elementUI.upload.fileFormatError"));
         return reject();
       }
     }
@@ -150,8 +154,8 @@ defineExpose({
   align-items: flex-end;
   justify-content: center;
   .preview-item {
-    width: zrem(90);
-    height: zrem(90);
+    width: zrem(75);
+    height: zrem(75);
     border: 1px solid var(--el-border-color);
     margin-right: zrem(10);
     transition: 0.4s;
@@ -165,8 +169,8 @@ defineExpose({
     }
   }
   .preview-item2 {
-    width: zrem(90);
-    height: zrem(90);
+    width: zrem(75);
+    height: zrem(75);
     border: 1px solid var(--el-border-color);
     transition: 0.4s;
     font-size: 0;
@@ -183,5 +187,8 @@ defineExpose({
     width: zrem(64);
     height: zrem(32);
   }
+}
+::v-deep .el-upload-list {
+  display: none;
 }
 </style>

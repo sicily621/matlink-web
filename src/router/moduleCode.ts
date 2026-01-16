@@ -7,6 +7,7 @@ export enum ModuleCode {
   baseManagement = "baseManagement",
   Category = "category",
   Material = 'material',
+  AuditFlow = "auditFlow",
   Unit = "unit",
   Stock = "stock",
   Product = "product",

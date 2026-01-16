@@ -150,6 +150,15 @@ export const dynamicRoutes: RouteRecordRaw[] = [
         },
       },
       {
+        path: "auditFlow",
+        component: () => import("@/pages/baseManagement/auditFlow/list.vue"),
+        name: "auditFlow",
+        meta: {
+          title: "审批流程",
+          moduleCode: ModuleCode.AuditFlow,
+        },
+      },
+      {
         path: "category",
         component: () => import("@/pages/baseManagement/category/list.vue"),
         name: "category",

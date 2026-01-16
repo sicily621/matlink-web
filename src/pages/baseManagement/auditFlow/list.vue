@@ -8,7 +8,7 @@
           :currentNodeKey="currentNodeKey"
           ref="treeRef"
           @changeNode="changeNode($event)"
-          placeholder="请输入名称"
+          placeholder="请输入部门名称"
           :propsObj="defaultProps"
           :searchFlag="true"
         >
@@ -25,33 +25,11 @@
                 :model="searchData"
               >
                 <el-form-item prop="name" label="名称">
-                  <el-input v-model="searchData.name" placeholder="请输入名称">
+                  <el-input v-model="searchData.title" placeholder="请输入名称">
                     <template #append>
                       <el-button :icon="Search" />
                     </template>
                   </el-input>
-                </el-form-item>
-                <el-form-item prop="code" label="编码">
-                  <el-input v-model="searchData.code" placeholder="请输入编码">
-                    <template #append>
-                      <el-button :icon="Search" />
-                    </template>
-                  </el-input>
-                </el-form-item>
-                <el-form-item prop="brand" label="品牌">
-                  <el-input v-model="searchData.brand" placeholder="请输入品牌">
-                    <template #append>
-                      <el-button :icon="Search" />
-                    </template>
-                  </el-input>
-                </el-form-item>
-                <el-form-item prop="specification" label="规格">
-                  <el-input
-                    v-model="searchData.specification"
-                    placeholder="请输入规格"
-                  >
-                    <template #append> <el-button :icon="Search" /> </template
-                  ></el-input>
                 </el-form-item>
               </el-form>
               <el-button type="primary" v-if="enableCreate" @click="create"
@@ -71,21 +49,19 @@
                 :indexMethod="indexMethod(currentPage, pageSize)"
                 class="h-full"
               >
-                <template #tradeTypeId="scope"
-                  >{{ categoryMap.get(scope.scope.row.tradeTypeId)?.name }}
+                <template #deptId="scope"
+                  >{{ departmentMap.get(scope.scope.row.deptId)?.name }}
                 </template>
-                <template #unit="scope"
-                  >{{ unitMap.get(scope.scope.row.unit)?.cnname }}
+                <template #resourceId="scope"
+                  >{{ stockMap.get(scope.scope.row.resourceId)?.name }}
                 </template>
-                <template #imageUrls="scope">
-                  <div class="icons-con">
-                    <div
-                      class="icon-con"
-                      v-for="url in scope.scope.row.imageUrls"
-                    >
-                      <img :src="`/static${url}`" />
-                    </div>
-                  </div>
+                <template #resourceType="scope"
+                  >{{ getTypeById(scope.scope.row.resourceType)?.name }}
+                </template>
+                <template #enable="scope">
+                  <el-switch v-model="scope.scope.row.enable"
+                  :inactive-value="0" :active-value="1" "
+                  @change="changeStatus(scope.scope.row)" />
                 </template>
                 <template #operate="scope">
                   <div class="flex">
@@ -127,10 +103,29 @@
         class="create-wrap"
         ref="createRef"
         :data="currentData"
-        :tradeTypeId="String(currentNodeKey)"
+        :deptId="String(currentNodeKey)"
+        v-if="processFlag === 1"
       ></Create>
+      <Step
+        class="create-wrap"
+        ref="stepRef"
+        :data="currentData"
+        :deptId="String(currentNodeKey)"
+        v-if="currentData && processFlag === 2"
+      ></Step>
       <el-card class="footer flex flex-justify-end flex-items-center">
-        <el-button type="primary" @click="save" class="p-l-6 p-r-6 m-r-3"
+        <el-button
+          type="primary"
+          @click="next"
+          v-if="processFlag === 1"
+          class="p-l-6 p-r-6 m-r-3"
+          >下一步</el-button
+        >
+        <el-button
+          type="primary"
+          v-if="processFlag === 2"
+          @click="save"
+          class="p-l-6 p-r-6 m-r-3"
           >保存</el-button
         >
         <el-button @click="back" class="p-l-6 p-r-6">返回</el-button>
@@ -145,17 +140,18 @@ import baseTable from "@@/components/baseTable/baseTable.vue";
 import pagination from "@@/components/pagination/pagination.vue";
 import type { PaginatedRequest } from "@@/apis/tables/type";
 import {
-  queryMaterialConditions,
-  deleteMaterial,
-  findMaterialPage,
-  Material,
-} from "../api/material";
+  queryAuditFlowConditions,
+  deleteAuditFlow,
+  findAuditFlowPage,
+  AuditFlow,
+  editAuditFlow,
+} from "../api/auditFlow";
 import {
-  getCategoryList,
-  Category,
-  getCategoryListByIds,
-} from "../api/category";
-import { getUnitListByIds } from "../api/unit";
+  getDepartmentList,
+  Department,
+  getDepartmentListByIds,
+} from "@pages/employeeManagement/api/department";
+import { getStockListByIds } from "../api/stock";
 import { indexMethod } from "@@/utils/page";
 import { watchDebounced } from "@vueuse/core";
 import { ElMessage } from "element-plus";
@@ -164,22 +160,32 @@ import { usePermissionStore } from "@/pinia/stores/permission";
 import { PermissionAction } from "@/pages/employeeManagement/api/permission";
 import { Search } from "@element-plus/icons-vue";
 import Create from "./create.vue";
+import Step from "./step.vue";
 const permissionStore = usePermissionStore();
 
 const enableDelete = permissionStore.hasPermission(
-  ModuleCode.Material,
+  ModuleCode.AuditFlow,
   PermissionAction.Delete
 );
 const enableCreate = permissionStore.hasPermission(
-  ModuleCode.Material,
+  ModuleCode.AuditFlow,
   PermissionAction.Add
 );
 const enableEdit = permissionStore.hasPermission(
-  ModuleCode.Material,
+  ModuleCode.AuditFlow,
   PermissionAction.Edit
 );
 const treeRef = ref();
-
+const typeOptions = ref([
+  { id: 1, name: "入库" },
+  { id: 2, name: "出库" },
+  { id: 3, name: "领料" },
+  { id: 4, name: "盘点" },
+  { id: 5, name: "采购" },
+]);
+const getTypeById = (id: number) => {
+  return typeOptions.value.find((item: any) => item.id === id);
+};
 // 左侧树列表
 const virtualRootId = "root";
 const treeData: any = ref<any[]>([]);
@@ -217,17 +223,12 @@ const loading = ref<boolean>(false);
 const processFlag = ref(0); // 0列表 1新建 2编辑
 const columns = ref([
   { prop: "index", label: "序号", width: "100", type: 1 },
-  { prop: "name", label: "名称" },
-  { prop: "simpleName", label: "简称" },
-  { prop: "code", label: "编码" },
-  { prop: "tradeTypeId", label: "类别" },
-  { prop: "brand", label: "品牌" },
-  { prop: "modelNo", label: "型号" },
-  { prop: "specification", label: "规格" },
-  { prop: "safeCountLimit", label: "安全数量" },
-  { prop: "minCountLimit", label: "最低库存" },
-  { prop: "unit", label: "单位" },
-  { prop: "imageUrls", label: "图片" },
+  { prop: "title", label: "名称" },
+  { prop: "resourceId", label: "物料库" },
+  { prop: "deptId", label: "部门" },
+  { prop: "resourceType", label: "类别" },
+  { prop: "remark", label: "备注" },
+  { prop: "enable", label: "启动" },
   { prop: "operate", label: "操作", width: 100 },
 ]);
 //分页
@@ -238,16 +239,24 @@ const pageChange = (page: any) => {
   currentPage.value = page - 1;
   refreshTable();
 };
-const currentData = ref<Material | null>(null);
-const edit = (row: Material) => {
+const currentData = ref<AuditFlow | null>(null);
+const edit = (row: AuditFlow) => {
   currentData.value = row;
   processFlag.value = 1;
 };
 const createRef = ref();
+const stepRef = ref();
 const save = () => {
+  // currentData.value = null;
+  // createRef.value.confirmSave(() => {
+  //   back();
+  // });
+};
+const next = () => {
   currentData.value = null;
-  createRef.value.confirmSave(() => {
-    back();
+  createRef.value.confirmSave((data: AuditFlow) => {
+    currentData.value = data;
+    processFlag.value = 2;
   });
 };
 const back = () => {
@@ -255,16 +264,13 @@ const back = () => {
   currentData.value = null;
   refreshTable();
 };
-const tableData = ref<Material[]>([]);
+const tableData = ref<AuditFlow[]>([]);
 
 const searchFormRef = ref("searchFormRef");
 
-const searchData = reactive<queryMaterialConditions>({
-  code: "",
-  name: "",
-  brand: "",
-  specification: "",
-  tradeTypeId: currentNodeKey.value,
+const searchData = reactive<queryAuditFlowConditions>({
+  title: "",
+  deptId: currentNodeKey.value,
 });
 
 watchDebounced(
@@ -276,20 +282,17 @@ watchDebounced(
 );
 function refreshTable() {
   loading.value = true;
-  const params: PaginatedRequest<queryMaterialConditions> = {
+  const params: PaginatedRequest<queryAuditFlowConditions> = {
     currentPage: currentPage.value + 1,
     size: pageSize.value,
   };
-  if (searchData.code) params.code = searchData.code;
-  if (searchData.name) params.name = searchData.name;
-  if (searchData.brand) params.brand = searchData.brand;
-  if (searchData.specification) params.specification = searchData.specification;
-  if (currentNodeKey.value) params.tradeTypeId = currentNodeKey.value;
-  findMaterialPage(params)
+  if (searchData.title) params.title = searchData.title;
+  if (currentNodeKey.value) params.deptId = currentNodeKey.value;
+  findAuditFlowPage(params)
     .then(async (res: any) => {
       const { total, list } = res.data;
-      const unitIds = list.map((item: any) => item.unit);
-      if (unitIds.length) await getUnitList(unitIds);
+      const resourceIdIds = list.map((item: any) => item.resourceId);
+      if (resourceIdIds.length) await getStockList(resourceIdIds);
       totalItems.value = total;
       tableData.value = list;
     })
@@ -304,28 +307,28 @@ const create = () => {
   processFlag.value = 1;
 };
 const remove = async (id: string) => {
-  await deleteMaterial(id);
+  await deleteAuditFlow(id);
   ElMessage({
     type: "success",
     message: "删除成功",
   });
   refreshTable();
 };
-const categoryMap = new Map();
-function buildCategoryTree(categorys: Category[], parentId: number = 0) {
+const departmentMap = new Map();
+function buildDepartmentTree(departments: Department[], parentId: number = 0) {
   // 第一步：创建所有分类的映射并初始化children
-  categorys.forEach((dept: Category) => {
-    categoryMap.set(dept.id, {
+  departments.forEach((dept: Department) => {
+    departmentMap.set(dept.id, {
       ...dept,
       children: [],
     });
   });
 
   // 第二步：建立所有层级的父子关系
-  categorys.forEach((dept: Category) => {
-    const current = categoryMap.get(dept.id);
+  departments.forEach((dept: Department) => {
+    const current = departmentMap.get(dept.id);
     if (dept.parentId !== 0) {
-      const parent = categoryMap.get(dept.parentId);
+      const parent = departmentMap.get(dept.parentId);
       if (parent) {
         parent.children.push(current);
       }
@@ -333,28 +336,38 @@ function buildCategoryTree(categorys: Category[], parentId: number = 0) {
   });
 
   // 第三步：收集顶级分类
-  return categorys
-    .filter((dept: Category) => dept.parentId === 0)
-    .map((dept: Category) => categoryMap.get(dept.id));
+  return departments
+    .filter((dept: Department) => dept.parentId === 0)
+    .map((dept: Department) => departmentMap.get(dept.id));
 }
-const queryCategoryOptions = async () => {
-  const res = await getCategoryList();
+const queryDepartmentOptions = async () => {
+  const res = await getDepartmentList();
   if ((res as any)?.data?.length) {
     rawParkData.value = (res as any)?.data || [];
-    treeData.value = buildCategoryTree((res as any)?.data || []);
+    treeData.value = buildDepartmentTree((res as any)?.data || []);
   }
 };
 
-const unitMap = ref<Map<string, any>>(new Map());
-const getUnitList = async (ids: string[]) => {
-  unitMap.value.clear();
-  const res = await getUnitListByIds(ids);
+const stockMap = ref<Map<string, any>>(new Map());
+const getStockList = async (ids: string[]) => {
+  stockMap.value.clear();
+  const res = await getStockListByIds(ids);
   (res as any).data.map((item: any) => {
-    unitMap.value.set(item.id, item);
+    stockMap.value.set(item.id, item);
   });
 };
+const changeStatus = async (row: any) => {
+  if (row.id) {
+    await editAuditFlow(row);
+    ElMessage({
+      type: "success",
+      message: "保存成功",
+    });
+    refreshTable();
+  }
+};
 onMounted(async () => {
-  await queryCategoryOptions();
+  await queryDepartmentOptions();
   refreshTable();
 });
 </script>

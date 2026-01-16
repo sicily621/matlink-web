@@ -1,11 +1,32 @@
 <template>
-  <div class="diamond-node" :class="{ active: props.selectedNodeId == nodeId }" :style="{ width: `${width}px`, height: `${height}px` }">
-    <svg width="100%" height="100%" viewBox="0 0 100 60" preserveAspectRatio="xMidYMid meet">
+  <div
+    class="diamond-node"
+    :class="{ active: props.selectedNodeId == nodeId }"
+    :style="{ width: `${width}px`, height: `${height}px` }"
+  >
+    <svg
+      width="100%"
+      height="100%"
+      viewBox="0 0 100 60"
+      preserveAspectRatio="xMidYMid meet"
+    >
       <polygon :points="diamondPoints" stroke-width="2" class="diamond-shape" />
-      <text x="50" y="32" text-anchor="middle" dominant-baseline="middle" font-size="14">{{ data.label }}</text>
+      <text x="50" y="32" text-anchor="middle" dominant-baseline="middle">
+        {{ data.label }}
+      </text>
     </svg>
-    <Handle type="source" :position="Position.Right" :id="`${nodeId}-right`" class="handle-right" />
-    <Handle type="target" :position="Position.Left" :id="`${nodeId}-left`" class="handle-left" />
+    <Handle
+      type="source"
+      :position="Position.Right"
+      :id="`${nodeId}-right`"
+      class="handle-right"
+    />
+    <Handle
+      type="target"
+      :position="Position.Left"
+      :id="`${nodeId}-left`"
+      class="handle-left"
+    />
   </div>
 </template>
 

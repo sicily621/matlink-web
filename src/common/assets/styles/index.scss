@@ -15,6 +15,9 @@
 // View Transition
 @import "./view-transition.scss";
 @import "./size.scss";
+@import "./layout.scss";
+@import "@vue-flow/core/dist/style.css";
+@import "@vue-flow/core/dist/theme-default.css";
 // 业务页面几乎都应该在根元素上挂载 class="app-container"，以保持页面美观
 .app-container {
   padding: 20px;

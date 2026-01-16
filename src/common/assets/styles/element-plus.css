@@ -83,6 +83,12 @@ html.dark-blue {
   --el-mask-color: rgba(0, 0, 0, 0.5);
   --el-mask-color-extra-light: rgba(0, 0, 0, 0.3);
 }
+html.dark {
+  --el-text-color-primary: #fff;
+  --el-text-color-regular: #fff;
+  --el-text-color-secondary: #fff;
+  /* --el-color-primary-light-9: #409eff; */
+}
 
 /* button */
 html.dark-blue .el-button {
