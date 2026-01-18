@@ -52,16 +52,19 @@
                 <template #deptId="scope"
                   >{{ departmentMap.get(scope.scope.row.deptId)?.name }}
                 </template>
-                <template #resourceId="scope"
-                  >{{ stockMap.get(scope.scope.row.resourceId)?.name }}
+                <template #stockId="scope"
+                  >{{ stockMap.get(scope.scope.row.stockId)?.name }}
                 </template>
-                <template #resourceType="scope"
-                  >{{ getTypeById(scope.scope.row.resourceType)?.name }}
+                <template #type="scope"
+                  >{{ getTypeById(scope.scope.row.type)?.name }}
                 </template>
                 <template #enable="scope">
-                  <el-switch v-model="scope.scope.row.enable"
-                  :inactive-value="0" :active-value="1" "
-                  @change="changeStatus(scope.scope.row)" />
+                  <el-switch
+                    v-model="scope.scope.row.enable"
+                    :inactive-value="0"
+                    :active-value="1"
+                    @change="changeStatus(scope.scope.row)"
+                  />
                 </template>
                 <template #operate="scope">
                   <div class="flex">
@@ -124,9 +127,9 @@
         <el-button
           type="primary"
           v-if="processFlag === 2"
-          @click="save"
+          @click="prev"
           class="p-l-6 p-r-6 m-r-3"
-          >保存</el-button
+          >上一步</el-button
         >
         <el-button @click="back" class="p-l-6 p-r-6">返回</el-button>
       </el-card>
@@ -149,7 +152,6 @@ import {
 import {
   getDepartmentList,
   Department,
-  getDepartmentListByIds,
 } from "@pages/employeeManagement/api/department";
 import { getStockListByIds } from "../api/stock";
 import { indexMethod } from "@@/utils/page";
@@ -224,9 +226,9 @@ const processFlag = ref(0); // 0列表 1新建 2编辑
 const columns = ref([
   { prop: "index", label: "序号", width: "100", type: 1 },
   { prop: "title", label: "名称" },
-  { prop: "resourceId", label: "物料库" },
+  { prop: "stockId", label: "物料库" },
   { prop: "deptId", label: "部门" },
-  { prop: "resourceType", label: "类别" },
+  { prop: "type", label: "类别" },
   { prop: "remark", label: "备注" },
   { prop: "enable", label: "启动" },
   { prop: "operate", label: "操作", width: 100 },
@@ -246,11 +248,8 @@ const edit = (row: AuditFlow) => {
 };
 const createRef = ref();
 const stepRef = ref();
-const save = () => {
-  // currentData.value = null;
-  // createRef.value.confirmSave(() => {
-  //   back();
-  // });
+const prev = () => {
+  processFlag.value = 1;
 };
 const next = () => {
   currentData.value = null;
@@ -291,8 +290,8 @@ function refreshTable() {
   findAuditFlowPage(params)
     .then(async (res: any) => {
       const { total, list } = res.data;
-      const resourceIdIds = list.map((item: any) => item.resourceId);
-      if (resourceIdIds.length) await getStockList(resourceIdIds);
+      const stockIdIds = list.map((item: any) => item.stockId);
+      if (stockIdIds.length) await getStockList(stockIdIds);
       totalItems.value = total;
       tableData.value = list;
     })
@@ -315,7 +314,7 @@ const remove = async (id: string) => {
   refreshTable();
 };
 const departmentMap = new Map();
-function buildDepartmentTree(departments: Department[], parentId: number = 0) {
+function buildDepartmentTree(departments: Department[]) {
   // 第一步：创建所有分类的映射并初始化children
   departments.forEach((dept: Department) => {
     departmentMap.set(dept.id, {

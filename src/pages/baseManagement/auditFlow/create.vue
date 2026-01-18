@@ -36,10 +36,10 @@
             >
             </el-input>
           </el-form-item>
-          <el-form-item label="流程类型" prop="resourceType">
+          <el-form-item label="流程类型" prop="type">
             <el-select
               class="flex-1 m-r-16"
-              v-model="form.resourceType"
+              v-model="form.type"
               placeholder="请选择流程类型"
             >
               <el-option
@@ -56,9 +56,9 @@
               label="启用"
             />
           </el-form-item>
-          <el-form-item label="物料库" prop="resourceId">
+          <el-form-item label="物料库" prop="stockId">
             <el-tree-select
-              v-model="form.resourceId"
+              v-model="form.stockId"
               placeholder="请选择物料库"
               :data="stockOptions"
               check-strictly
@@ -76,23 +76,15 @@ import { ref, reactive, onMounted } from "vue";
 import { AuditFlow, createAuditFlow, editAuditFlow } from "../api/auditFlow";
 import { getDepartmentList } from "@pages/employeeManagement/api/department";
 import { ElMessage } from "element-plus";
-import { Stock, getStockList } from "../api/stock";
-import { formatTimeToString } from "@@/utils/datetime";
-import { ModuleCode } from "@/router/moduleCode";
-import { useUserStore } from "@/pinia/stores/user";
-import { getUnitList } from "../api/unit";
-import Upload from "@static/elementUI/upload/upload.vue";
-import { UploadType } from "@static/js/common/enum";
+import { getStockList } from "../api/stock";
 const props = defineProps<{ data: AuditFlow | null; deptId: string }>();
 const formRef = ref();
 const selectProps = { value: "id", label: "name" };
-const selectUnitProps = { value: "id", label: "cnname" };
-const userStore = useUserStore();
 //表单
 const form = ref<AuditFlow>({
   title: "",
-  resourceId: "",
-  resourceType: 1,
+  stockId: "",
+  type: 1,
   deptId: props.deptId,
   remark: "",
   enable: 1,
@@ -112,15 +104,15 @@ if (props.data) {
 const rules = reactive({
   title: [{ required: true, message: "不能为空" }],
   remark: [{ required: true, message: "不能为空" }],
-  resourceType: [{ required: true, message: "不能为空" }],
-  resourceId: [{ required: true, message: "不能为空" }],
+  type: [{ required: true, message: "不能为空" }],
+  stockId: [{ required: true, message: "不能为空" }],
 });
 const stockOptions = ref<any[]>([{ name: "无", id: 0 }]);
 const queryStockOptions = async () => {
   const res = await getStockList();
   if ((res as any)?.data?.length) {
     stockOptions.value = buildTree((res as any)?.data || []);
-    if (!props.data) form.value.resourceId = stockOptions.value[0]?.id;
+    if (!props.data) form.value.stockId = stockOptions.value[0]?.id;
   }
 };
 function buildTree(departments: any[]) {

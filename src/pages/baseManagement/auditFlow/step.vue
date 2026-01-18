@@ -126,7 +126,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { onMounted, ref, reactive } from "vue";
+import { onMounted, ref } from "vue";
 import {
   Step,
   getStepList,
@@ -162,7 +162,7 @@ const edges = ref([]);
 //表单
 const form = ref<Step>({
   flowId: props.data.id as unknown as number,
-  resourceType: props.data.resourceType,
+  type: props.data.type,
   level: 1,
   isRoleUser: 0,
   roleId: "",
@@ -292,7 +292,7 @@ const departmentMap = new Map();
 const getDeptName = (id: number | string) => {
   return findNodeById(deptOptions.value, id as any as number)?.name ?? "";
 };
-function buildDepartmentTree(departments: Department[], parentId: number = 0) {
+function buildDepartmentTree(departments: Department[]) {
   // 第一步：创建所有分类的映射并初始化children
   departments.forEach((dept: Department) => {
     departmentMap.set(dept.id, {
@@ -430,15 +430,6 @@ const querySteps = async () => {
   });
 };
 onMounted(async () => {
-  //   const newNode = {
-  //     id: `node_${0 + 1}`,
-  //     type: "diamond",
-  //     data: {
-  //       label: "审批",
-  //     },
-  //     position: { x: 100 + 0 * 250, y: 300 },
-  //   };
-  //   vueFlowRef.value.addNodes([newNode]);
   await getDepartment();
   await getRole();
   await querySteps();
