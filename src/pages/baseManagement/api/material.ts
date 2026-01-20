@@ -2,7 +2,7 @@ import { materialPrefix, materialImagePrefix } from "../api";
 import { Post, Get, Put, Delete, PostForm } from "@/http/axios";
 export interface Material {
   id?: string | number;
-  tradeTypeId: string | number;
+  materialTypeId: string | number;
   code: string;
   name: string;
   simpleName: string;
@@ -32,7 +32,7 @@ export interface queryMaterialConditions {
   name: string;
   brand: string;
   specification: string;
-  tradeTypeId: string | number;
+  materialTypeId: string | number;
 }
 
 export const createMaterial = (data: Material) => Post(materialPrefix, data);

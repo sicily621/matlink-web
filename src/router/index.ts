@@ -197,6 +197,27 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     ],
   },
   {
+    path: "/stockIn",
+    component: Layouts,
+    redirect: "/stockInManagement/stockIn",
+    meta: {
+      title: "物料入库",
+      elIcon: "Goods",
+      moduleCode: ModuleCode.InStock,
+    },
+    children: [
+      {
+        path: "stockIn",
+        component: () => import("@/pages/stockInManagement/stockIn/list.vue"),
+        name: "stockIn",
+        meta: {
+          title: "入库登记",
+          moduleCode: ModuleCode.InStock,
+        },
+      },
+    ],
+  },
+  {
     path: "/warehouseManagement",
     component: Layouts,
     redirect: "/warehouseManagement/warehouse",

@@ -1,43 +1,61 @@
 <template>
   <div class="custom-model-con" v-if="customModelConFlag">
-    <div class="custom-model d-flex flex-column"
-      :class="{ 'show-custom-model': customModelShowFlag, 'el-bg': noHeaderFlag, 'p-b-0': noContentPaddingFlag }"
-      :style="style">
+    <div
+      class="custom-model d-flex flex-column"
+      :class="{
+        'show-custom-model': customModelShowFlag,
+        'el-bg': noHeaderFlag,
+        'p-b-0': noContentPaddingFlag,
+      }"
+      :style="style"
+    >
       <div class="custom-model-header" v-if="!noHeaderFlag">
         <div class="custom-model-title">{{ translatedTitle }}</div>
-        <div class="custom-model-close" v-if="!closeCustomFlag" @click="closeCustomModel(true)">
+        <div
+          class="custom-model-close"
+          v-if="!closeCustomFlag"
+          @click="closeCustomModel(true)"
+        >
           <el-icon>
             <Close />
           </el-icon>
         </div>
       </div>
-      <div class="custom-model-content d-flex flex-1"
-        :class="{ 'btn-hidden': noConfirmBtnFlag, 'padding-none': noHeaderFlag || noContentPaddingFlag }">
+      <div
+        class="custom-model-content d-flex flex-1"
+        :class="{
+          'btn-hidden': noConfirmBtnFlag,
+          'padding-none': noHeaderFlag || noContentPaddingFlag,
+        }"
+      >
         <slot></slot>
       </div>
       <div class="custom-model-buttons" v-if="!noConfirmBtnFlag">
-        <el-button type="primary" class="custom-model-button" @click="modelConfirm()">{{ i18nM('zModel.confirm')
-          }}</el-button>
+        <el-button
+          type="primary"
+          class="custom-model-button"
+          @click="modelConfirm()"
+          >确定</el-button
+        >
       </div>
     </div>
     <div class="mask"></div>
   </div>
 </template>
 <script setup lang="ts">
-import { ref,computed } from "vue";
+import { ref, computed } from "vue";
 const customModelConFlag = ref(false);
 const customModelShowFlag = ref(false);
-const i18nM = window.$i18nM;
 const props = defineProps<{
   customModelTitle?: string;
   style?: any;
-  closeCustomFlag?: boolean,
+  closeCustomFlag?: boolean;
   noConfirmBtnFlag?: boolean;
   noHeaderFlag?: boolean;
   noContentPaddingFlag?: boolean;
 }>();
 const translatedTitle = computed(() => {
-  return props.customModelTitle ? i18nM(props.customModelTitle) : '';
+  return props.customModelTitle ? props.customModelTitle : "";
 });
 const emits = defineEmits(["confirm", "close"]);
 const openCustomModel = () => {
@@ -47,7 +65,7 @@ const openCustomModel = () => {
   });
 };
 const closeCustomModel = (emitFlag?: boolean) => {
-  if (emitFlag) emits('close');
+  if (emitFlag) emits("close");
   customModelShowFlag.value = false;
   setTimeout(() => {
     customModelConFlag.value = false;
@@ -62,8 +80,7 @@ defineExpose({
 });
 </script>
 <style scoped lang="scss">
-@use "@static/css/common/size.scss" as *;
-@use "@static/css/theme/update-element.scss" as *;
+@use "@@/assets/styles/size.scss" as *;
 
 .custom-model-con {
   width: 100%;
@@ -105,7 +122,7 @@ defineExpose({
       align-items: center;
       justify-content: space-between;
       line-height: zrem(20);
-      padding: zrem(20) zrem(28);
+      padding: zrem(16) zrem(20);
 
       .custom-model-title {
         color: var(--el-messagebox-title-color);
@@ -119,13 +136,12 @@ defineExpose({
     }
 
     .custom-model-content {
+      max-height: 100%;
+      padding: 0 zrem(15) zrem(15);
+      box-sizing: border-box;
       &.btn-hidden {
         height: calc(100% - zrem(62));
       }
-
-      max-height: 100%;
-      padding: 0 zrem(20) zrem(20);
-      box-sizing: border-box;
     }
 
     .padding-none {

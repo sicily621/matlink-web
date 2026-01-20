@@ -10,6 +10,7 @@ export enum ModuleCode {
   AuditFlow = "auditFlow",
   Unit = "unit",
   Stock = "stock",
+  InStock = 'inStock',
   Product = "product",
   WarehouseManagement = "warehouseManagement",
   Warehouse = "warehouse",

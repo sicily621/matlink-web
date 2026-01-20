@@ -16,9 +16,9 @@
         require-asterisk-position="right"
       >
         <div class="width-300 d-flex">
-          <el-form-item label="物料类别" prop="tradeTypeId">
+          <el-form-item label="物料类别" prop="materialTypeId">
             <el-tree-select
-              v-model="form.tradeTypeId"
+              v-model="form.materialTypeId"
               placeholder="请选择物料类别"
               :data="categoryOptions"
               check-strictly
@@ -238,7 +238,7 @@ import { useUserStore } from "@/pinia/stores/user";
 import { getUnitList } from "../api/unit";
 import Upload from "@static/elementUI/upload/upload.vue";
 import { UploadType } from "@static/js/common/enum";
-const props = defineProps<{ data: Material | null; tradeTypeId: string }>();
+const props = defineProps<{ data: Material | null; materialTypeId: string }>();
 const formRef = ref();
 const selectProps = { value: "id", label: "name" };
 const selectUnitProps = { value: "id", label: "cnname" };
@@ -247,7 +247,7 @@ const userStore = useUserStore();
 const form = ref<Material>({
   code: `${ModuleCode.Material}${formatTimeToString()}`,
   name: "",
-  tradeTypeId: props.tradeTypeId,
+  materialTypeId: props.materialTypeId,
   simpleName: "",
   brand: "",
   modelNo: "",
@@ -283,7 +283,7 @@ if (props.data) {
 const rules = reactive({
   simpleName: [{ required: true, message: "不能为空" }],
   name: [{ required: true, message: "不能为空" }],
-  tradeTypeId: [{ required: true, message: "不能为空" }],
+  materialTypeId: [{ required: true, message: "不能为空" }],
 });
 
 function buildTree(categorys: any[]) {
@@ -366,7 +366,7 @@ const queryCategoryOptions = async () => {
   const res = await getCategoryList();
   if ((res as any)?.data?.length) {
     categoryOptions.value = buildTree((res as any)?.data || []);
-    if (!props.data) form.value.tradeTypeId = categoryOptions.value[0]?.id;
+    if (!props.data) form.value.materialTypeId = categoryOptions.value[0]?.id;
   }
 };
 const queryUnitOptions = async () => {

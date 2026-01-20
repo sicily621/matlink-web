@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container flex h-full">
+  <div class="w-full flex h-full">
     <div class="w-full h-full flex-1 flex" v-if="!processFlag">
       <div class="left el-card">
         <tree
@@ -20,26 +20,38 @@
             <div class="flex">
               <el-form
                 ref="searchFormRef"
-                class="flex-grow-1"
+                class="flex-1"
                 :inline="true"
                 :model="searchData"
               >
                 <el-form-item prop="name" label="名称">
-                  <el-input v-model="searchData.name" placeholder="请输入名称">
+                  <el-input
+                    v-model="searchData.name"
+                    class="w-50"
+                    placeholder="请输入名称"
+                  >
                     <template #append>
                       <el-button :icon="Search" />
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="code" label="编码">
-                  <el-input v-model="searchData.code" placeholder="请输入编码">
+                  <el-input
+                    v-model="searchData.code"
+                    class="w-50"
+                    placeholder="请输入编码"
+                  >
                     <template #append>
                       <el-button :icon="Search" />
                     </template>
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="brand" label="品牌">
-                  <el-input v-model="searchData.brand" placeholder="请输入品牌">
+                  <el-input
+                    v-model="searchData.brand"
+                    class="w-50"
+                    placeholder="请输入品牌"
+                  >
                     <template #append>
                       <el-button :icon="Search" />
                     </template>
@@ -48,15 +60,14 @@
                 <el-form-item prop="specification" label="规格">
                   <el-input
                     v-model="searchData.specification"
+                    class="w-50"
                     placeholder="请输入规格"
                   >
                     <template #append> <el-button :icon="Search" /> </template
                   ></el-input>
                 </el-form-item>
               </el-form>
-              <el-button type="primary" v-if="enableCreate" @click="create"
-                >新增</el-button
-              >
+              <el-button type="primary" @click="confirmSave">保存</el-button>
             </div>
           </el-card>
           <div
@@ -69,6 +80,9 @@
                 :columns="columns"
                 :table-data="tableData"
                 :indexMethod="indexMethod(currentPage, pageSize)"
+                @select="select"
+                @selectAll="selectAll"
+                :checkboxFlag="true"
                 class="h-full"
               >
                 <template #materialTypeId="scope"
@@ -87,26 +101,6 @@
                     </div>
                   </div>
                 </template>
-                <template #operate="scope">
-                  <div class="flex">
-                    <el-icon
-                      class="fz16 pointer m-r-5 cursor-pointer"
-                      text
-                      v-if="enableEdit"
-                      @click="edit(scope.scope.row)"
-                    >
-                      <Edit />
-                    </el-icon>
-                    <el-icon
-                      class="fz16 cursor-pointer"
-                      text
-                      v-if="enableDelete"
-                      @click="remove(scope.scope.row.id)"
-                    >
-                      <Delete />
-                    </el-icon>
-                  </div>
-                </template>
               </baseTable>
             </div>
             <div class="pager-wrapper h-12 p-r-4">
@@ -122,20 +116,6 @@
         </div>
       </div>
     </div>
-    <div class="h-full w-full flex flex-col" v-if="processFlag">
-      <Create
-        class="create-wrap"
-        ref="createRef"
-        :data="currentData"
-        :materialTypeId="String(currentNodeKey)"
-      ></Create>
-      <el-card class="footer flex flex-justify-end flex-items-center">
-        <el-button type="primary" @click="save" class="p-l-6 p-r-6 m-r-3"
-          >保存</el-button
-        >
-        <el-button @click="back" class="p-l-6 p-r-6">返回</el-button>
-      </el-card>
-    </div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -149,13 +129,9 @@ import {
   deleteMaterial,
   findMaterialPage,
   Material,
-} from "../api/material";
-import {
-  getCategoryList,
-  Category,
-  getCategoryListByIds,
-} from "../api/category";
-import { getUnitListByIds } from "../api/unit";
+} from "@pages/baseManagement/api/material";
+import { getCategoryList, Category } from "@pages/baseManagement/api/category";
+import { getUnitListByIds } from "@pages/baseManagement/api/unit";
 import { indexMethod } from "@@/utils/page";
 import { watchDebounced } from "@vueuse/core";
 import { ElMessage } from "element-plus";
@@ -163,7 +139,8 @@ import { ModuleCode } from "@/router/moduleCode";
 import { usePermissionStore } from "@/pinia/stores/permission";
 import { PermissionAction } from "@/pages/employeeManagement/api/permission";
 import { Search } from "@element-plus/icons-vue";
-import Create from "./create.vue";
+const props = defineProps<{ materialIds: any[] }>();
+const emits = defineEmits(["save"]);
 const permissionStore = usePermissionStore();
 
 const enableDelete = permissionStore.hasPermission(
@@ -228,7 +205,6 @@ const columns = ref([
   { prop: "minCountLimit", label: "最低库存" },
   { prop: "unit", label: "单位" },
   { prop: "imageUrls", label: "图片" },
-  { prop: "operate", label: "操作", width: 100 },
 ]);
 //分页
 const pageSize = ref(10);
@@ -238,23 +214,37 @@ const pageChange = (page: any) => {
   currentPage.value = page - 1;
   refreshTable();
 };
-const currentData = ref<Material | null>(null);
-const edit = (row: Material) => {
-  currentData.value = row;
-  processFlag.value = 1;
-};
-const createRef = ref();
-const save = () => {
-  currentData.value = null;
-  createRef.value.confirmSave(() => {
-    back();
+const checkedIds = ref<any[]>([]);
+if (props.materialIds && props.materialIds.length) {
+  checkedIds.value = props.materialIds;
+}
+
+const select = (selection: any, row: any) => {
+  const checked = selection.find((item: any) => {
+    return item.id === row.id;
   });
+  if (checked) {
+    checkedIds.value = [...new Set([...checkedIds.value, row.id])];
+  } else {
+    checkedIds.value = checkedIds.value.filter((id: any) => id !== row.id);
+  }
 };
-const back = () => {
-  processFlag.value = 0;
-  currentData.value = null;
-  refreshTable();
+
+const selectAll = (selection: any) => {
+  const allIds = tableData.value.map((item: any) => item.id);
+  if (selection.length) {
+    checkedIds.value = [...new Set([...checkedIds.value, ...allIds])];
+  } else {
+    checkedIds.value = checkedIds.value.filter(
+      (id: any) => !allIds.includes(id)
+    );
+  }
 };
+const confirmSave = () => {
+  emits("save", checkedIds.value);
+};
+const currentData = ref<Material | null>(null);
+
 const tableData = ref<Material[]>([]);
 
 const searchFormRef = ref("searchFormRef");

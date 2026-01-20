@@ -1,5 +1,5 @@
 import { employeePrefix } from "../api";
-import { Post, Get, Put, Delete,PostForm } from "@/http/axios";
+import { Post, Get, Put, Delete, PostForm } from "@/http/axios";
 
 export interface Employee {
   id?: string | number;
@@ -32,4 +32,9 @@ export const findEmployeePage = (data: any) =>
   Get(employeePrefix + "/page", data);
 export const getEmployeeList = (data: any) =>
   Get(`${employeePrefix}/list`, data);
-export const uploadFile = (data:{file:File})=>PostForm("/file/upload",data)
+
+//根据员工Ids查询员工列表
+export const getEmployeeListByIds = (ids: string[] | number[]) =>
+  Get(`${employeePrefix}/getByIds/${ids}`, null);
+export const uploadFile = (data: { file: File }) => PostForm("/file/upload", data)
+
