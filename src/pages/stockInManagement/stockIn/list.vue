@@ -360,7 +360,10 @@ function refreshTable() {
       const newUserArr = Array.from(new Set(userIds));
       if (newUserArr.length) {
         const employeeRes: any = await getEmployeeListByIds(newUserArr);
-        userNameMap.value = employeeRes.data;
+        userNameMap.value = {};
+        employeeRes.data.map((item: any) => {
+          userNameMap.value[item.id] = item.realName;
+        });
       }
       tableData.value = list;
     })

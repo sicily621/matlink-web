@@ -86,7 +86,11 @@
           />
         </el-form-item>
         <div class="d-flex">
-          <el-radio-group v-model="form.isRoleUser" class="m-l-10 m-b-5">
+          <el-radio-group
+            v-model="form.isRoleUser"
+            class="m-l-10 m-b-5"
+            @change="changeIsRoleUser"
+          >
             <el-radio :value="1">指定人</el-radio>
             <el-radio :value="0">指定角色</el-radio>
           </el-radio-group>
@@ -112,7 +116,7 @@
               v-for="item of userOption"
               :key="item.id"
               :value="item.id"
-              :label="item.realName"
+              :label="item.name"
             ></el-option>
           </el-select>
         </el-form-item>
@@ -171,10 +175,11 @@ const form = ref<Step>({
   userName: "",
   deptId: "",
 });
-function create() {
+const create = () => {
   editIndex.value = -1;
+  delete form.value["id"];
   dialogFormVisible.value = true;
-}
+};
 
 const currentNode = ref<null | Step>(null);
 const onNodeClick = (node: any, isNode: boolean) => {
@@ -241,8 +246,10 @@ const confirm = async () => {
   }
   if (editIndex.value > -1) {
     const params: Step = { ...form.value };
+    params.roleName = roleMap.value.get(params.roleId) || "";
     if (params.isRoleUser === 0) {
-      delete params["userId"];
+      params.userId = 0;
+      params.userName = "";
     }
     delete params["isRoleUser"];
     const api = params?.id ? editStep : createStep;
@@ -279,8 +286,10 @@ const confirm = async () => {
     }
     const params: Step = { ...form.value, level: len + 1 };
     if (params.isRoleUser === 0) {
-      delete params["userId"];
+      params.userId = 0;
+      params.userName = "";
     }
+    params.roleName = roleMap.value.get(params.roleId) || "";
     delete params["isRoleUser"];
     const api = params?.id ? editStep : createStep;
     const res: any = await api(params);
@@ -349,6 +358,13 @@ const changeRole = () => {
   form.value.roleName = roleMap.value.get(form.value.roleId) || "";
   getUserList();
 };
+const changeIsRoleUser = () => {
+  if (!form.value.isRoleUser) {
+    form.value.userId = 0;
+    form.value.userName = "";
+    form.value.roleName = "";
+  }
+};
 const getRole = async () => {
   const res: any = await getRoleList();
   roleMap.value.clear();
@@ -370,22 +386,28 @@ const getUserList = async () => {
   const params: any = {};
   if (form.value.deptId) {
     params.departmentId = form.value.deptId;
-  } else {
+  }
+  if (form.value.roleId) {
     params.roleId = form.value.roleId;
   }
   const res: any = await getEmployeeList(params);
-  userOption.value = res.data.map((item: any) => {
-    const { id, realName: name } = item;
-    userMap.value.set(id, name);
-    return item;
-  });
+  if (res.data.length) {
+    userOption.value = res.data.map((item: any) => {
+      const { id, realName: name } = item;
+      userMap.value.set(id, name);
+      return { id, name };
+    });
+  } else {
+    userOption.value = [{ id: 0, name: "无" }];
+  }
   if (userOption.value?.[0] && form.value.isRoleUser) {
     form.value.userId = userOption.value?.[0].id;
     form.value.userName = userOption.value?.[0].name;
+    form.value.roleName = roleMap.value.get(form.value.roleId);
   } else {
     form.value.userId = 0;
+    form.value.userName = "";
     form.value.roleName = "";
-    userOption.value = [{ id: 0, name: "无" }];
   }
 };
 const changeUser = () => {

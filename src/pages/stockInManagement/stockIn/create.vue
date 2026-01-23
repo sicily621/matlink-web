@@ -346,6 +346,22 @@
         <Material :materialIds="materialIds" @save="saveMaterial"></Material>
       </div>
     </zModel>
+    <zModel
+      ref="orderRef"
+      :style="{ width: '96%', height: '80%' }"
+      :custom-model-title="form.type === 3 ? '领料单' : '采购单'"
+      :noConfirmBtnFlag="true"
+      @confirm="() => {}"
+    >
+      <div class="flex-1 d-flex w-full h-full relative content-bg">
+        <Order
+          :id="form.resourceId"
+          :stockId="form.stockId"
+          :type="form.type"
+          @save="saveOrder"
+        ></Order>
+      </div>
+    </zModel>
   </div>
 </template>
 <script lang="ts" setup>
@@ -359,15 +375,16 @@ import { More, Search, CircleClose } from "@element-plus/icons-vue";
 import { getSupplierList } from "@pages/baseManagement/api/supplier";
 import { findMaterialListByIds } from "@pages/baseManagement/api/material";
 import { useUserStore } from "@/pinia/stores/user";
-import {
-  getCategoryListByIds,
-  Category,
-} from "@pages/baseManagement/api/category";
+import { getCategoryListByIds } from "@pages/baseManagement/api/category";
 import { getUnitListByIds } from "@pages/baseManagement/api/unit";
+import { getOutBoundApplyDetailList } from "@pages/outBoundApplyManagement/api/outBoundApplyDetail";
+import { getPurchaseDetailList } from "@pages/purchaseManagement/api/purchaseDetail";
+import { saveInStockDetail, deleteInStockDetail } from "../api/inStockDetail";
 import baseTable from "@@/components/baseTable/baseTable.vue";
 import zModel from "@static/components/zModel/zModel.vue";
 import tree from "@@/components/tree/tree.vue";
 import Material from "./material.vue";
+import Order from "./resourceOrder.vue";
 const props = defineProps<{
   data: InStock | null;
   stockId: string;
@@ -551,34 +568,45 @@ const openModal = () => {
     if (targetRow) tableRef.value.setCurrentRow(targetRow);
   });
 };
-const saveOrder = (data: any) => {
+const saveOrder = async (data: any) => {
   form.value.resourceId = data?.resourceId;
   form.value.resourceNo = data?.resourceNo;
   orderRef.value.closeCustomModel();
-  // if (form.value.type == 3) {
-  //   getMaterialOutBoundApplyDetail({ applyId: form.value.resourceId }, (res: any) => {
-  //     detailMap.value.clear();
-  //     materialIds.value =
-  //       res.data?.map((item: any) => {
-  //         const { materialId } = item;
-  //         detailMap.value.set(materialId, { ...item, expectedCount: item.actualCount, perPrice: Number(item?.material?.suggestedCostPrice ?? 0) });
-  //         return materialId;
-  //       }) ?? [];
-  //     refreshTable();
-  //   });
-  // }
-  // if (form.value.type == 2) {
-  //   getPurchasingRequisitionDetail({ billId: form.value.resourceId }, (res: any) => {
-  //     detailMap.value.clear();
-  //     materialIds.value =
-  //       res.data?.map((item: any) => {
-  //         const { materialId, count } = item;
-  //         detailMap.value.set(materialId, { ...item, expectedCount: count, actualCount: count, perPrice: item?.perPrice ?? 0 });
-  //         return materialId;
-  //       }) ?? [];
-  //     refreshTable();
-  //   });
-  // }
+  if (form.value.type == 3) {
+    const res: any = await getOutBoundApplyDetailList({
+      applyId: form.value.resourceId,
+    });
+    detailMap.value.clear();
+    materialIds.value =
+      res.data?.map((item: any) => {
+        const { materialId } = item;
+        detailMap.value.set(materialId, {
+          ...item,
+          expectedCount: item.actualCount,
+          perPrice: Number(item?.material?.suggestedCostPrice ?? 0),
+        });
+        return materialId;
+      }) ?? [];
+    refreshTable();
+  }
+  if (form.value.type == 2) {
+    const res: any = await getPurchaseDetailList({
+      billId: form.value.resourceId,
+    });
+    detailMap.value.clear();
+    materialIds.value =
+      res.data?.map((item: any) => {
+        const { materialId, count } = item;
+        detailMap.value.set(materialId, {
+          ...item,
+          expectedCount: count,
+          actualCount: count,
+          perPrice: item?.perPrice ?? 0,
+        });
+        return materialId;
+      }) ?? [];
+    refreshTable();
+  }
 };
 const materialRef = ref<any>();
 const addMaterial = () => {
@@ -600,7 +628,7 @@ const removeMaterial = (row: any) => {
         type: "success",
         message: "删除成功",
       });
-      // refreshTable();
+      refreshTable();
     })
     .catch(() => {
       ElMessage({
@@ -692,16 +720,60 @@ const changeNode = (data: any) => {
   }
   getUserList();
 };
+let errorTime: any;
 const confirmSave = async (cb?: Function) => {
   try {
     const valid = await formRef.value.validate();
     if (valid) {
-      const params = { ...form.value };
+      if (tableData.value.length == 0) {
+        errorShow.value = true;
+        if (errorTime) clearTimeout(errorTime);
+        errorTime = setTimeout(() => {
+          errorShow.value = false;
+        }, 5000);
+        return;
+      }
+      const params: any = {
+        ...form.value,
+        inStockTime: new Date(form.value.inStockTime),
+      };
+      delete params["inStockUserName"];
+      if (!params["approverCreateTime"]) delete params["approverCreateTime"];
+      if (!params["approverUserId"]) delete params["approverUserId"];
       const api = params.id ? editInStock : createInStock;
       const res: any = await api(params);
       ElMessage({
         type: "success",
         message: "保存成功",
+      });
+      await deleteInStockDetail(res.data.id);
+      const details = tableData.value.map((item: any) => {
+        const {
+          materialId,
+          expectedCount,
+          actualCount,
+          perPrice,
+          totalPrice,
+          priceRatio,
+          inStockPrice,
+        } = item;
+        const result: any = {
+          inStockId: res.data.id,
+          materialId,
+          stockId: form.value.stockId,
+          expectedCount,
+          actualCount,
+          perPrice,
+          totalPrice,
+          priceRatio,
+          inStockPrice,
+        };
+        return result;
+      });
+      await saveInStockDetail(details);
+      ElMessage({
+        type: "success",
+        message: props.data ? "编辑成功" : "新增成功",
       });
       cb && cb(res.data);
     }

@@ -11,7 +11,7 @@
  Target Server Version : 80025 (8.0.25)
  File Encoding         : 65001
 
- Date: 20/01/2026 18:27:31
+ Date: 23/01/2026 18:54:28
 */
 
 SET NAMES utf8mb4;
@@ -118,7 +118,7 @@ CREATE TABLE `clt_login_log`  (
   `status` tinyint NULL DEFAULT 1 COMMENT '状态(1-成功,0-失败)',
   `message` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '登录信息',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2013538216991494147 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2014648297392898051 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of clt_login_log
@@ -315,6 +315,21 @@ INSERT INTO `clt_login_log` VALUES (2013157776015097857, 1950095792504283138, '2
 INSERT INTO `clt_login_log` VALUES (2013163319085707265, 1950095792504283138, '2026-01-19 16:15:12', '127.0.0.1', 1, '登录成功');
 INSERT INTO `clt_login_log` VALUES (2013439860860452865, 1950095792504283138, '2026-01-20 10:34:05', '127.0.0.1', 1, '登录成功');
 INSERT INTO `clt_login_log` VALUES (2013538216991494146, 1950095792504283138, '2026-01-20 17:04:55', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2013885698795507714, 1950095792504283138, '2026-01-21 16:05:41', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014169056406618114, 1950095792504283138, '2026-01-22 10:51:39', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014230437281628161, 1950095792504283138, '2026-01-22 14:55:33', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014270240509304834, 1950095792504283138, '2026-01-22 17:33:43', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014535292965552130, 1950095792504283138, '2026-01-23 11:06:56', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014591075686219778, 1950095792504283138, '2026-01-23 14:48:36', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014611707434037250, 1950095792504283138, '2026-01-23 16:10:35', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014617785714524161, 1950095792504283138, '2026-01-23 16:34:44', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014631048934236162, 1950095792504283138, '2026-01-23 17:27:26', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014633019367882754, 1950095792504283138, '2026-01-23 17:35:16', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014633803904126977, 1950095792504283138, '2026-01-23 17:38:23', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014640828826447873, 1950095792504283138, '2026-01-23 18:06:18', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014641351306706946, 1950095792504283138, '2026-01-23 18:08:23', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014647297064022018, 1950095792504283138, '2026-01-23 18:32:00', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014648297392898050, 1950095792504283138, '2026-01-23 18:35:59', '127.0.0.1', 1, '登录成功');
 
 -- ----------------------------
 -- Table structure for clt_material
@@ -349,7 +364,7 @@ CREATE TABLE `clt_material`  (
 -- ----------------------------
 -- Records of clt_material
 -- ----------------------------
-INSERT INTO `clt_material` VALUES (2011354494170955777, 1952678553081520129, '物料一', '一', 'material20260114162700332', '', '', '', 2010249036283551746, '', '', 0, 0, 0, 0.00, 0.00, 1, '', '2026-01-14 16:27:35', '2026-01-15 10:47:00', 1950095792504283138, 0);
+INSERT INTO `clt_material` VALUES (2011354494170955777, 1952678553081520129, '物料一', '一', 'material20260114162700332', '品牌1', '模型1', '规格一', 2010249036283551746, '', '', 0, 0, 0, 0.00, 0.00, 1, '', '2026-01-14 16:27:35', '2026-01-15 10:47:00', 1950095792504283138, 0);
 
 -- ----------------------------
 -- Table structure for clt_material_audit_flow
@@ -374,7 +389,7 @@ CREATE TABLE `clt_material_audit_flow`  (
 -- ----------------------------
 -- Records of clt_material_audit_flow
 -- ----------------------------
-INSERT INTO `clt_material_audit_flow` VALUES (2012059199998132225, '流程1', 2010989510140256258, 1, 1952262586321022978, '1', 1, 0, NULL, '2026-01-16 15:07:50', '2026-01-19 18:55:29', 0);
+INSERT INTO `clt_material_audit_flow` VALUES (2012059199998132225, '流程1', 2010989510140256258, 1, 1952262586321022978, '1', 1, 0, NULL, '2026-01-16 15:07:50', '2026-01-23 14:38:59', 0);
 
 -- ----------------------------
 -- Table structure for clt_material_audit_flow_detail
@@ -399,7 +414,7 @@ CREATE TABLE `clt_material_audit_flow_detail`  (
 -- ----------------------------
 -- Records of clt_material_audit_flow_detail
 -- ----------------------------
-INSERT INTO `clt_material_audit_flow_detail` VALUES (2012108193633796098, 2012059199998132225, 1, 1, 1952262586321022978, 1, '', NULL, '', '2026-01-16 18:22:31', '2026-01-16 18:22:31', 0);
+INSERT INTO `clt_material_audit_flow_detail` VALUES (2014544057546768385, 2012059199998132225, 1, 1, 1952262586321022978, 6, '销售主管', 1980217833198645250, '张宇', '2026-01-23 14:40:51', '2026-01-23 11:41:46', 0);
 
 -- ----------------------------
 -- Table structure for clt_material_audit_flow_detail_relation
@@ -550,7 +565,7 @@ CREATE TABLE `clt_material_in_stock_details`  (
   `description` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   `invoice_number` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '发票号',
   `invoice_time` bigint NULL DEFAULT 0 COMMENT '开票日期',
-  `photos` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图片，只有App端可以传',
+  `photos` varchar(1024) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '图片',
   `create_time` datetime NULL DEFAULT NULL,
   `update_time` datetime NULL DEFAULT NULL,
   `del_flag` int NOT NULL DEFAULT 0 COMMENT '标识',
@@ -599,7 +614,7 @@ CREATE TABLE `clt_material_out_stock`  (
   `audit_user_id` bigint NULL DEFAULT 0 COMMENT '审核人',
   `audit_create_time` bigint NULL DEFAULT 0 COMMENT '审核时间',
   `create_user_id` bigint NOT NULL DEFAULT 0 COMMENT '创建人ID',
-  `create_time` datetime NOT NULL DEFAULT 0 COMMENT '时间戳',
+  `create_time` datetime NOT NULL COMMENT '时间戳',
   `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
   `useage` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用途',
   `update_time` datetime NULL DEFAULT NULL,
@@ -665,17 +680,17 @@ CREATE TABLE `clt_material_outbound_apply`  (
   `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库ID',
   `workorder_id` bigint NULL DEFAULT 0 COMMENT '工单ID',
   `apply_no` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '领料单号：SQ2025020300002,不重复后台动态生成',
-  `apply_time` bigint NOT NULL DEFAULT 0 COMMENT '申请时间',
+  `apply_time` datetime NOT NULL COMMENT '申请时间',
   `dept_id` bigint NOT NULL DEFAULT 0 COMMENT '申请部门ID',
   `apply_user_id` bigint NOT NULL DEFAULT 0 COMMENT '申请人ID',
   `audit_status` int NOT NULL DEFAULT 0 COMMENT '审核状态:0-待审核,1-审核不通过，2-审核通过，3-审核中',
   `status` int NOT NULL DEFAULT 0 COMMENT '申请状态:0-未领料，1-已领料,2-废弃',
   `audit_user_id` bigint NULL DEFAULT 0 COMMENT '审批人ID',
-  `audit_time` bigint NULL DEFAULT 0 COMMENT '审批时间',
-  `useage` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用途',
+  `audit_time` datetime NULL DEFAULT NULL COMMENT '审批时间',
+  `purpose` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用途',
   `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用途备注',
   `create_user_id` bigint NOT NULL DEFAULT 0 COMMENT '创建人ID',
-  `create_time` datetime NOT NULL DEFAULT 0 COMMENT '创建时间',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL,
   `del_flag` int NOT NULL DEFAULT 0 COMMENT '标志',
   PRIMARY KEY (`id`) USING BTREE
@@ -684,6 +699,7 @@ CREATE TABLE `clt_material_outbound_apply`  (
 -- ----------------------------
 -- Records of clt_material_outbound_apply
 -- ----------------------------
+INSERT INTO `clt_material_outbound_apply` VALUES (121, 2010989510140256258, 0, 'A01', '2026-01-23 14:46:50', 0, 1950095792504283138, 2, 0, 0, NULL, NULL, NULL, 1950095792504283138, '2026-01-23 14:47:33', NULL, 0);
 
 -- ----------------------------
 -- Table structure for clt_material_outbound_apply_detail
@@ -704,6 +720,7 @@ CREATE TABLE `clt_material_outbound_apply_detail`  (
 -- ----------------------------
 -- Records of clt_material_outbound_apply_detail
 -- ----------------------------
+INSERT INTO `clt_material_outbound_apply_detail` VALUES (111, 121, 2011354494170955777, 10.00, 10.00, '2026-01-23 14:48:21', NULL, 0);
 
 -- ----------------------------
 -- Table structure for clt_material_stock
@@ -1030,14 +1047,14 @@ CREATE TABLE `clt_purchasing_requisition`  (
   `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '申请人ID',
   `apply_user_id` bigint NOT NULL DEFAULT 0 COMMENT '申请人ID',
   `dept_id` bigint NOT NULL DEFAULT 0 COMMENT '申请部门ID',
-  `apply_date` bigint NOT NULL DEFAULT 0 COMMENT '期望时间',
+  `apply_date` datetime NOT NULL COMMENT '期望时间',
   `audit_status` int NOT NULL DEFAULT 0 COMMENT '审核状态',
   `status` int NOT NULL DEFAULT 0 COMMENT '采购状态：0未采购1已采购2已废弃3已入库',
   `create_user_id` bigint NOT NULL DEFAULT 0 COMMENT '创建人ID',
-  `create_time` datetime NOT NULL DEFAULT 0 COMMENT '创建时间',
   `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
   `audit_user_id` bigint NULL DEFAULT 0 COMMENT '审核人',
-  `audit_time` bigint NULL DEFAULT 0 COMMENT '审核时间',
+  `audit_time` datetime NULL DEFAULT NULL COMMENT '审核时间',
+  `create_time` datetime NOT NULL COMMENT '创建时间',
   `update_time` datetime NULL DEFAULT NULL,
   `del_flag` int NOT NULL DEFAULT 0 COMMENT '标志',
   PRIMARY KEY (`id`) USING BTREE
@@ -1046,6 +1063,7 @@ CREATE TABLE `clt_purchasing_requisition`  (
 -- ----------------------------
 -- Records of clt_purchasing_requisition
 -- ----------------------------
+INSERT INTO `clt_purchasing_requisition` VALUES (1, 'P01', 2010989510140256258, 1950095792504283138, 0, '2026-01-23 14:42:11', 2, 1, 1950095792504283138, NULL, 0, NULL, '2026-01-23 14:42:37', NULL, 0);
 
 -- ----------------------------
 -- Table structure for clt_purchasing_requisition_details
@@ -1062,7 +1080,7 @@ CREATE TABLE `clt_purchasing_requisition_details`  (
   `per_price` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '单价',
   `total_price` decimal(20, 2) NULL DEFAULT 0.00 COMMENT '总价',
   `supplier_id` bigint NULL DEFAULT 0 COMMENT '供应商ID',
-  `delivery_date` bigint NOT NULL DEFAULT 0 COMMENT '期望采购日期',
+  `delivery_date` datetime NOT NULL COMMENT '期望采购日期',
   `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '描述',
   `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '附件',
   `create_time` datetime NULL DEFAULT NULL,
@@ -1074,6 +1092,7 @@ CREATE TABLE `clt_purchasing_requisition_details`  (
 -- ----------------------------
 -- Records of clt_purchasing_requisition_details
 -- ----------------------------
+INSERT INTO `clt_purchasing_requisition_details` VALUES (1212, 1, 1952678553081520129, 2011354494170955777, 10.00, '品牌一', '模型一', 10.00, 100.00, 0, '2026-01-23 14:45:12', '11', NULL, '2026-01-23 14:45:19', NULL, 0);
 
 -- ----------------------------
 -- Table structure for clt_role
