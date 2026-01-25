@@ -33,12 +33,12 @@ export const AuditStatusList = [
 export enum OutBoundApplyStatus {
   UnApply = 0,
   Applied = 1,
-  Abandoned = 2
+  Abandoned = 2,
 }
 export const OutBoundApplyStatusList = [
   { id: 0, name: "未领料" },
   { id: 1, name: "已领料" },
-  { id: 2, name: "已废弃" }
+  { id: 2, name: "已废弃" },
 ];
 export interface queryOutBoundApplyConditions {
   applyNo: string;
@@ -48,9 +48,15 @@ export interface queryOutBoundApplyConditions {
   startTime: string;
   endTime: string;
 }
-export const createOutBoundApply = (data: OutBoundApply) => Post(outBoundApplyPrefix, data);
-export const editOutBoundApply = (data: OutBoundApply) => Put(outBoundApplyPrefix, data);
+export const createOutBoundApply = (data: OutBoundApply) =>
+  Post(outBoundApplyPrefix, data);
+export const editOutBoundApply = (data: OutBoundApply) =>
+  Put(outBoundApplyPrefix, data);
 export const deleteOutBoundApply = (id: string | number) =>
   Delete(outBoundApplyPrefix + `/${id}`);
-export const findOutBoundApplyPage = (data: any) => Get(outBoundApplyPrefix + "/page", data);
-export const getOutBoundApplyList = () => Get(`${outBoundApplyPrefix}/list`, null);
+export const findOutBoundApplyPage = (data: any) =>
+  Get(outBoundApplyPrefix + "/page", data);
+export const getOutBoundApply = (id: string | number) =>
+  Get(outBoundApplyPrefix + `/${id}`, null);
+export const getOutBoundApplyList = () =>
+  Get(`${outBoundApplyPrefix}/list`, null);

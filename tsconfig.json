@@ -3,11 +3,7 @@
     // 基础设置
     "target": "ES2021",
     "module": "ESNext",
-    "lib": [
-      "ES2021",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2021", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
     "composite": true,
     // 模块解析与导入设置
@@ -18,7 +14,7 @@
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
     // 发射设置
-    "noEmit": true, // 不发射文件，通常在配合其他构建工具时使用
+    "noEmit": true,
     "jsx": "preserve",
     // 类型检查设置
     "strict": true,
@@ -27,39 +23,23 @@
     "strictNullChecks": true,
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
-    // 类型声明
-    "types": [
-      "vitest/globals",
-      "element-plus/global",
-      "vue",
-      "node"
-    ],
-    "baseUrl": ".",
+    "types": ["vitest/globals", "element-plus/global", "vue", "node"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@@/*": [
-        "src/common/*"
-      ],
-      "@static/*": [
-        "src/static/*"
-      ],
-      "@pages/*": [
-        "src/pages/*"
-      ],
+      "@/*": ["./src/*"],
+      "@@/*": ["./src/common/*"],
+      "@static/*": ["./src/static/*"],
+      "@pages/*": ["./src/pages/*"]
     }
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
-    "src/**/*.vue", // 关键：包含 Vue 单文件组件
-    "src/pages/**/*.vue",
+    "src/**/*.vue",
     "types/**/*.d.ts",
-    "tests/**/*.test.ts",
+    "tests/**/*.test.ts"
   ]
 }

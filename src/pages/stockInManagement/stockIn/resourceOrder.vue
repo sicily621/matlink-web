@@ -101,11 +101,11 @@ const props = defineProps<{
   stockId: string | number;
 }>();
 const emits = defineEmits(["save"]);
-const resourceId = ref(props.id);
-const resourceNo = ref("");
+const originOrderId = ref(props.id);
+const originOrderNo = ref("");
 const currentChange = (row: any) => {
-  resourceId.value = row.id;
-  resourceNo.value = props.type === 3 ? row.applyNo : row.billNo;
+  originOrderId.value = row.id;
+  originOrderNo.value = props.type === 3 ? row.applyNo : row.billNo;
 };
 const isAfter = (time: Date) => {
   const currentDate = new Date();
@@ -145,7 +145,7 @@ const pageChange = (page: any) => {
   refreshTable();
 };
 const confirmSave = () => {
-  emits("save", { resourceId, resourceNo });
+  emits("save", { originOrderId, originOrderNo });
 };
 const tableData = ref<any[]>([]);
 

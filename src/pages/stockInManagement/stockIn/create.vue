@@ -50,11 +50,11 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="源单号" prop="originOrderId">
+          <el-form-item label="源单号" prop="originOrderNo">
             <el-input
               class="w-200"
               :disabled="true"
-              v-model="form.originOrderId"
+              v-model="form.originOrderNo"
               placeholder="请选择"
             >
               <template #append>
@@ -148,7 +148,7 @@
                         <Delete />
                       </el-icon>
                       <el-icon
-                        class="fz16 pointer m-l-8"
+                        class="fz16 pointer m-l-3"
                         text
                         v-if="file.id"
                         @click="download(file)"
@@ -355,7 +355,7 @@
     >
       <div class="flex-1 d-flex w-full h-full relative content-bg">
         <Order
-          :id="form.resourceId"
+          :id="form.originOrderId"
           :stockId="form.stockId"
           :type="form.type"
           @save="saveOrder"
@@ -366,9 +366,20 @@
 </template>
 <script lang="ts" setup>
 import { ref, reactive, onMounted, nextTick } from "vue";
-import { InStock, createInStock, editInStock } from "../api/inStock";
+import {
+  InStock,
+  createInStock,
+  editInStock,
+  uploadInStockFiles,
+  batchSaveInStockFiles,
+  getInStockFileList,
+  deleteInStockFile,
+} from "../api/inStock";
 import { getDepartmentList } from "@pages/employeeManagement/api/department";
-import { getEmployeeList } from "@pages/employeeManagement/api/employee";
+import {
+  getEmployeeList,
+  getEmployee,
+} from "@pages/employeeManagement/api/employee";
 import { ElMessage } from "element-plus";
 import { getStockList } from "@pages/baseManagement/api/stock";
 import { More, Search, CircleClose } from "@element-plus/icons-vue";
@@ -380,11 +391,17 @@ import { getUnitListByIds } from "@pages/baseManagement/api/unit";
 import { getOutBoundApplyDetailList } from "@pages/outBoundApplyManagement/api/outBoundApplyDetail";
 import { getPurchaseDetailList } from "@pages/purchaseManagement/api/purchaseDetail";
 import { saveInStockDetail, deleteInStockDetail } from "../api/inStockDetail";
+import { getOutBoundApply } from "@pages/outBoundApplyManagement/api/outBoundApply";
+import { getPurchase } from "@pages/purchaseManagement/api/purchase";
+import { getInStockDetailList } from "../api/inStockDetail";
 import baseTable from "@@/components/baseTable/baseTable.vue";
 import zModel from "@static/components/zModel/zModel.vue";
 import tree from "@@/components/tree/tree.vue";
 import Material from "./material.vue";
 import Order from "./resourceOrder.vue";
+import { ElMessageBox } from "element-plus";
+import { formatTimeToString } from "@@/utils/datetime";
+import { ModuleCode } from "@/router/moduleCode";
 const props = defineProps<{
   data: InStock | null;
   stockId: string;
@@ -406,7 +423,7 @@ const form = ref<InStock>({
   originOrderId: "",
   originOrderNo: "",
   stockId: props.stockId,
-  inStockNo: "",
+  inStockNo: `${ModuleCode.InStock}${formatTimeToString()}`,
   auditStatus: 0,
   status: 0,
   supplyId: 0,
@@ -520,8 +537,8 @@ const selectOrder = () => {
   orderRef.value.openCustomModel();
 };
 const clearOrder = () => {
-  form.value.stockId = "";
-  form.value.inStockNo = "";
+  form.value.originOrderId = "";
+  form.value.originOrderNo = "";
   materialIds.value = [];
   tableData.value = [];
 };
@@ -562,6 +579,7 @@ const tableRef = ref();
 const openModal = () => {
   modelRef.value.openCustomModel();
   nextTick(() => {
+    deptTreeRef.value.setCurrentKey(currentNodeKey.value);
     const targetRow = userTableData.value.find(
       (row: any) => row.id === form.value.inStockUserId
     );
@@ -569,12 +587,12 @@ const openModal = () => {
   });
 };
 const saveOrder = async (data: any) => {
-  form.value.resourceId = data?.resourceId;
-  form.value.resourceNo = data?.resourceNo;
+  form.value.originOrderId = data?.originOrderId;
+  form.value.originOrderNo = data?.originOrderNo;
   orderRef.value.closeCustomModel();
   if (form.value.type == 3) {
     const res: any = await getOutBoundApplyDetailList({
-      applyId: form.value.resourceId,
+      applyId: form.value.originOrderId,
     });
     detailMap.value.clear();
     materialIds.value =
@@ -591,7 +609,7 @@ const saveOrder = async (data: any) => {
   }
   if (form.value.type == 2) {
     const res: any = await getPurchaseDetailList({
-      billId: form.value.resourceId,
+      billId: form.value.originOrderId,
     });
     detailMap.value.clear();
     materialIds.value =
@@ -613,29 +631,14 @@ const addMaterial = () => {
   materialRef.value.openCustomModel();
 };
 const removeMaterial = (row: any) => {
-  ElMessageBox.confirm("确定要删除物料吗", "删除物料", {
-    confirmButtonText: "删除",
-    confirmButtonClass: "w-80",
-    cancelButtonText: "取消",
-    cancelButtonClass: "message-box-cancel-btn w-80",
-    type: "warning",
-  })
-    .then(() => {
-      materialIds.value = materialIds.value.filter(
-        (id: any) => id !== row.materialId
-      );
-      ElMessage({
-        type: "success",
-        message: "删除成功",
-      });
-      refreshTable();
-    })
-    .catch(() => {
-      ElMessage({
-        type: "info",
-        message: "删除失败",
-      });
-    });
+  materialIds.value = materialIds.value.filter(
+    (id: any) => id !== row.materialId
+  );
+  ElMessage({
+    type: "success",
+    message: "删除成功",
+  });
+  refreshTable();
 };
 const saveMaterial = (ids: any[]) => {
   materialIds.value = ids;
@@ -707,17 +710,8 @@ const currentNodeKey = ref<number | string>("");
 const deptTreeRef = ref();
 //左侧树列表 选中节点变化触发
 const changeNode = (data: any) => {
-  if (data.id === virtualRootId) {
-    if (data.children.length > 0) {
-      currentNodeKey.value = data?.children[0]?.id;
-      deptTreeRef.value.setCurrentKey(currentNodeKey.value);
-    } else {
-      currentNodeKey.value = virtualRootId;
-      return;
-    }
-  } else {
-    currentNodeKey.value = data.id;
-  }
+  currentNodeKey.value = data?.id;
+  deptTreeRef.value.setCurrentKey(currentNodeKey.value);
   getUserList();
 };
 let errorTime: any;
@@ -735,7 +729,7 @@ const confirmSave = async (cb?: Function) => {
       }
       const params: any = {
         ...form.value,
-        inStockTime: new Date(form.value.inStockTime),
+        inStockTime: form.value.inStockTime.getTime(),
       };
       delete params["inStockUserName"];
       if (!params["approverCreateTime"]) delete params["approverCreateTime"];
@@ -746,6 +740,28 @@ const confirmSave = async (cb?: Function) => {
         type: "success",
         message: "保存成功",
       });
+      const files: any = new FormData();
+      const newFiles = form.value.files
+        .filter((item: any) => "name" in item)
+        .map((item: any) => {
+          files.append("files", item);
+          return item;
+        });
+      if ([...files.entries()].length) {
+        const fileRes: any = await uploadInStockFiles(files);
+        const filesPaths = fileRes?.fileNames
+          ? fileRes.fileNames.split(",")
+          : [];
+        const inStockFiles = filesPaths.map((path: string, i: number) => {
+          const img: any = {
+            inStockId: String((res as any)?.data?.id),
+            filePath: path,
+            fileName: newFiles[i].name,
+          };
+          return img;
+        });
+        await batchSaveInStockFiles(inStockFiles);
+      }
       await deleteInStockDetail(res.data.id);
       const details = tableData.value.map((item: any) => {
         const {
@@ -786,7 +802,10 @@ const queryDepartmentOptions = async () => {
   if ((res as any)?.data?.length) {
     departmentOptions.value = buildTree((res as any)?.data || []);
     treeData.value = buildTree((res as any)?.data || []);
-    if (!props.data) form.value.deptId = departmentOptions.value[0]?.id;
+    if (!props.data) {
+      form.value.deptId = departmentOptions.value[0]?.id;
+      currentNodeKey.value = departmentOptions.value[0]?.id;
+    }
     getUserList();
   }
 };
@@ -812,7 +831,38 @@ const download = (file: any) => {
   a.href = blobUrl;
   a.click();
 };
-const remove = (file: any, index: number) => {};
+const remove = (file: any, index: number) => {
+  ElMessageBox.confirm("确定要删除文件吗？", "删除文件", {
+    confirmButtonText: "删除",
+    cancelButtonText: "取消",
+    type: "warning",
+  })
+    .then(async () => {
+      if (file.id) {
+        const res: any = await deleteInStockFile(file.id);
+        if (res.code) {
+          ElMessage({
+            type: "success",
+            message: "删除成功",
+          });
+          form.value.files.splice(index, 1);
+        } else {
+          ElMessage({
+            type: "info",
+            message: "删除失败",
+          });
+        }
+      } else {
+        form.value.files.splice(index, 1);
+      }
+    })
+    .catch(() => {
+      ElMessage({
+        type: "info",
+        message: "删除失败",
+      });
+    });
+};
 const beforeUpload = (file: File) => {
   form.value.files.push(file);
   return false;
@@ -874,6 +924,37 @@ onMounted(async () => {
   await queryDepartmentOptions();
   await queryStockOptions();
   await querySupplierOptions();
+  if (props?.data?.id) {
+    const userRes: any = await getEmployee(String(props.data.inStockUserId));
+    form.value.inStockUserName = userRes.data.realName;
+    if (form.value.type == 3) {
+      const res: any = await getOutBoundApply(form.value.originOrderId);
+      form.value.originOrderNo = res.data.applyNo;
+    } else if (form.value.type == 2) {
+      const res: any = await getPurchase(form.value.originOrderId);
+      form.value.originOrderNo = res.data.billNo;
+    }
+    const detailRes: any = await getInStockDetailList({
+      inStockId: props.data.id,
+    });
+    detailMap.value.clear();
+    materialIds.value =
+      detailRes.data?.map((item: any) => {
+        const { materialId } = item;
+        detailMap.value.set(materialId, item);
+        return materialId;
+      }) ?? [];
+    refreshTable();
+    const fileRes = await getInStockFileList({
+      inStockId: props.data.id as any as string,
+    });
+    form.value.files = (fileRes as any).data.map((item: any) => {
+      return {
+        ...item,
+        filePath: `/static` + item.filePath,
+      };
+    });
+  }
 });
 defineExpose({ confirmSave });
 </script>

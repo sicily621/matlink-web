@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : localhost
+ Source Server         : localhost_3306
  Source Server Type    : MySQL
- Source Server Version : 80025 (8.0.25)
+ Source Server Version : 80025
  Source Host           : localhost:3306
  Source Schema         : matlink_db
 
  Target Server Type    : MySQL
- Target Server Version : 80025 (8.0.25)
+ Target Server Version : 80025
  File Encoding         : 65001
 
- Date: 23/01/2026 18:54:28
+ Date: 25/01/2026 23:29:15
 */
 
 SET NAMES utf8mb4;
@@ -29,7 +29,7 @@ CREATE TABLE `clt_category`  (
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `del_flag` int NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1952678710640549890 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品分类表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 1952678710640549889 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '商品分类表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of clt_category
@@ -54,7 +54,7 @@ CREATE TABLE `clt_department`  (
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `del_flag` int NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `department_name`(`name` ASC) USING BTREE
+  UNIQUE INDEX `department_name`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1952987749664636930 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '部门表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -118,7 +118,7 @@ CREATE TABLE `clt_login_log`  (
   `status` tinyint NULL DEFAULT 1 COMMENT '状态(1-成功,0-失败)',
   `message` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '登录信息',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2014648297392898051 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录日志表' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 2015262076897673219 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '用户登录日志表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of clt_login_log
@@ -330,6 +330,12 @@ INSERT INTO `clt_login_log` VALUES (2014640828826447873, 1950095792504283138, '2
 INSERT INTO `clt_login_log` VALUES (2014641351306706946, 1950095792504283138, '2026-01-23 18:08:23', '127.0.0.1', 1, '登录成功');
 INSERT INTO `clt_login_log` VALUES (2014647297064022018, 1950095792504283138, '2026-01-23 18:32:00', '127.0.0.1', 1, '登录成功');
 INSERT INTO `clt_login_log` VALUES (2014648297392898050, 1950095792504283138, '2026-01-23 18:35:59', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014961342863994881, 1950095792504283138, '2026-01-24 15:19:54', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2014975921811677185, 1950095792504283138, '2026-01-24 16:17:50', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2015006907895209985, 1950095792504283138, '2026-01-24 18:20:58', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2015007438113943554, 1950095792504283138, '2026-01-24 18:23:04', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2015255994049576962, 1950095792504283138, '2026-01-25 10:50:45', '127.0.0.1', 1, '登录成功');
+INSERT INTO `clt_login_log` VALUES (2015262076897673218, 1950095792504283138, '2026-01-25 11:14:55', '127.0.0.1', 1, '登录成功');
 
 -- ----------------------------
 -- Table structure for clt_material
@@ -444,6 +450,8 @@ CREATE TABLE `clt_material_audit_flow_detail_relation`  (
 -- ----------------------------
 -- Records of clt_material_audit_flow_detail_relation
 -- ----------------------------
+INSERT INTO `clt_material_audit_flow_detail_relation` VALUES (2015004768577839105, 2015004768514924546, 2015004768313597953, 1, 2010989510140256258, 1, 1952262586321022978, 6, '销售主管', '', NULL, 3, NULL, NULL, '2026-01-24 18:12:28', '2026-01-24 18:12:28', NULL);
+INSERT INTO `clt_material_audit_flow_detail_relation` VALUES (2015006275087949826, 2015006275087949825, 2015006275025035266, 1, 2010989510140256258, 1, 1952262586321022978, 6, '销售主管', '', NULL, 3, NULL, NULL, '2026-01-24 18:18:28', '2026-01-24 18:18:28', NULL);
 
 -- ----------------------------
 -- Table structure for clt_material_audit_flow_relation
@@ -469,6 +477,8 @@ CREATE TABLE `clt_material_audit_flow_relation`  (
 -- ----------------------------
 -- Records of clt_material_audit_flow_relation
 -- ----------------------------
+INSERT INTO `clt_material_audit_flow_relation` VALUES (2015004768514924546, 2010989510140256258, 2015004768313597953, 0, NULL, NULL, 1952262586321022978, 1, 1, 1, '2026-01-24 18:12:28', '2026-01-24 18:12:28', NULL);
+INSERT INTO `clt_material_audit_flow_relation` VALUES (2015006275087949825, 2010989510140256258, 2015006275025035266, 0, NULL, NULL, 1952262586321022978, 1, 1, 1, '2026-01-24 18:18:28', '2026-01-24 18:18:28', NULL);
 
 -- ----------------------------
 -- Table structure for clt_material_category
@@ -524,7 +534,7 @@ CREATE TABLE `clt_material_in_stock`  (
   `id` bigint NOT NULL DEFAULT 1 COMMENT 'id',
   `origin_order_id` bigint NULL DEFAULT 0 COMMENT '源单id：关联单号，采购/生产/调拨',
   `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库ID',
-  `in_stock_no` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '单号RK20251014000001,按日期递增',
+  `in_stock_no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '单号RK20251014000001,按日期递增',
   `audit_status` int NOT NULL DEFAULT 0 COMMENT '审核状态:0-待审核,1-审核不通过，2-审核通过，3-审核中',
   `status` int NOT NULL DEFAULT 0 COMMENT '入库状态:0-未入库,1-已入库，2-已作废',
   `supply_id` bigint NULL DEFAULT 0 COMMENT '供应商ID,0-无',
@@ -546,6 +556,8 @@ CREATE TABLE `clt_material_in_stock`  (
 -- ----------------------------
 -- Records of clt_material_in_stock
 -- ----------------------------
+INSERT INTO `clt_material_in_stock` VALUES (2015004768313597953, 1, 2010989510140256258, 'inStock20260124181105115', 0, 0, 0, 2, '1', 1, 1980217833198645250, '2026-01-24 18:11:05', 0, NULL, 1950095792504283138, NULL, '2026-01-24 18:12:28', '2026-01-24 18:12:28', 1);
+INSERT INTO `clt_material_in_stock` VALUES (2015006275025035266, 121, 2010989510140256258, 'inStock20260124181754977', 0, 0, 266836534430720, 3, '1', 1, 1980218236149624833, '2026-01-24 18:17:55', 0, NULL, 1950095792504283138, NULL, '2026-01-24 18:18:28', '2026-01-24 18:18:28', 0);
 
 -- ----------------------------
 -- Table structure for clt_material_in_stock_details
@@ -575,6 +587,7 @@ CREATE TABLE `clt_material_in_stock_details`  (
 -- ----------------------------
 -- Records of clt_material_in_stock_details
 -- ----------------------------
+INSERT INTO `clt_material_in_stock_details` VALUES (2015006275419299842, 2015006275025035266, 2011354494170955777, 2010989510140256258, 0.05, 0.50, 0.49, 0.01, 10.00, 10.00, NULL, NULL, 0, NULL, '2026-01-24 18:18:28', '2026-01-24 18:18:28', 0);
 
 -- ----------------------------
 -- Table structure for clt_material_in_stock_file
@@ -594,6 +607,7 @@ CREATE TABLE `clt_material_in_stock_file`  (
 -- ----------------------------
 -- Records of clt_material_in_stock_file
 -- ----------------------------
+INSERT INTO `clt_material_in_stock_file` VALUES (2015006275217973249, 2015006275025035266, '/2026/01/24/148c536902fc451b99963d22cb7ac09f_20260124181827A002.jpg', 'logo.jpg', '2026-01-24 18:18:28', '2026-01-24 18:18:28', 0);
 
 -- ----------------------------
 -- Table structure for clt_material_out_stock
@@ -612,11 +626,10 @@ CREATE TABLE `clt_material_out_stock`  (
   `out_stock_user_id` bigint NOT NULL DEFAULT 0 COMMENT '入库人ID',
   `out_stock_time` bigint NULL DEFAULT NULL COMMENT '入库时间',
   `audit_user_id` bigint NULL DEFAULT 0 COMMENT '审核人',
-  `audit_create_time` bigint NULL DEFAULT 0 COMMENT '审核时间',
+  `audit_time` bigint NULL DEFAULT 0 COMMENT '审核时间',
   `create_user_id` bigint NOT NULL DEFAULT 0 COMMENT '创建人ID',
   `create_time` datetime NOT NULL COMMENT '时间戳',
   `description` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '备注',
-  `useage` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '用途',
   `update_time` datetime NULL DEFAULT NULL,
   `del_flag` int NOT NULL DEFAULT 0 COMMENT '标志',
   PRIMARY KEY (`id`) USING BTREE
@@ -663,7 +676,9 @@ CREATE TABLE `clt_material_out_stock_file`  (
   `out_stock_id` bigint NOT NULL DEFAULT 0 COMMENT '出库记录id',
   `file_path` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件路径',
   `file_name` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '文件名称',
-  `flag` int NOT NULL DEFAULT 0 COMMENT '标识',
+  `del_flag` int NOT NULL DEFAULT 0 COMMENT '标识',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-出库记录附件表' ROW_FORMAT = DYNAMIC;
 
@@ -752,18 +767,19 @@ INSERT INTO `clt_material_stock` VALUES (2010989602410749953, 201098951014025625
 DROP TABLE IF EXISTS `clt_material_stock_detail`;
 CREATE TABLE `clt_material_stock_detail`  (
   `id` bigint NOT NULL COMMENT '主键ID',
-  `project_id` bigint NOT NULL DEFAULT 0 COMMENT '项目ID',
   `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库存号ID',
-  `trade_type_id` bigint NOT NULL DEFAULT 0 COMMENT '类别ID',
-  `trade_id` bigint NOT NULL DEFAULT 0 COMMENT '物料id',
+  `material_type_id` bigint NOT NULL DEFAULT 0 COMMENT '类别ID',
+  `material_id` bigint NOT NULL DEFAULT 0 COMMENT '物料id',
   `count` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '库存数量',
   `lock_count` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '锁定数量',
   `use_count` decimal(10, 2) NOT NULL DEFAULT 0.00 COMMENT '可用数量',
-  `stock_time` bigint NOT NULL DEFAULT 0 COMMENT '更新时间',
+  `stock_time` datetime NOT NULL DEFAULT 0 COMMENT '更新时间',
   `transit_count` decimal(10, 2) NULL DEFAULT 0.00 COMMENT '在途数量',
   `cost_price` decimal(10, 2) NOT NULL COMMENT '成本单价',
   `total_cost_price` decimal(10, 2) NOT NULL COMMENT '成本总价',
-  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  `del_flag` int NOT NULL DEFAULT 0 COMMENT '标志',
+  `create_time` datetime NULL DEFAULT NULL,
+  `update_time` datetime NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-物料库存详情表' ROW_FORMAT = DYNAMIC;
 
@@ -778,15 +794,15 @@ DROP TABLE IF EXISTS `clt_material_stock_record`;
 CREATE TABLE `clt_material_stock_record`  (
   `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
   `type` int NOT NULL DEFAULT 0 COMMENT '类型：1-入库，2-出库，3-盘盈/盘亏调整',
-  `related_doc_id` bigint NOT NULL DEFAULT 0 COMMENT '关联出入库单id',
-  `trade_id` bigint NOT NULL DEFAULT 0 COMMENT '物料ID',
+  `related_order_id` bigint NOT NULL DEFAULT 0 COMMENT '关联出入库单id',
+  `material_id` bigint NOT NULL DEFAULT 0 COMMENT '物料ID',
   `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库id',
   `quantity_change` decimal(18, 6) NOT NULL DEFAULT 0.000000 COMMENT '变化数量',
   `balance_after` decimal(18, 6) NOT NULL DEFAULT 0.000000 COMMENT '剩余数量',
   `cost_price` decimal(10, 2) NOT NULL COMMENT '成本单价',
   `total_cost_price` decimal(10, 2) NOT NULL COMMENT '成本总价',
   `handle_user_id` bigint NOT NULL DEFAULT 0 COMMENT '处置人id',
-  `handle_time` bigint NOT NULL DEFAULT 0 COMMENT '处置时间',
+  `handle_time` datetime NOT NULL DEFAULT 0 COMMENT '处置时间',
   `create_time` datetime NULL DEFAULT NULL,
   `update_time` datetime NULL DEFAULT NULL,
   `del_flag` int NULL DEFAULT NULL,
@@ -927,7 +943,7 @@ CREATE TABLE `clt_permission`  (
   `action` int NOT NULL DEFAULT 1 COMMENT '操作类型 1 view、2 add、3 edit、4 delete、5 approve',
   `type` int NOT NULL DEFAULT 1 COMMENT '权限类型 1 菜单级别 2 按钮级别',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `permission_name`(`name` ASC) USING BTREE
+  UNIQUE INDEX `permission_name`(`name`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1980287290148933634 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '权限表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -1108,8 +1124,8 @@ CREATE TABLE `clt_role`  (
   `update_time` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `del_flag` int NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `role_name`(`name` ASC) USING BTREE,
-  UNIQUE INDEX `role_code`(`code` ASC) USING BTREE
+  UNIQUE INDEX `role_name`(`name`) USING BTREE,
+  UNIQUE INDEX `role_code`(`code`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1952580037491453954 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '角色表' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
@@ -1427,25 +1443,5 @@ CREATE TABLE `clt_supplier_information`  (
 -- ----------------------------
 INSERT INTO `clt_supplier_information` VALUES (218926484622336, '52689', '得力办公耗材', '得力办公', '杭州', '办公耗材', 2, '王', '15011011868', '', '1234@qq.com', 1, '办公耗材', 0, NULL, NULL);
 INSERT INTO `clt_supplier_information` VALUES (266836534430720, 'Apple1001', 'apple', '京东苹果', '', '', 1, '京东', '13300000001', '', '13300000001@qq.com', 1, '京东', 0, NULL, NULL);
-
--- ----------------------------
--- Table structure for clt_trade_detail
--- ----------------------------
-DROP TABLE IF EXISTS `clt_trade_detail`;
-CREATE TABLE `clt_trade_detail`  (
-  `id` bigint NOT NULL DEFAULT 0 COMMENT 'id',
-  `stock_id` bigint NOT NULL DEFAULT 0 COMMENT '库存号ID',
-  `material_id` bigint NOT NULL DEFAULT 0 COMMENT '商品编码',
-  `stock_batch` bigint NOT NULL DEFAULT 0 COMMENT '采购码',
-  `validation_period` bigint NOT NULL DEFAULT 0 COMMENT '有效期',
-  `code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '码',
-  `count` decimal(20, 2) NOT NULL DEFAULT 0.00 COMMENT '数量',
-  `flag` int NOT NULL DEFAULT 0 COMMENT '标志',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '物料管理-物料详情表' ROW_FORMAT = DYNAMIC;
-
--- ----------------------------
--- Records of clt_trade_detail
--- ----------------------------
 
 SET FOREIGN_KEY_CHECKS = 1;

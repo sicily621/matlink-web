@@ -32,9 +32,11 @@ export const findEmployeePage = (data: any) =>
   Get(employeePrefix + "/page", data);
 export const getEmployeeList = (data: any) =>
   Get(`${employeePrefix}/list`, data);
+export const getEmployee = (id: string | number) =>
+  Get(`${employeePrefix}/${id}`, null);
 
 //根据员工Ids查询员工列表
 export const getEmployeeListByIds = (ids: string[] | number[]) =>
   Get(`${employeePrefix}/getByIds/${ids}`, null);
-export const uploadFile = (data: { file: File }) => PostForm("/file/upload", data)
-
+export const uploadFile = (data: { file: File }) =>
+  PostForm("/file/upload", data);

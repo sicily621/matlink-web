@@ -348,8 +348,8 @@ function refreshTable() {
   findInStockPage(params)
     .then(async (res: any) => {
       const { total, list } = res.data;
-      const resourceIdIds = list.map((item: any) => item.resourceId);
-      if (resourceIdIds.length) await getStockListByIds(resourceIdIds);
+      const stockIds = list.map((item: any) => item.stockId);
+      if (stockIds.length) await getStockListByIds(stockIds);
       totalItems.value = total;
       const userIds: string[] = [];
       list?.forEach((event: any) => {
@@ -436,12 +436,6 @@ const edit = (row: any) => {
   currentData.value = row;
   processFlag.value = 1;
 };
-const showDetail = (row: any) => {
-  onlyView.value = true;
-  currentData.value = row;
-  processFlag.value = 1;
-};
-
 onMounted(async () => {
   await queryStock();
   refreshTable();

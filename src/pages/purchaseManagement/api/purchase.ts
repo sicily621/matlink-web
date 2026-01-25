@@ -34,7 +34,7 @@ export enum PurchaseStatus {
   UnPurchased = 0,
   Purchased = 1,
   Abandoned = 2,
-  Warehoused = 3
+  Warehoused = 3,
 }
 export const PurchaseStatusList = [
   { id: 0, name: "未采购" },
@@ -54,5 +54,8 @@ export const createPurchase = (data: Purchase) => Post(purchasePrefix, data);
 export const editPurchase = (data: Purchase) => Put(purchasePrefix, data);
 export const deletePurchase = (id: string | number) =>
   Delete(purchasePrefix + `/${id}`);
-export const findPurchasePage = (data: any) => Get(purchasePrefix + "/page", data);
+export const getPurchase = (id: string | number) =>
+  Get(purchasePrefix + `/${id}`, null);
+export const findPurchasePage = (data: any) =>
+  Get(purchasePrefix + "/page", data);
 export const getPurchaseList = () => Get(`${purchasePrefix}/list`, null);
