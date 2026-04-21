@@ -1,0 +1,150 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" version="29.6.4">
+  <diagram name="第 1 页" id="_dgapZ4oZ4ARn1ndee_9">
+    <mxGraphModel dx="1170" dy="654" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-1" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="120" width="270" x="780" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-2" parent="GqCl69jF1bHdfa3NZY4l-1" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-3" parent="GqCl69jF1bHdfa3NZY4l-2" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry">
+            <mxRectangle height="120" width="270" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-4" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div style=&quot;line-height: 150%;&quot;&gt;数据流名：物料信息表&lt;div&gt;来源：2&lt;span style=&quot;text-align: center;&quot;&gt;物料信息维护&lt;/span&gt;&lt;/div&gt;&lt;div&gt;去向：运维人员、2物料信息维护&lt;/div&gt;&lt;div&gt;组成：主键ID+物料编码+物料名称+物料分类+&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;计量单位+品牌+型号+规格&lt;/span&gt;&lt;/div&gt;&lt;div&gt;流量：平均80次/天，峰值180次&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="106" width="267" x="783" y="377" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-5" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="120" width="270" x="500" y="370" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-6" parent="GqCl69jF1bHdfa3NZY4l-5" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-7" parent="GqCl69jF1bHdfa3NZY4l-6" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry">
+            <mxRectangle height="120" width="270" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-8" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div style=&quot;line-height: 180%;&quot;&gt;数据流名：审批流程表&lt;div&gt;来源：1审批流程&lt;span style=&quot;text-align: center;&quot;&gt;维护&lt;/span&gt;&lt;/div&gt;&lt;div&gt;去向：3.3审批业务、1审批流程维护&lt;/div&gt;&lt;div&gt;组成：主键ID+流程名称+业务类型+物料库&lt;/div&gt;&lt;div&gt;流量：平均40次/天，峰值140次&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="106" width="267" x="503" y="377" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-9" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="120" width="270" x="500" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-10" parent="GqCl69jF1bHdfa3NZY4l-9" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-11" parent="GqCl69jF1bHdfa3NZY4l-10" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry">
+            <mxRectangle height="120" width="270" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-12" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div style=&quot;line-height: 150%;&quot;&gt;数据流名：采购信息表&lt;div&gt;来源：3.1采购信息&lt;span style=&quot;text-align: center;&quot;&gt;维护&lt;/span&gt;&lt;/div&gt;&lt;div&gt;去向：3.1采购信息&lt;span style=&quot;text-align: center;&quot;&gt;维护&lt;/span&gt;、部门主管&lt;/div&gt;&lt;div&gt;组成：主键ID+物料库+采购时间+采购人+采购状态+审批状态+审批人+审批时间+用途&lt;/div&gt;&lt;div&gt;流量：平均20次/天，峰值50次&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="106" width="267" x="503" y="507" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-13" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="120" width="270" x="781.5" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-14" parent="GqCl69jF1bHdfa3NZY4l-13" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-15" parent="GqCl69jF1bHdfa3NZY4l-14" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry">
+            <mxRectangle height="120" width="270" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-16" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div style=&quot;line-height: 150%;&quot;&gt;数据流名：领用信息表&lt;div&gt;来源：3.2领用信息&lt;span style=&quot;text-align: center;&quot;&gt;维护&lt;/span&gt;&lt;/div&gt;&lt;div&gt;去向：3.2领用信息&lt;span style=&quot;text-align: center;&quot;&gt;维护&lt;/span&gt;、部门主管&lt;/div&gt;&lt;div&gt;组成：主键ID+物料库+申请时间+申请人+领用状态+审批状态+审批人+审批时间&lt;/div&gt;&lt;div&gt;流量：平均20次/天，峰值50次&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="106" width="267" x="784.5" y="507" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-17" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="120" width="270" x="498.5" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-18" parent="GqCl69jF1bHdfa3NZY4l-17" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-19" parent="GqCl69jF1bHdfa3NZY4l-18" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry">
+            <mxRectangle height="120" width="270" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-20" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div style=&quot;line-height: 150%;&quot;&gt;数据流名：入库记录表&lt;div&gt;来源：4.1入库单&lt;span style=&quot;text-align: center;&quot;&gt;维护&lt;/span&gt;&lt;/div&gt;&lt;div&gt;去向：4.1入库单&lt;span style=&quot;text-align: center;&quot;&gt;维护&lt;/span&gt;、3.3审批业务&lt;/div&gt;&lt;div&gt;组成：主键ID+物料库+入库单号+业务状态+审批状态+入库金额+审批人+审批时间&lt;/div&gt;&lt;div&gt;流量：平均40次/天，峰值80次&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="106" width="267" x="501.5" y="637" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-21" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="120" width="270" x="780" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-22" parent="GqCl69jF1bHdfa3NZY4l-21" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-23" parent="GqCl69jF1bHdfa3NZY4l-22" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry">
+            <mxRectangle height="120" width="270" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-24" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div style=&quot;line-height: 150%;&quot;&gt;数据流名：出库记录表&lt;div&gt;来源：4.2出库单&lt;span style=&quot;text-align: center;&quot;&gt;维护&lt;/span&gt;&lt;/div&gt;&lt;div&gt;去向：4.2出库单&lt;span style=&quot;text-align: center;&quot;&gt;维护&lt;/span&gt;、3.3审批业务&lt;/div&gt;&lt;div&gt;组成：&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;主键ID+物料库+出库单号+业务状态+审批状态+出库金额+审批人+审批时间&lt;/span&gt;&lt;/div&gt;&lt;div&gt;流量：平均40次/天，峰值80次&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="106" width="267" x="783" y="637" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-25" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="120" width="270" x="498.5" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-26" parent="GqCl69jF1bHdfa3NZY4l-25" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-27" parent="GqCl69jF1bHdfa3NZY4l-26" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry">
+            <mxRectangle height="120" width="270" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-28" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div style=&quot;line-height: 150%;&quot;&gt;数据流名：审批记录表&lt;div&gt;来源：3.3审批业务&lt;/div&gt;&lt;div&gt;去向：4.1入库单维护、4.2出库单维护&lt;/div&gt;&lt;div&gt;组成：主键ID+物料库+关联单ID+&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;部门ID&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;+审批状态+审批备注+审批人+审批时间&lt;/span&gt;&lt;/div&gt;&lt;div&gt;流量：平均30次/天，峰值60次&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="106" width="267" x="501.5" y="767" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-29" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="120" width="270" x="780" y="760" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-30" parent="GqCl69jF1bHdfa3NZY4l-29" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-31" parent="GqCl69jF1bHdfa3NZY4l-30" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry">
+            <mxRectangle height="120" width="270" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-32" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div style=&quot;line-height: 150%;&quot;&gt;数据流名：盘点信息表&lt;div&gt;来源：4.4盘点任务&lt;span style=&quot;text-align: center;&quot;&gt;维护&lt;/span&gt;&lt;/div&gt;&lt;div&gt;去向：4.4盘点任务&lt;span style=&quot;text-align: center;&quot;&gt;维护&lt;/span&gt;、3.3审批业务&lt;/div&gt;&lt;div&gt;组成：&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;主键ID+物料库+名称+盘点人+开始时间+结束时间+审批状态+审批人+审批时间+业务状态&lt;/span&gt;&lt;/div&gt;&lt;div&gt;流量：平均40次/天，峰值80次&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="106" width="267" x="783" y="767" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-33" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="120" width="270" x="498.5" y="890" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-34" parent="GqCl69jF1bHdfa3NZY4l-33" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-35" parent="GqCl69jF1bHdfa3NZY4l-34" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry">
+            <mxRectangle height="120" width="270" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-36" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div style=&quot;line-height: 150%;&quot;&gt;数据流名：库存流水表&lt;div&gt;来源：4.3更新库存&lt;/div&gt;&lt;div&gt;去向：4.3更新库存、部门主管&lt;/div&gt;&lt;div&gt;组成：主键ID+物料库+关联单ID+变化数量+剩余数量+处置人+处置时间&lt;/div&gt;&lt;div&gt;流量：平均80次/天，峰值200次&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="106" width="267" x="501.5" y="897" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-37" parent="1" style="shape=table;startSize=0;container=1;collapsible=0;childLayout=tableLayout;" value="" vertex="1">
+          <mxGeometry height="120" width="270" x="780" y="890" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-38" parent="GqCl69jF1bHdfa3NZY4l-37" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;strokeColor=inherit;top=0;left=0;bottom=0;right=0;collapsible=0;dropTarget=0;fillColor=none;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry" />
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-39" parent="GqCl69jF1bHdfa3NZY4l-38" style="shape=partialRectangle;html=1;whiteSpace=wrap;connectable=0;strokeColor=inherit;overflow=hidden;fillColor=none;top=0;left=0;bottom=0;right=0;pointerEvents=1;" value="" vertex="1">
+          <mxGeometry height="120" width="270" as="geometry">
+            <mxRectangle height="120" width="270" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="GqCl69jF1bHdfa3NZY4l-40" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div style=&quot;line-height: 150%;&quot;&gt;数据流名：库存记录表&lt;div&gt;来源：4.3更新库存&lt;/div&gt;&lt;div&gt;去向：&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;4.3更新库存、部门主管&lt;/span&gt;&lt;/div&gt;&lt;div&gt;组成：&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;主键ID+物料库+物料ID+物料分类ID+库存数量+成本单价&lt;/span&gt;&lt;/div&gt;&lt;div&gt;流量：平均80次/天，峰值200次&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="106" width="267" x="783" y="897" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

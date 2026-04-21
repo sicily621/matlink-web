@@ -1,0 +1,60 @@
+@mixin lineToRight($height: 1px) {
+  width: 100%;
+  height: $height;
+  @include gradientBackground("--borderColor", 90deg, 1, 0);
+}
+
+@mixin lineToLeft($height: 1px) {
+  width: 100%;
+  height: $height;
+  @include gradientBackground("--borderColor", -90deg, 1, 0);
+}
+
+@mixin border-gradient($height: 1px, $position: "top", $direction: "right") {
+  position: relative;
+
+  &:before {
+    content: "";
+    position: absolute;
+    #{$position}: 0;
+    left: 0;
+    z-index: 2;
+
+    @if $direction =="right" {
+      @include lineToRight($height);
+    }
+
+    @else {
+      @include lineToLeft($height);
+    }
+  }
+}
+
+@mixin border-top($height: 1px) {
+  @include border-gradient($height, "top");
+}
+
+@mixin border-bottom($height: 1px) {
+  @include border-gradient($height, "bottom");
+}
+
+@mixin gradientBackground($color: "--bgColorOverlay", $degree: 90deg, $startOpacity: 0.4, $endOpacity: 0) {
+  background: linear-gradient(#{$degree}, rgba(var(#{$color}), #{$startOpacity}), rgba(var(#{$color}), #{$endOpacity}));
+}
+
+@mixin leftMenuActiveBackground {
+  //@include gradientBackground("--colorPrimaryRgb");
+  //@include gradient-colors-primary;
+}
+
+@mixin leftMenuBackground {
+  @include gradientBackground("--bgColorOverlay");
+}
+
+@mixin headerBackground {
+  @include gradientBackground("--bgColorOverlay", 180deg);
+}
+
+@mixin footerBackground {
+  @include gradientBackground("--bgColorOverlay", 180deg, 0.6, 0.3);
+}

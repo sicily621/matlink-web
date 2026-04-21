@@ -1,0 +1,45 @@
+{
+  "compilerOptions": {
+    // 基础设置
+    "target": "ES2021",
+    "module": "ESNext",
+    "lib": ["ES2021", "DOM", "DOM.Iterable"],
+    "skipLibCheck": true,
+    "composite": true,
+    // 模块解析与导入设置
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    // 发射设置
+    "noEmit": true,
+    "jsx": "preserve",
+    // 类型检查设置
+    "strict": true,
+    "useDefineForClassFields": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "types": ["vitest/globals", "element-plus/global", "vue", "node"],
+    "paths": {
+      "@/*": ["./src/*"],
+      "@@/*": ["./src/common/*"],
+      "@static/*": ["./src/static/*"],
+      "@pages/*": ["./src/pages/*"]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
+    "types/**/*.d.ts",
+    "tests/**/*.test.ts"
+  ]
+}

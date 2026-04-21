@@ -1,0 +1,1 @@
+export const getBoxClientWidth = (ref: any) => console.log(ref.value); 

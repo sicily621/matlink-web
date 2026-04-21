@@ -1,0 +1,149 @@
+@use "./size.scss" as *;
+
+@mixin margin($i) {
+  .m-#{$i} {
+    margin: zrem($i);
+  }
+  .m-t-#{$i} {
+    margin-top: zrem($i);
+  }
+  .m-r-#{$i} {
+    margin-right: zrem($i);
+  }
+  .m-b-#{$i} {
+    margin-bottom: zrem($i);
+  }
+  .m-l-#{$i} {
+    margin-left: zrem($i);
+  }
+}
+
+@mixin padding($i) {
+  .p-#{$i} {
+    padding: zrem($i);
+  }
+  .p-t-#{$i} {
+    padding-top: zrem($i);
+  }
+  .p-r-#{$i} {
+    padding-right: zrem($i);
+  }
+  .p-b-#{$i} {
+    padding-bottom: zrem($i);
+  }
+  .p-l-#{$i} {
+    padding-left: zrem($i);
+  }
+}
+//1到9
+@for $i from 1 to 10 {
+  .w-#{$i * 10} {
+    width: zrem($i * 10) !important;
+    min-width: zrem($i * 10);
+  }
+  .w-#{100 + $i * 10} {
+    width: zrem(100 + $i * 10) !important;
+    min-width: zrem(100 + $i * 10);
+  }
+  .w-#{$i * 100} {
+    width: zrem($i * 100) !important;
+    min-width: zrem($i * 100);
+  }
+  .h-#{$i * 10} {
+    height: zrem($i * 10);
+  }
+  .h-#{$i * 100} {
+    height: zrem($i * 100);
+  }
+  @include margin($i * 10);
+  @include padding($i * 10);
+}
+
+@each $i in 3, 5, 8, 12, 16, 24 {
+  @include margin($i);
+  @include padding($i);
+}
+
+//1到8
+@for $i from 1 to 9 {
+  .tran-rotate-#{$i * 45} {
+    transform: rotate($i * 45deg);
+  }
+}
+
+.overflow-spot {
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.none {
+  border: none;
+  padding: 0;
+  margin: 0;
+  outline: none;
+}
+.border-none {
+  border: none !important;
+}
+.padding-0 {
+  padding: 0 !important;
+}
+.margin-0 {
+  margin: 0;
+}
+.m-l-0 {
+  margin-left: 0;
+}
+.m-r-0 {
+  margin-right: 0;
+}
+.m-t-0 {
+  margin-top: 0;
+}
+.m-b-0 {
+  margin-bottom: 0;
+}
+.w-0 {
+  width: 0;
+}
+.w-auto {
+  width: auto;
+}
+.pointer {
+  cursor: pointer;
+}
+.relative {
+  position: relative;
+}
+.absolute {
+  position: absolute;
+}
+
+.w-full {
+  width: 100%;
+}
+.h-full {
+  height: 100%;
+}
+.w-150 {
+  width: zrem(150);
+  min-width: zrem(150);
+}
+.w-272 {
+  width: zrem(272);
+}
+.w-296 {
+  width: zrem(296);
+}
+.w-320 {
+  width: zrem(320);
+}
+.t-a-l {
+  text-align: left !important;
+}
+.t-a-l-input {
+  input {
+    text-align: left !important;
+  }
+}

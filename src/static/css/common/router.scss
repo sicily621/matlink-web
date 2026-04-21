@@ -1,0 +1,219 @@
+#nprogress .bar {
+  background-color: var(--textColorSecondary) !important;
+  height: zrem(2) !important;
+  // background: red !important;
+}
+
+// .index-enter-from
+// .index-enter-to
+// .index-enter-active
+// .index-leave-active
+// .index-leave-to
+// .index-leave-from
+
+// 弹出
+.bounce-enter-active {
+  animation: bounce-in .8s;
+}
+
+.bounce-leave-active {
+  animation: bounce-in .8s reverse;
+}
+
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+    margin-left: 200px;
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.25);
+    margin-left: -20px;
+    opacity: 0.5;
+  }
+
+  100% {
+    margin-left: 0;
+    opacity: 1;
+  }
+}
+
+// 渐隐
+.opacity-enter-from,
+.opacity-leave-to {
+  opacity: 0;
+}
+
+.opacity-enter-to,
+.opacity-leave-from {
+  opacity: 1;
+}
+
+.opacity-enter-active,
+.opacity-leave-active {
+  transition: .4s;
+}
+
+
+//左滑
+.leftSwiper-enter-active,
+.leftSwiper-leave-active {
+  transition: all 0.75s ease-out;
+}
+
+
+.leftSwiper-enter-to {
+  position: absolute;
+  right: 0;
+}
+
+
+.leftSwiper-enter-from {
+  position: absolute;
+  right: -100%;
+}
+
+
+.leftSwiper-leave-to {
+  position: absolute;
+  left: -100%;
+}
+
+
+.leftSwiper-leave-from {
+  position: absolute;
+  left: 0;
+}
+
+//右滑
+.rightSwiper-enter-active,
+.rightSwiper-leave-active {
+  transition: all 0.75s ease-out;
+}
+
+
+.rightSwiper-enter-to {
+  position: absolute;
+  right: 0;
+}
+
+
+.rightSwiper-enter-from {
+  position: absolute;
+  right: 100%;
+}
+
+
+.rightSwiper-leave-to {
+  position: absolute;
+  left: 100%;
+}
+
+
+.rightSwiper-leave-from {
+  position: absolute;
+  left: 0;
+}
+
+//上滑
+.topSwiper-enter-active,
+.topSwiper-leave-active {
+  transition: all 0.75s ease-out;
+}
+
+
+.topSwiper-enter-to {
+  position: absolute;
+  top: 0;
+}
+
+
+.topSwiper-enter-from {
+  position: absolute;
+  top: 100%;
+}
+
+
+.topSwiper-leave-to {
+  position: absolute;
+  bottom: 100%;
+}
+
+
+.topSwiper-leave-from {
+  position: absolute;
+  bottom: 0;
+}
+
+//下滑
+.bottomSwiper-enter-active,
+.bottomSwiper-leave-active {
+  transition: all 0.75s ease-out;
+}
+
+.bottomSwiper-enter-to {
+  position: absolute;
+  top: 0;
+}
+
+.bottomSwiper-enter-from {
+  position: absolute;
+  top: -100%;
+}
+
+.bottomSwiper-leave-to {
+  position: absolute;
+  bottom: -100%;
+}
+
+.bottomSwiper-leave-from {
+  position: absolute;
+  bottom: 0;
+}
+
+//缩放滑动
+.scaleRight-enter-active,
+.scaleRight-leave-active {
+  position: absolute;
+  transition: all 0.85s ease;
+}
+
+.scaleRight-enter-from {
+  left: -100%;
+}
+
+.scaleRight-enter-to {
+  left: 0%;
+}
+
+.scaleRight-leave-from {
+  transform: scale(1);
+}
+
+.scaleRight-leave-to {
+  transform: scale(0.8);
+}
+
+//缩放左滑动
+.scaleLeft-enter-active,
+.scaleLeft-leave-active {
+  position: absolute;
+  transition: all 0.85s ease;
+}
+
+.scaleLeft-enter-from {
+  left: 100%;
+}
+
+.scaleLeft-enter-to {
+  left: 0%;
+}
+
+.scaleLeft-leave-from {
+  transform: scale(1);
+}
+
+.scaleLeft-leave-to {
+  transform: scale(0.8);
+}
