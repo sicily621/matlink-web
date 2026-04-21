@@ -85,4 +85,5 @@ export const updateAuditStatus = (data: {
   auditStatus: number;
   auditRemark?: string;
 }) => Post(inStockPrefix + "/updateAuditStatus", data);
-export const validateInStockNo = (data: InStock) => Post(inStockPrefix + "/validateInStockNo", data);
+export const validateInStockNo = (data: InStock) =>
+  Post(inStockPrefix + "/validateInStockNo", data);
