@@ -1,18 +1,33 @@
 <template>
   <div class="app-container flex h-full">
     <div class="w-full h-full flex-1 flex" v-if="!processFlag">
-      <div class="left el-card">
-        <tree
-          :data="treeData"
-          :expandedKeys="expandedKeys"
-          :currentNodeKey="currentNodeKey"
-          ref="treeRef"
-          @changeNode="changeNode($event)"
-          placeholder="请输入物料库名称"
-          :propsObj="defaultProps"
-          :searchFlag="true"
-        >
-        </tree>
+      <div class="left el-card flex flex-col">
+        <div class="flex-1">
+          <tree
+            :data="stockTreeData"
+            :expandedKeys="stockExpandedKeys"
+            :currentNodeKey="stockCurrentNodeKey"
+            ref="stockTreeRef"
+            @changeNode="changeStockNode($event)"
+            placeholder="请输入物料库名称"
+            :propsObj="defaultProps"
+            :searchFlag="true"
+          >
+          </tree>
+        </div>
+        <div class="flex-1">
+          <tree
+            :data="treeData"
+            :expandedKeys="expandedKeys"
+            :currentNodeKey="currentNodeKey"
+            ref="treeRef"
+            @changeNode="changeNode($event)"
+            placeholder="请输入物料分类"
+            :propsObj="defaultProps"
+            :searchFlag="true"
+          >
+          </tree>
+        </div>
       </div>
       <div class="flex-1 flex flex-col h-full">
         <div class="h-full w-full flex flex-col" v-if="!processFlag">
@@ -223,7 +238,11 @@ import { ModuleCode } from "@/router/moduleCode";
 import { usePermissionStore } from "@/pinia/stores/permission";
 import { PermissionAction } from "@/pages/employeeManagement/api/permission";
 import { getEmployeeListByIds } from "@/pages/employeeManagement/api/employee";
-import { getCategoryListByIds } from "@pages/baseManagement/api/category";
+import {
+  getCategoryListByIds,
+  getCategoryList,
+  Category,
+} from "@pages/baseManagement/api/category";
 import { getUnitListByIds } from "@pages/baseManagement/api/unit";
 import Detail from "./detail.vue";
 import { Search } from "@element-plus/icons-vue";
@@ -250,15 +269,14 @@ const typeOptions = ref([
 const getName = (list: any[], targetId: string | number) => {
   return list.find((item: any) => item.id === targetId)?.name ?? "";
 };
-const treeRef = ref();
-const getStatus = (id: string, list: any[]) => {
-  return list.find((item) => item.id === id)?.name ?? "无";
-};
 const onlyView = ref(false);
+
+const treeRef = ref();
 
 // 左侧树列表
 const virtualRootId = "root";
 const treeData: any = ref<any[]>([]);
+const stockTreeData: any = ref<any[]>([]);
 
 //为过滤保留源数据
 const rawParkData = ref<any[]>([]);
@@ -288,6 +306,23 @@ const changeNode = (data: any) => {
   }
   refreshTable();
 };
+const stockExpandedKeys = ref<Array<number | string>>([virtualRootId]);
+const stockCurrentNodeKey = ref<number | string>("");
+const changeStockNode = (data: any) => {
+  if (data.id === virtualRootId) {
+    if (data.children.length > 0) {
+      stockCurrentNodeKey.value = data?.children[0]?.id;
+      stockTreeRef.value.setCurrentKey(stockCurrentNodeKey.value);
+    } else {
+      stockCurrentNodeKey.value = virtualRootId;
+      return;
+    }
+  } else {
+    stockCurrentNodeKey.value = data.id;
+  }
+  refreshTable();
+};
+const stockTreeRef = ref();
 
 const loading = ref<boolean>(false);
 const processFlag = ref(0); // 0列表 1新建 2编辑
@@ -365,7 +400,8 @@ function refreshTable() {
   if (searchData.code.length) params.code = searchData.code;
   if (searchData.brand.length) params.brand = searchData.brand;
   if (searchData.name.length) params.name = searchData.name;
-  if (currentNodeKey.value) params.stockId = currentNodeKey.value;
+  if (stockCurrentNodeKey.value) params.stockId = stockCurrentNodeKey.value;
+  if (currentNodeKey.value) params.materialTypeId = currentNodeKey.value;
   findInventoryPage(params)
     .then(async (res: any) => {
       const { total, list } = res.data;
@@ -444,18 +480,43 @@ function buildStockTree(stocks: Stock[], parentId: number = 0) {
 const queryStock = async () => {
   const res = await getStockList();
   if ((res as any)?.data?.length) {
-    rawParkData.value = (res as any)?.data || [];
-    treeData.value = buildStockTree((res as any)?.data || []);
-    currentNodeKey.value = treeData.value[0].id;
-    treeRef.value.setCurrentKey(currentNodeKey.value);
+    stockTreeData.value = buildStockTree((res as any)?.data || []);
+    stockCurrentNodeKey.value = stockTreeData.value[0].id;
+    stockTreeRef.value.setCurrentKey(stockCurrentNodeKey.value);
   }
 };
 
-const save = () => {
-  if (processFlag.value == 1) {
-    createRef.value.confirmSave(() => {
-      back();
+function buildCategoryTree(categorys: Category[], parentId: number = 0) {
+  // 第一步：创建所有分类的映射并初始化children
+  categorys.forEach((dept: Category) => {
+    categoryMap.value.set(String(dept.id), {
+      ...dept,
+      children: [],
     });
+  });
+
+  // 第二步：建立所有层级的父子关系
+  categorys.forEach((dept: Category) => {
+    const current = categoryMap.value.get(String(dept.id));
+    if (dept.parentId !== 0) {
+      const parent = categoryMap.value.get(String(dept.parentId));
+      if (parent) {
+        parent.children.push(current);
+      }
+    }
+  });
+
+  // 第三步：收集顶级分类
+  return categorys
+    .filter((dept: Category) => dept.parentId === 0)
+    .map((dept: Category) => categoryMap.value.get(String(dept.id)));
+}
+const queryCategoryOptions = async () => {
+  const res = await getCategoryList();
+  if ((res as any)?.data?.length) {
+    rawParkData.value = (res as any)?.data || [];
+    treeData.value = buildCategoryTree((res as any)?.data || []);
+    currentNodeKey.value = treeData.value[0].id;
   }
 };
 const back = () => {
@@ -465,6 +526,7 @@ const back = () => {
 };
 onMounted(async () => {
   await queryStock();
+  await queryCategoryOptions();
   refreshTable();
 });
 </script>
