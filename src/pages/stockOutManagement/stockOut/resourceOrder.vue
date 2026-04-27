@@ -50,7 +50,9 @@
                 :table-data="tableData"
                 :indexMethod="indexMethod(currentPage, pageSize)"
                 @currentChange="currentChange"
+                :row-class-name="tableRowClassName"
                 class="h-full"
+                ref="tableRef"
               >
                 <template #applyUserId="scope">
                   {{ userNameMap?.[scope.scope.row.applyUserId] ?? "-" }}
@@ -92,23 +94,46 @@ import { onMounted, ref, reactive } from "vue";
 import baseTable from "@@/components/baseTable/baseTable.vue";
 import pagination from "@@/components/pagination/pagination.vue";
 import { findOutBoundApplyPage } from "@pages/outBoundApplyManagement/api/outBoundApply";
-import { findInStockPage } from "@pages/stockInManagement/api/inStock";
+import { findPurchasePage } from "@pages/purchaseManagement/api/purchase";
 import { getEmployeeListByIds } from "@/pages/employeeManagement/api/employee";
 import { indexMethod } from "@@/utils/page";
 import { watchDebounced } from "@vueuse/core";
 import { formatDate } from "@static/js/common/date";
 import { Search } from "@element-plus/icons-vue";
+import { ElMessage } from "element-plus";
 const props = defineProps<{
   id: string | number;
   type: number;
   stockId: string | number;
 }>();
 const emits = defineEmits(["save"]);
+const tableRef = ref();
 const originOrderId = ref(props.id);
 const originOrderNo = ref("");
 const currentChange = (row: any) => {
+  if (!row) return;
+  if (row?.relatedOutStock) {
+    tableRef.value.setCurrentRow(null);
+    ElMessage({
+      type: "warning",
+      message: "已经关联出库单，无法重复关联",
+    });
+    return;
+  }
   originOrderId.value = row.id;
   originOrderNo.value = props.type === 1 ? row.applyNo : row.inStockNo;
+};
+const tableRowClassName = ({
+  row,
+  rowIndex,
+}: {
+  row: any;
+  rowIndex: number;
+}) => {
+  if (row.relatedOutStock) {
+    return "disabled-row";
+  }
+  return "";
 };
 const isAfter = (time: Date) => {
   const currentDate = new Date();
@@ -130,10 +155,9 @@ const columns = computed(() => {
   } else if (props.type === 2) {
     result = [
       { prop: "index", label: "序号", type: 1, width: "100%" },
-      { prop: "inStockNo", label: "入库单号" },
-      { prop: "inStockUserId", label: "入库人" },
-      { prop: "inStockTime", label: "入库时间" },
-      { prop: "createTime", label: "创建时间" },
+      { prop: "billNo", label: "采购" },
+      { prop: "applyUserId", label: "申请人" },
+      { prop: "applyDate", label: "采购时间" },
       { prop: "description", label: "备注" },
     ];
   }
@@ -166,12 +190,12 @@ watchDebounced(
   () => {
     refreshTable();
   },
-  { debounce: 500, maxWait: 1000 },
+  { debounce: 500, maxWait: 1000 }
 );
 const refreshTable = async () => {
   loading.value = true;
   let params: any;
-  let api = props.type === 1 ? findOutBoundApplyPage : findInStockPage;
+  let api = props.type === 1 ? findOutBoundApplyPage : findPurchasePage;
   if (props.type === 1) {
     params = {
       currentPage: currentPage.value + 1,
@@ -187,7 +211,7 @@ const refreshTable = async () => {
       currentPage: currentPage.value + 1,
       size: pageSize.value,
       stockId: props.stockId,
-      status: 1,
+      status: 3,
       auditStatus: 2,
     };
     if (searchData.name) params.inStockNo = searchData.name;
@@ -201,7 +225,7 @@ const refreshTable = async () => {
   totalItems.value = total;
   const userIds: string[] = [];
   list?.forEach((event: any) => {
-    userIds.push(props.type === 1 ? event.applyUserId : event.inStockUserId);
+    userIds.push(props.type === 1 ? event.applyUserId : event.applyUserId);
   });
   const newUserArr = Array.from(new Set(userIds));
   if (newUserArr.length) {

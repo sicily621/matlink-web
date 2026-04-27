@@ -50,6 +50,8 @@
                 :table-data="tableData"
                 :indexMethod="indexMethod(currentPage, pageSize)"
                 @currentChange="currentChange"
+                :row-class-name="tableRowClassName"
+                ref="tableRef"
                 class="h-full"
               >
                 <template #applyUserId="scope">
@@ -95,6 +97,7 @@ import { indexMethod } from "@@/utils/page";
 import { watchDebounced } from "@vueuse/core";
 import { formatDate } from "@static/js/common/date";
 import { Search } from "@element-plus/icons-vue";
+import { ElMessage } from "element-plus";
 const props = defineProps<{
   id: string | number;
   type: number;
@@ -103,7 +106,17 @@ const props = defineProps<{
 const emits = defineEmits(["save"]);
 const originOrderId = ref(props.id);
 const originOrderNo = ref("");
+const tableRef = ref();
 const currentChange = (row: any) => {
+  if (!row) return;
+  if (row?.relatedInStock) {
+    tableRef.value.setCurrentRow(null);
+    ElMessage({
+      type: "warning",
+      message: "已经关联入库单，无法重复关联",
+    });
+    return;
+  }
   originOrderId.value = row.id;
   originOrderNo.value = props.type === 3 ? row.applyNo : row.billNo;
 };
@@ -111,6 +124,18 @@ const isAfter = (time: Date) => {
   const currentDate = new Date();
   currentDate.setHours(0, 0, 0, 0);
   return time.getTime() > currentDate.getTime();
+};
+const tableRowClassName = ({
+  row,
+  rowIndex,
+}: {
+  row: any;
+  rowIndex: number;
+}) => {
+  if (row.relatedInStock) {
+    return "disabled-row";
+  }
+  return "";
 };
 const loading = ref<boolean>(false);
 const processFlag = ref(0); // 0列表 1新建 2编辑
@@ -162,7 +187,7 @@ watchDebounced(
   () => {
     refreshTable();
   },
-  { debounce: 500, maxWait: 1000 },
+  { debounce: 500, maxWait: 1000 }
 );
 const refreshTable = async () => {
   loading.value = true;
@@ -174,7 +199,7 @@ const refreshTable = async () => {
       size: pageSize.value,
       stockId: props.stockId,
       auditStatus: 2,
-      status: 0,
+      status: 1, //已领用
     };
 
     if (searchData.name) params.applyNo = searchData.name;

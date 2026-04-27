@@ -22,12 +22,17 @@
   .el-table__header {
     height: 50px;
   }
+  .disabled-row {
+    color: var(--el-text-color-disabled);
+    cursor: no-drop;
+  }
 }
 .el-tree {
   .el-tree-node__content {
     height: 34px;
   }
 }
-.el-date-editor.el-input, .el-date-editor.el-input__wrapper{
-  width:230px!important
+.el-date-editor.el-input,
+.el-date-editor.el-input__wrapper {
+  width: 230px !important;
 }

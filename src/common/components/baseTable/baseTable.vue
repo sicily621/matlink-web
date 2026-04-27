@@ -17,6 +17,7 @@
       empty-text="&nbsp"
       table-layout="auto"
       :height="props.height"
+      :row-class-name="props.rowClassName"
       :header-cell-style="headerCellStyle"
     >
       <el-table-column
@@ -203,6 +204,7 @@ interface Props {
   hideTableEmptyImg?: boolean;
   height?: string;
   fixedColumnMore?: boolean;
+  rowClassName?: any;
 }
 const baseTableRef = ref();
 const props = defineProps<Props>();
@@ -259,9 +261,9 @@ const renderHeaderIconEdit = (data: any, col: any) => {
             marginLeft: "2px",
           },
         },
-        [h(Edit, {})],
+        [h(Edit, {})]
       ),
-    ],
+    ]
   );
 };
 const isCheckedObj = ref<any>({});
