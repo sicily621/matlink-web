@@ -397,7 +397,7 @@
     <zModel
       ref="orderRef"
       :style="{ width: '96%', height: '80%' }"
-      :custom-model-title="form.type === 1 ? '领料单' : '采购单'"
+      :custom-model-title="form.type === 1 ? '领料单' : '采购入库单'"
       :noConfirmBtnFlag="true"
       @confirm="() => {}"
     >

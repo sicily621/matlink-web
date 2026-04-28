@@ -252,7 +252,7 @@ const columns = ref([
   { prop: "brand", label: "品牌" },
   { prop: "specification", label: "规格" },
   { prop: "unit", label: "单位" },
-  { prop: "useCount", label: "可用数量" },
+  { prop: "count", label: "库存数量" },
   { prop: "expectedCount", label: "原单数量" },
   { prop: "actualCount", label: "出库数量" },
   { prop: "costPrice", label: "成本单价" },
@@ -413,7 +413,7 @@ const refreshTable = async () => {
   if (unitIds.length) await getUnitList(unitIds);
   tableData.value = res.data.map((item: any) => {
     const row = {
-      useCount: 0,
+      count: 0,
       costPrice: 0,
       totalCostPrice: 0,
       expectedCount: "",
@@ -430,7 +430,7 @@ const refreshTable = async () => {
       Object.assign(row, detail);
     }
     if (material) {
-      row.useCount = Number(material.useCount);
+      row.count = Number(material.count);
       row.costPrice = Number(material.costPrice);
       row.totalCostPrice = Number(material.totalCostPrice);
     }
