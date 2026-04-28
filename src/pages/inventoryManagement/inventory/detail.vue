@@ -145,8 +145,25 @@ const pageChange = (page: any) => {
 };
 
 const tableData = ref<any[]>([]);
+function formatDate(date: Date): string {
+  const pad = (n: number) => n.toString().padStart(2, "0");
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+    date.getDate()
+  )}`;
+}
+function getRecentDaysRange(days: number = 15): [String, String] {
+  // 1. 获取当前时间作为结束时间
+  const end = new Date();
 
-const time = ref("");
+  // 2. 创建一个新的 Date 对象用于计算开始时间
+  const start = new Date(end.getTime());
+
+  // 3. 将开始时间向前推指定的天数
+  start.setDate(start.getDate() - days);
+
+  return [formatDate(start), formatDate(end)];
+}
+const time = ref<any>(getRecentDaysRange());
 
 const materialIds = ref<string[]>([]);
 const materialMap = ref<Map<string, any>>(new Map());

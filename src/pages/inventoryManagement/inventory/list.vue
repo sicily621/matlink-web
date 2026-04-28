@@ -207,7 +207,7 @@
     <div class="h-full w-full flex flex-col" v-if="processFlag">
       <Detail
         ref="createRef"
-        :stockId="String(currentNodeKey)"
+        :stockId="String(stockCurrentNodeKey)"
         :materialId="String(currentData?.materialId)"
         :back="back"
       ></Detail>
@@ -251,11 +251,11 @@ import { findMaterialListByIds } from "@pages/baseManagement/api/material";
 const permissionStore = usePermissionStore();
 const enableEdit = permissionStore.hasPermission(
   ModuleCode.Inventory,
-  PermissionAction.Edit,
+  PermissionAction.Edit
 );
 const enableRead = permissionStore.hasPermission(
   ModuleCode.Inventory,
-  PermissionAction.View,
+  PermissionAction.View
 );
 const userNameMap = ref<{ [key: string]: string }>({});
 const warningInventoryOptions = [
@@ -372,7 +372,7 @@ watchDebounced(
   () => {
     refreshTable();
   },
-  { debounce: 500, maxWait: 1000 },
+  { debounce: 500, maxWait: 1000 }
 );
 const materialIds = ref<string[]>([]);
 const materialMap = ref<Map<string, any>>(new Map());
@@ -411,7 +411,7 @@ function refreshTable() {
       materialIds.value = list.map((item: any) => item.materialId);
       if (materialIds.value.length > 0) {
         const materialRes: any = await findMaterialListByIds(
-          materialIds.value.join(","),
+          materialIds.value.join(",")
         );
         materialMap.value.clear();
         materialRes.data.map((item: any) => {
